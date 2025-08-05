@@ -41,12 +41,7 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
           <Text fontSize="xl" fontWeight="bold" color="gray.800">
             Stellar DeFi
           </Text>
-          <IconButton
-            aria-label="Menu"
-            icon={<FiMenu />}
-            variant="ghost"
-            size="sm"
-          />
+          <IconButton aria-label="Menu" icon={<FiMenu />} variant="ghost" size="sm" />
         </HStack>
       </Box>
 

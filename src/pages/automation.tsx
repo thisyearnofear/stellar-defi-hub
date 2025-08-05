@@ -1,6 +1,6 @@
-import { type NextPage } from 'next'
-import Head from 'next/head'
-import { AutomationDashboard } from '../components/automation/AutomationDashboard'
+import { type NextPage } from 'next';
+import Head from 'next/head';
+import { AutomationDashboard } from '../components/automation/AutomationDashboard';
 
 const AutomationPage: NextPage = () => {
   return (
@@ -12,7 +12,7 @@ const AutomationPage: NextPage = () => {
 
       <AutomationDashboard />
     </>
-  )
-}
+  );
+};
 
-export default AutomationPage
+export default AutomationPage;

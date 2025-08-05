@@ -3,10 +3,10 @@
 
 export enum StellarWalletType {
   FREIGHTER = 'freighter',
-  LOBSTR = 'lobstr', 
+  LOBSTR = 'lobstr',
   HANA = 'hana',
   RABET = 'rabet',
-  ALBEDO = 'albedo'
+  ALBEDO = 'albedo',
 }
 
 export interface StellarWallet {
@@ -116,7 +116,7 @@ class LobstrWallet implements StellarWallet {
     }
     const result = await window.lobstrApi.signTransaction({
       xdr,
-      networkPassphrase
+      networkPassphrase,
     });
     return result.signedXDR;
   }
@@ -169,7 +169,7 @@ class HanaWallet implements StellarWallet {
     }
     const result = await window.hana.signTransaction({
       xdr,
-      networkPassphrase
+      networkPassphrase,
     });
     return result.signedXDR;
   }
@@ -242,17 +242,17 @@ class AlbedoWallet implements StellarWallet {
   async connect(): Promise<string> {
     // Albedo uses popup-based connection
     const albedoUrl = `https://albedo.link/confirm?intent=public_key&pubkey=&callback=${encodeURIComponent(window.location.origin)}`;
-    
+
     return new Promise((resolve, reject) => {
       const popup = window.open(albedoUrl, 'albedo', 'width=400,height=600');
-      
+
       const handleMessage = (event: MessageEvent) => {
         if (event.origin !== 'https://albedo.link') return;
-        
+
         if (event.data.type === 'albedo_intent_result') {
           window.removeEventListener('message', handleMessage);
           popup?.close();
-          
+
           if (event.data.result) {
             const publicKey = event.data.result.pubkey;
             localStorage.setItem('albedo_public_key', publicKey);
@@ -262,9 +262,9 @@ class AlbedoWallet implements StellarWallet {
           }
         }
       };
-      
+
       window.addEventListener('message', handleMessage);
-      
+
       // Timeout after 5 minutes
       setTimeout(() => {
         window.removeEventListener('message', handleMessage);
@@ -289,17 +289,17 @@ class AlbedoWallet implements StellarWallet {
   async signTransaction(xdr: string, networkPassphrase: string): Promise<string> {
     const publicKey = await this.getPublicKey();
     const albedoUrl = `https://albedo.link/confirm?intent=tx&xdr=${encodeURIComponent(xdr)}&pubkey=${publicKey}&network=${encodeURIComponent(networkPassphrase)}&callback=${encodeURIComponent(window.location.origin)}`;
-    
+
     return new Promise((resolve, reject) => {
       const popup = window.open(albedoUrl, 'albedo', 'width=400,height=600');
-      
+
       const handleMessage = (event: MessageEvent) => {
         if (event.origin !== 'https://albedo.link') return;
-        
+
         if (event.data.type === 'albedo_intent_result') {
           window.removeEventListener('message', handleMessage);
           popup?.close();
-          
+
           if (event.data.result) {
             resolve(event.data.result.xdr);
           } else {
@@ -307,9 +307,9 @@ class AlbedoWallet implements StellarWallet {
           }
         }
       };
-      
+
       window.addEventListener('message', handleMessage);
-      
+
       setTimeout(() => {
         window.removeEventListener('message', handleMessage);
         popup?.close();
@@ -330,7 +330,7 @@ export const STELLAR_WALLETS: Record<StellarWalletType, StellarWallet> = {
 
 // Get all available wallets
 export function getAvailableWallets(): StellarWallet[] {
-  return Object.values(STELLAR_WALLETS).filter(wallet => wallet.isInstalled());
+  return Object.values(STELLAR_WALLETS).filter((wallet) => wallet.isInstalled());
 }
 
 // Get wallet by type
@@ -342,20 +342,20 @@ export function getWallet(type: StellarWalletType): StellarWallet {
 export function getRecommendedWallet(): StellarWallet | null {
   const available = getAvailableWallets();
   if (available.length === 0) return null;
-  
+
   // Priority order: Freighter > Lobstr > Hana > Rabet > Albedo
   const priority = [
     StellarWalletType.FREIGHTER,
     StellarWalletType.LOBSTR,
     StellarWalletType.HANA,
     StellarWalletType.RABET,
-    StellarWalletType.ALBEDO
+    StellarWalletType.ALBEDO,
   ];
-  
+
   for (const type of priority) {
-    const wallet = available.find(w => w.id === type);
+    const wallet = available.find((w) => w.id === type);
     if (wallet) return wallet;
   }
-  
+
   return available[0];
 }

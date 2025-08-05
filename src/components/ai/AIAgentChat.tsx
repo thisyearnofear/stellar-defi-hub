@@ -53,7 +53,8 @@ export const AIAgentChat: React.FC = () => {
             <Box textAlign="center" py={8}>
               <RiRobotLine size={48} color="#CBD5E0" />
               <Text color="gray.500" mt={4}>
-                Hi! I&apos;m your Stellar DeFi assistant. Ask me anything about your portfolio, trading, or DeFi opportunities.
+                Hi! I&apos;m your Stellar DeFi assistant. Ask me anything about your portfolio,
+                trading, or DeFi opportunities.
               </Text>
             </Box>
           )}
@@ -65,9 +66,7 @@ export const AIAgentChat: React.FC = () => {
               justify={message.type === 'user' ? 'flex-end' : 'flex-start'}
               spacing={3}
             >
-              {message.type !== 'user' && (
-                <Avatar size="sm" icon={<RiRobotLine />} bg="blue.500" />
-              )}
+              {message.type !== 'user' && <Avatar size="sm" icon={<RiRobotLine />} bg="blue.500" />}
 
               <Box
                 maxW="80%"
@@ -80,21 +79,15 @@ export const AIAgentChat: React.FC = () => {
                 borderBottomLeftRadius={message.type === 'user' ? 'lg' : 'sm'}
               >
                 <Text fontSize="sm">{message.content}</Text>
-                <Text
-                  fontSize="xs"
-                  opacity={0.7}
-                  mt={1}
-                >
+                <Text fontSize="xs" opacity={0.7} mt={1}>
                   {message.timestamp.toLocaleTimeString([], {
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
                   })}
                 </Text>
               </Box>
 
-              {message.type === 'user' && (
-                <Avatar size="sm" icon={<FiUser />} bg="gray.500" />
-              )}
+              {message.type === 'user' && <Avatar size="sm" icon={<FiUser />} bg="gray.500" />}
             </HStack>
           ))}
 
@@ -104,7 +97,9 @@ export const AIAgentChat: React.FC = () => {
               <Box bg="gray.100" px={4} py={3} borderRadius="lg" borderBottomLeftRadius="sm">
                 <HStack spacing={2}>
                   <Spinner size="sm" />
-                  <Text fontSize="sm" color="gray.600">Thinking...</Text>
+                  <Text fontSize="sm" color="gray.600">
+                    Thinking...
+                  </Text>
                 </HStack>
               </Box>
             </HStack>

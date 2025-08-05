@@ -14,11 +14,12 @@ export interface AIAgentMessage {
     result?: any;
     confidence?: number;
     intent?: string;
+    followUpQuestions?: string[];
   };
 }
 
 export interface AIAgentAction {
-  type: 'trade' | 'stake' | 'lend' | 'borrow' | 'analyze' | 'alert' | 'rebalance';
+  type: 'trade' | 'stake' | 'lend' | 'borrow' | 'analyze' | 'alert' | 'rebalance' | 'automate';
   description: string;
   parameters: any;
   estimatedGas?: string;
@@ -92,20 +93,24 @@ export class StellarAIAgent {
   }
 
   // Natural language processing with enhanced context
-  async processMessage(message: string, userProfile?: any, portfolioData?: any): Promise<AIAgentMessage> {
+  async processMessage(
+    message: string,
+    userProfile?: any,
+    portfolioData?: any
+  ): Promise<AIAgentMessage> {
     const response = await fetch(`${this.baseUrl}/process`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
         message,
         walletAddress: this.walletAddress,
         userProfile,
         portfolioData,
-        timestamp: new Date().toISOString()
-      })
+        timestamp: new Date().toISOString(),
+      }),
     });
 
     return await response.json();
@@ -117,12 +122,12 @@ export class StellarAIAgent {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
         action,
-        walletAddress: this.walletAddress
-      })
+        walletAddress: this.walletAddress,
+      }),
     });
 
     return await response.json();
@@ -134,12 +139,12 @@ export class StellarAIAgent {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
         description,
-        walletAddress: this.walletAddress
-      })
+        walletAddress: this.walletAddress,
+      }),
     });
 
     return await response.json();
@@ -149,8 +154,8 @@ export class StellarAIAgent {
   async getActiveAutomations(): Promise<AutomationStrategy[]> {
     const response = await fetch(`${this.baseUrl}/automation/list`, {
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`
-      }
+        Authorization: `Bearer ${this.apiKey}`,
+      },
     });
 
     return await response.json();
@@ -162,14 +167,14 @@ export class StellarAIAgent {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        walletAddress: this.walletAddress
-      })
+        walletAddress: this.walletAddress,
+      }),
     });
 
-    const result = await response.json() as { analysis: string };
+    const result = (await response.json()) as { analysis: string };
     return result.analysis;
   }
 
@@ -179,14 +184,14 @@ export class StellarAIAgent {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`
+        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        asset: asset ?? 'XLM'
-      })
+        asset: asset ?? 'XLM',
+      }),
     });
 
-    const result = await response.json() as { insights: string };
+    const result = (await response.json()) as { insights: string };
     return result.insights;
   }
 
@@ -200,28 +205,29 @@ export class StellarAIAgent {
 export const AI_EXAMPLES = {
   prompts: [
     "What's the best way to earn yield on my XLM?",
-    "Should I buy more XLM now or wait?",
-    "Rebalance my portfolio to 60% XLM, 30% USDC, 10% other",
-    "Set up automatic buying of $100 XLM every week",
-    "Alert me if XLM drops below $0.10",
+    'Should I buy more XLM now or wait?',
+    'Rebalance my portfolio to 60% XLM, 30% USDC, 10% other',
+    'Set up automatic buying of $100 XLM every week',
+    'Alert me if XLM drops below $0.10',
     "What's my portfolio risk level?",
-    "Find the highest yield opportunities",
-    "Explain why my portfolio lost money today"
+    'Find the highest yield opportunities',
+    'Explain why my portfolio lost money today',
   ],
   responses: [
     {
-      analysis: "Based on current market conditions, Blend Protocol offers 8.2% APY on XLM with low risk...",
+      analysis:
+        'Based on current market conditions, Blend Protocol offers 8.2% APY on XLM with low risk...',
       actions: [
         {
           type: 'lend',
           description: 'Lend 1000 XLM to Blend Protocol',
           parameters: { asset: 'XLM', amount: '1000', protocol: 'blend' },
           riskLevel: 'low',
-          expectedOutcome: '8.2% APY, ~82 XLM annually'
-        }
-      ]
-    }
-  ]
+          expectedOutcome: '8.2% APY, ~82 XLM annually',
+        },
+      ],
+    },
+  ],
 };
 
 // AI Agent Hook for React components with enhanced context
@@ -235,11 +241,15 @@ export const useAIAgent = () => {
     const savedMessages = localStorage.getItem('stellar_ai_conversation');
     if (savedMessages) {
       try {
-        const parsed = JSON.parse(savedMessages) as Array<Omit<AIAgentMessage, 'timestamp'> & { timestamp: string }>;
-        setMessages(parsed.map((msg) => ({
-          ...msg,
-          timestamp: new Date(msg.timestamp)
-        })));
+        const parsed = JSON.parse(savedMessages) as Array<
+          Omit<AIAgentMessage, 'timestamp'> & { timestamp: string }
+        >;
+        setMessages(
+          parsed.map((msg) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp),
+          }))
+        );
       } catch (error) {
         console.warn('Failed to load conversation history:', error);
       }
@@ -260,14 +270,14 @@ export const useAIAgent = () => {
         id: Date.now().toString(),
         content,
         timestamp: new Date(),
-        type: 'user'
+        type: 'user',
       };
 
-      setMessages(prev => [...prev, userMessage]);
+      setMessages((prev) => [...prev, userMessage]);
 
       // Get enhanced response with context
       const response = await agent.processMessage(content, userProfile, portfolioData);
-      setMessages(prev => [...prev, response]);
+      setMessages((prev) => [...prev, response]);
 
       return response;
     } finally {
@@ -285,10 +295,10 @@ export const useAIAgent = () => {
         content: `Executed: ${action.description}`,
         timestamp: new Date(),
         type: 'action',
-        metadata: { action: action.type, result }
+        metadata: { action: action.type, result },
       };
 
-      setMessages(prev => [...prev, actionMessage]);
+      setMessages((prev) => [...prev, actionMessage]);
       return result;
     } finally {
       setIsProcessing(false);
@@ -301,17 +311,17 @@ export const useAIAgent = () => {
   };
 
   const getLastIntent = () => {
-    const lastAgentMessage = messages.filter(m => m.type === 'agent').pop();
+    const lastAgentMessage = messages.filter((m) => m.type === 'agent').pop();
     return lastAgentMessage?.metadata?.intent ?? null;
   };
 
   const getConversationSummary = () => {
     return {
       totalMessages: messages.length,
-      userMessages: messages.filter(m => m.type === 'user').length,
-      agentMessages: messages.filter(m => m.type === 'agent').length,
-      actionsExecuted: messages.filter(m => m.type === 'action').length,
-      lastActivity: messages.length > 0 ? messages[messages.length - 1].timestamp : null
+      userMessages: messages.filter((m) => m.type === 'user').length,
+      agentMessages: messages.filter((m) => m.type === 'agent').length,
+      actionsExecuted: messages.filter((m) => m.type === 'action').length,
+      lastActivity: messages.length > 0 ? messages[messages.length - 1].timestamp : null,
     };
   };
 
@@ -323,6 +333,6 @@ export const useAIAgent = () => {
     executeAction,
     clearConversation,
     getLastIntent,
-    getConversationSummary
+    getConversationSummary,
   };
 };

@@ -1,11 +1,11 @@
-import { type NextPage } from 'next'
-import Head from 'next/head'
-import { StellarDEX } from '../components/stellar/StellarDEX'
-import { MobileTrade } from '../components/mobile/MobileTrade'
-import { useBreakpointValue } from '@chakra-ui/react'
+import { type NextPage } from 'next';
+import Head from 'next/head';
+import { StellarDEX } from '../components/stellar/StellarDEX';
+import { MobileTrade } from '../components/mobile/MobileTrade';
+import { useBreakpointValue } from '@chakra-ui/react';
 
 const TradePage: NextPage = () => {
-  const isMobile = useBreakpointValue({ base: true, md: false })
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <>
@@ -16,7 +16,7 @@ const TradePage: NextPage = () => {
 
       {isMobile ? <MobileTrade /> : <StellarDEX />}
     </>
-  )
-}
+  );
+};
 
-export default TradePage
+export default TradePage;

@@ -1,23 +1,22 @@
-import React from 'react'
-import { BaseLayout } from '@/components/layout/BaseLayout'
-import { HotToastConfig } from '@/components/layout/HotToastConfig'
-import GlobalStyles from '@/styles/GlobalStyles'
-import { ChakraProvider, DarkMode } from '@chakra-ui/react'
-import { cache } from '@emotion/css'
-import { CacheProvider } from '@emotion/react'
-import { DefaultSeo } from 'next-seo'
-import type { AppProps } from 'next/app'
-import { Inconsolata } from 'next/font/google'
-import Head from 'next/head'
-import Script from 'next/script'
+import React from 'react';
+import { BaseLayout } from '@/components/layout/BaseLayout';
+import { HotToastConfig } from '@/components/layout/HotToastConfig';
+import GlobalStyles from '@/styles/GlobalStyles';
+import { ChakraProvider, DarkMode } from '@chakra-ui/react';
+import { cache } from '@emotion/css';
+import { CacheProvider } from '@emotion/react';
+import { DefaultSeo } from 'next-seo';
+import type { AppProps } from 'next/app';
+import { Inconsolata } from 'next/font/google';
+import Head from 'next/head';
+import Script from 'next/script';
 
-import { StellarProvider } from '../components/web3/StellarProvider'
+import { StellarProvider } from '../components/web3/StellarProvider';
 
 // Google Font(s) via `next/font`
-const inconsolata = Inconsolata({ subsets: ['latin'] })
+const inconsolata = Inconsolata({ subsets: ['latin'] });
 
 function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     <>
       {/* TODO SEO */}
@@ -54,8 +53,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             --font-inconsolata: ${inconsolata.style.fontFamily}, 'Inconsolata';
           }
         `}</style>
-
-
       </Head>
 
       {/* Suppress wallet extension console errors */}
@@ -79,7 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 originalError.apply(console, args);
               };
             })();
-          `
+          `,
         }}
       />
 
@@ -99,7 +96,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </CacheProvider>
       </StellarProvider>
     </>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

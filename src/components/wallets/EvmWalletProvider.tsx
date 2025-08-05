@@ -22,9 +22,7 @@ export const EvmWalletProvider: React.FC<EvmWalletProviderProps> = ({ children }
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={config}>
-        <RainbowKitProvider>
-          {children}
-        </RainbowKitProvider>
+        <RainbowKitProvider>{children}</RainbowKitProvider>
       </WagmiProvider>
     </QueryClientProvider>
   );

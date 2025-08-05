@@ -33,10 +33,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       type: 'agent',
       metadata: {
         confidence: aiResponse.confidence,
-        action: aiResponse.actions,
+        action: JSON.stringify(aiResponse.actions),
         intent: aiResponse.intent,
-        followUpQuestions: aiResponse.followUpQuestions
-      }
+        followUpQuestions: aiResponse.followUpQuestions,
+      },
     };
 
     res.status(200).json(response);
@@ -46,14 +46,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Fallback response if Gemini fails
     const fallbackResponse: AIAgentMessage = {
       id: Date.now().toString(),
-      content: "I'm having trouble processing your request right now. Please try again or ask me something else about Stellar DeFi!",
+      content:
+        "I'm having trouble processing your request right now. Please try again or ask me something else about Stellar DeFi!",
       timestamp: new Date(),
       type: 'agent',
       metadata: {
         confidence: 0.5,
         action: '',
-        intent: 'error'
-      }
+        intent: 'error',
+      },
     };
 
     res.status(200).json(fallbackResponse);
@@ -72,7 +73,7 @@ async function processAIMessage(message: string, walletAddress?: string): Promis
     automation: /automate|schedule|recurring|dca|dollar.cost/,
     market_insight: /market|trend|forecast|prediction/,
     rebalance: /rebalance|allocate|distribute/,
-    alert: /alert|notify|watch|monitor/
+    alert: /alert|notify|watch|monitor/,
   };
 
   // Detect primary intent
@@ -94,8 +95,8 @@ async function processAIMessage(message: string, walletAddress?: string): Promis
     type: 'agent',
     metadata: {
       confidence: response.confidence,
-      action: response.actions
-    }
+      action: JSON.stringify(response.actions),
+    },
   };
 }
 
@@ -111,9 +112,9 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             description: 'Get detailed portfolio breakdown',
             parameters: { walletAddress },
             riskLevel: 'low',
-            expectedOutcome: 'Detailed risk and performance analysis'
-          }
-        ]
+            expectedOutcome: 'Detailed risk and performance analysis',
+          },
+        ],
       };
 
     case 'yield_opportunity':
@@ -126,16 +127,16 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             description: 'Lend 1000 XLM to Blend Protocol (8.2% APY)',
             parameters: { asset: 'XLM', amount: '1000', protocol: 'blend' },
             riskLevel: 'low',
-            expectedOutcome: '~82 XLM annually, low risk'
+            expectedOutcome: '~82 XLM annually, low risk',
           },
           {
             type: 'stake',
             description: 'Add liquidity to XLM/USDC pool (12% APY)',
             parameters: { asset1: 'XLM', asset2: 'USDC', amount: '500' },
             riskLevel: 'medium',
-            expectedOutcome: '~12% APY with impermanent loss risk'
-          }
-        ]
+            expectedOutcome: '~12% APY with impermanent loss risk',
+          },
+        ],
       };
 
     case 'trade_execution':
@@ -153,12 +154,12 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             parameters: {
               fromAsset: 'USDC',
               toAsset: assetMatch?.[0]?.toUpperCase() || 'XLM',
-              amount: amountMatch?.[1] || '100'
+              amount: amountMatch?.[1] || '100',
             },
             riskLevel: 'low',
-            expectedOutcome: `Acquire ${assetMatch?.[0]?.toUpperCase() || 'XLM'} at current market price`
-          }
-        ]
+            expectedOutcome: `Acquire ${assetMatch?.[0]?.toUpperCase() || 'XLM'} at current market price`,
+          },
+        ],
       };
 
     case 'automation':
@@ -171,16 +172,16 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             description: 'Set up weekly $100 XLM purchase (DCA)',
             parameters: { asset: 'XLM', amount: '100', frequency: 'weekly' },
             riskLevel: 'low',
-            expectedOutcome: 'Automated weekly purchases to average price'
+            expectedOutcome: 'Automated weekly purchases to average price',
           },
           {
             type: 'automation',
             description: 'Auto-rebalance portfolio monthly',
             parameters: { frequency: 'monthly', threshold: '5%' },
             riskLevel: 'low',
-            expectedOutcome: 'Maintain target allocation automatically'
-          }
-        ]
+            expectedOutcome: 'Maintain target allocation automatically',
+          },
+        ],
       };
 
     case 'market_insight':
@@ -193,9 +194,9 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             description: 'Get detailed market analysis',
             parameters: { asset: 'XLM', timeframe: '1d' },
             riskLevel: 'low',
-            expectedOutcome: 'Comprehensive market insights and trends'
-          }
-        ]
+            expectedOutcome: 'Comprehensive market insights and trends',
+          },
+        ],
       };
 
     case 'rebalance':
@@ -208,12 +209,12 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             description: 'Rebalance to 60% XLM, 30% USDC, 10% other',
             parameters: {
               targetAllocation: { XLM: 60, USDC: 30, OTHER: 10 },
-              threshold: 5
+              threshold: 5,
             },
             riskLevel: 'low',
-            expectedOutcome: 'Portfolio rebalanced to target allocation'
-          }
-        ]
+            expectedOutcome: 'Portfolio rebalanced to target allocation',
+          },
+        ],
       };
 
     case 'alert':
@@ -226,16 +227,16 @@ async function generateResponse(intent: string, message: string, walletAddress?:
             description: 'Alert when XLM drops below $0.10',
             parameters: { asset: 'XLM', condition: 'below', price: '0.10' },
             riskLevel: 'low',
-            expectedOutcome: 'Instant notification when condition is met'
-          }
-        ]
+            expectedOutcome: 'Instant notification when condition is met',
+          },
+        ],
       };
 
     default:
       return {
         content: `I'm your Stellar DeFi AI assistant! I can help you analyze your portfolio, find yield opportunities, execute trades, set up automation, and monitor markets. What would you like to do?`,
         confidence: 0.6,
-        actions: []
+        actions: [],
       };
   }
 }

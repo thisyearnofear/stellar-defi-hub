@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const userStrategies = automationStrategies.get(walletAddress) || [];
-    
+
     res.status(200).json(userStrategies);
   } catch (error) {
     console.error('Automation list error:', error);

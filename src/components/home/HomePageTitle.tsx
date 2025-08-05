@@ -1,16 +1,16 @@
-import Link from 'next/link'
-import type { FC } from 'react'
-import 'twin.macro'
-import tw, { styled } from 'twin.macro'
+import Link from 'next/link';
+import type { FC } from 'react';
+import 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
 const StyledIconLink = styled(Link)(() => [
   tw`opacity-90 transition-all hover:(-translate-y-0.5 opacity-100)`,
-])
+]);
 
 export const HomePageTitle: FC = () => {
-  const title = 'Stellar DeFi Hub'
-  const desc = 'Trade on Stellar DEX, Earn Yield with Blend, Access the Stellar Ecosystem'
-  const githubHref = 'https://github.com/paltalabs/create-soroban-dapp/'
+  const title = 'Stellar DeFi Hub';
+  const desc = 'Trade on Stellar DEX, Earn Yield with Blend, Access the Stellar Ecosystem';
+  const githubHref = 'https://github.com/paltalabs/create-soroban-dapp/';
 
   return (
     <>
@@ -28,7 +28,7 @@ export const HomePageTitle: FC = () => {
 
         {/* Tagline & Links */}
         <p tw="mt-2 text-gray-600 text-sm">
-          Largely inspired by the {' '}
+          Largely inspired by the{' '}
           <a
             href="https://github.com/scio-labs/inkathon"
             target="_blank"
@@ -36,10 +36,10 @@ export const HomePageTitle: FC = () => {
           >
             Ink!athon
           </a>{' '}
-           project.
+          project.
         </p>
         <p tw="mt-2 text-gray-600 text-sm">
-          Adapted by {' '}
+          Adapted by{' '}
           <a
             href="https://github.com/benjaminsalon"
             target="_blank"
@@ -47,7 +47,7 @@ export const HomePageTitle: FC = () => {
           >
             Benjamin Salon
           </a>{' '}
-          in collaboration with {' '}
+          in collaboration with{' '}
           <a
             href="https://paltalabs.io"
             target="_blank"
@@ -77,5 +77,5 @@ export const HomePageTitle: FC = () => {
         <div tw="my-14 w-14 bg-gray-800 h-[2px]" />
       </div>
     </>
-  )
-}
+  );
+};

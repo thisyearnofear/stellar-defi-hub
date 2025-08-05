@@ -23,7 +23,7 @@ import {
   Alert,
   AlertIcon,
   Button,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, RepeatIcon } from '@chakra-ui/icons';
 import { ProductionBanner } from '../common/ProductionBanner';
@@ -73,7 +73,7 @@ export const PortfolioDashboard: React.FC = () => {
         amount: '5,000',
         value: 5000,
         apy: 5.2,
-        healthFactor: 999
+        healthFactor: 999,
       },
       {
         id: '2',
@@ -83,7 +83,7 @@ export const PortfolioDashboard: React.FC = () => {
         type: 'supply',
         amount: '25,000',
         value: 2500,
-        apy: 4.8
+        apy: 4.8,
       },
       {
         id: '3',
@@ -95,8 +95,8 @@ export const PortfolioDashboard: React.FC = () => {
         value: 2000,
         apy: 7.8,
         healthFactor: 2.5,
-        liquidationRisk: 'low'
-      }
+        liquidationRisk: 'low',
+      },
     ];
 
     const mockChainBalances: ChainBalance[] = [
@@ -105,25 +105,25 @@ export const PortfolioDashboard: React.FC = () => {
         totalValue: 8500,
         assets: [
           { symbol: 'USDC', balance: '3,000', value: 3000 },
-          { symbol: 'XLM', balance: '55,000', value: 5500 }
-        ]
+          { symbol: 'XLM', balance: '55,000', value: 5500 },
+        ],
       },
       {
         chain: 'Ethereum',
         totalValue: 2400,
         assets: [
           { symbol: 'USDC', balance: '1,200', value: 1200 },
-          { symbol: 'ETH', balance: '0.5', value: 1200 }
-        ]
+          { symbol: 'ETH', balance: '0.5', value: 1200 },
+        ],
       },
       {
         chain: 'Avalanche',
         totalValue: 800,
         assets: [
           { symbol: 'USDC', balance: '500', value: 500 },
-          { symbol: 'AVAX', balance: '10', value: 300 }
-        ]
-      }
+          { symbol: 'AVAX', balance: '10', value: 300 },
+        ],
+      },
     ];
 
     setPositions(mockPositions);
@@ -132,8 +132,8 @@ export const PortfolioDashboard: React.FC = () => {
     // Calculate totals
     const portfolioValue = mockChainBalances.reduce((sum, chain) => sum + chain.totalValue, 0);
     const yieldEarning = mockPositions
-      .filter(p => p.type === 'supply')
-      .reduce((sum, p) => sum + (p.value * p.apy / 100), 0);
+      .filter((p) => p.type === 'supply')
+      .reduce((sum, p) => sum + (p.value * p.apy) / 100, 0);
 
     setTotalPortfolioValue(portfolioValue);
     setTotalYieldEarning(yieldEarning);
@@ -141,27 +141,38 @@ export const PortfolioDashboard: React.FC = () => {
 
   const getChainColor = (chain: string) => {
     switch (chain.toLowerCase()) {
-      case 'stellar': return 'purple';
-      case 'ethereum': return 'blue';
-      case 'avalanche': return 'red';
-      case 'solana': return 'green';
-      default: return 'gray';
+      case 'stellar':
+        return 'purple';
+      case 'ethereum':
+        return 'blue';
+      case 'avalanche':
+        return 'red';
+      case 'solana':
+        return 'green';
+      default:
+        return 'gray';
     }
   };
 
   const getRiskColor = (risk?: string) => {
     switch (risk) {
-      case 'low': return 'green';
-      case 'medium': return 'yellow';
-      case 'high': return 'red';
-      default: return 'gray';
+      case 'low':
+        return 'green';
+      case 'medium':
+        return 'yellow';
+      case 'high':
+        return 'red';
+      default:
+        return 'gray';
     }
   };
 
   return (
     <VStack spacing={6} align="stretch">
-      <Text fontSize="2xl" fontWeight="bold">Portfolio Dashboard</Text>
-      
+      <Text fontSize="2xl" fontWeight="bold">
+        Portfolio Dashboard
+      </Text>
+
       <ProductionBanner />
 
       {/* Portfolio Overview */}
@@ -198,7 +209,8 @@ export const PortfolioDashboard: React.FC = () => {
               <StatLabel>Active Positions</StatLabel>
               <StatNumber>{positions.length}</StatNumber>
               <StatHelpText>
-                {positions.filter(p => p.type === 'supply').length} supply, {positions.filter(p => p.type === 'borrow').length} borrow
+                {positions.filter((p) => p.type === 'supply').length} supply,{' '}
+                {positions.filter((p) => p.type === 'borrow').length} borrow
               </StatHelpText>
             </Stat>
           </Card>
@@ -218,8 +230,10 @@ export const PortfolioDashboard: React.FC = () => {
       {/* Chain Balances */}
       <Card p={6} bg={bgColor} border="1px solid" borderColor={borderColor}>
         <VStack spacing={4} align="stretch">
-          <Text fontSize="lg" fontWeight="bold">Chain Balances</Text>
-          
+          <Text fontSize="lg" fontWeight="bold">
+            Chain Balances
+          </Text>
+
           <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
             {chainBalances.map((chain) => (
               <Card key={chain.chain} p={4} bg="gray.50" border="1px solid" borderColor="gray.200">
@@ -232,23 +246,27 @@ export const PortfolioDashboard: React.FC = () => {
                     </HStack>
                     <Text fontWeight="bold">${chain.totalValue.toLocaleString()}</Text>
                   </HStack>
-                  
+
                   <VStack spacing={2} align="stretch">
                     {chain.assets.map((asset) => (
                       <HStack key={asset.symbol} justify="space-between">
                         <HStack>
-                          <Text fontSize="sm" fontWeight="medium">{asset.symbol}</Text>
-                          <Text fontSize="sm" color="gray.600">{asset.balance}</Text>
+                          <Text fontSize="sm" fontWeight="medium">
+                            {asset.symbol}
+                          </Text>
+                          <Text fontSize="sm" color="gray.600">
+                            {asset.balance}
+                          </Text>
                         </HStack>
                         <Text fontSize="sm">${asset.value.toLocaleString()}</Text>
                       </HStack>
                     ))}
                   </VStack>
-                  
-                  <Progress 
-                    value={(chain.totalValue / totalPortfolioValue) * 100} 
-                    colorScheme={getChainColor(chain.chain)} 
-                    size="sm" 
+
+                  <Progress
+                    value={(chain.totalValue / totalPortfolioValue) * 100}
+                    colorScheme={getChainColor(chain.chain)}
+                    size="sm"
                   />
                 </VStack>
               </Card>
@@ -261,7 +279,9 @@ export const PortfolioDashboard: React.FC = () => {
       <Card p={6} bg={bgColor} border="1px solid" borderColor={borderColor}>
         <VStack spacing={4} align="stretch">
           <HStack justify="space-between">
-            <Text fontSize="lg" fontWeight="bold">Active DeFi Positions</Text>
+            <Text fontSize="lg" fontWeight="bold">
+              Active DeFi Positions
+            </Text>
             <Button size="sm" leftIcon={<RepeatIcon />} variant="outline">
               Refresh All
             </Button>
@@ -292,9 +312,7 @@ export const PortfolioDashboard: React.FC = () => {
                     </VStack>
                   </Td>
                   <Td>
-                    <Badge colorScheme={getChainColor(position.chain)}>
-                      {position.chain}
-                    </Badge>
+                    <Badge colorScheme={getChainColor(position.chain)}>{position.chain}</Badge>
                   </Td>
                   <Td>
                     <Text fontWeight="medium">{position.asset}</Text>
@@ -313,7 +331,7 @@ export const PortfolioDashboard: React.FC = () => {
                     </VStack>
                   </Td>
                   <Td>
-                    <Text 
+                    <Text
                       color={position.type === 'supply' ? 'green.500' : 'red.500'}
                       fontWeight="bold"
                     >
@@ -393,7 +411,9 @@ export const PortfolioDashboard: React.FC = () => {
           </Grid>
 
           <Box>
-            <Text fontSize="sm" fontWeight="medium" mb={2}>Recommendations:</Text>
+            <Text fontSize="sm" fontWeight="medium" mb={2}>
+              Recommendations:
+            </Text>
             <VStack align="stretch" spacing={1}>
               <Text fontSize="xs">• Consider rebalancing to increase Stellar exposure</Text>
               <Text fontSize="xs">• Monitor health factors on borrowed positions</Text>

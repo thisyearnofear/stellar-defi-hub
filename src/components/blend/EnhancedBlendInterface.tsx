@@ -26,11 +26,16 @@ import {
   StatLabel,
   StatNumber,
   StatHelpText,
-  StatArrow
+  StatArrow,
 } from '@chakra-ui/react';
 import { BlendPool } from '../../types/blend';
 import { TransactionSimulator, createTransactionSteps } from '../common/TransactionSimulator';
-import { ProgressiveDisclosure, TransactionDetails, PoolDetails, RiskWarning } from '../common/ProgressiveDisclosure';
+import {
+  ProgressiveDisclosure,
+  TransactionDetails,
+  PoolDetails,
+  RiskWarning,
+} from '../common/ProgressiveDisclosure';
 
 interface EnhancedBlendInterfaceProps {
   pool: BlendPool;
@@ -40,14 +45,17 @@ interface EnhancedBlendInterfaceProps {
     borrowed: string;
     healthFactor: number;
   };
-  onTransaction: (type: 'supply' | 'borrow' | 'repay' | 'withdraw', amount: string) => Promise<void>;
+  onTransaction: (
+    type: 'supply' | 'borrow' | 'repay' | 'withdraw',
+    amount: string
+  ) => Promise<void>;
 }
 
 export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
   pool,
   userBalance = '0',
   userPosition,
-  onTransaction
+  onTransaction,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [amount, setAmount] = useState('');
@@ -88,7 +96,7 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
     if (sliderValue === 0) {
       setAmount('');
     } else {
-      const calculatedAmount = (maxAmount * sliderValue / 100).toFixed(6);
+      const calculatedAmount = ((maxAmount * sliderValue) / 100).toFixed(6);
       setAmount(calculatedAmount);
     }
   }, [sliderValue, maxAmount]);
@@ -150,35 +158,45 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
 
   const getActionColor = () => {
     switch (currentAction) {
-      case 'supply': return 'green';
-      case 'borrow': return 'blue';
-      case 'repay': return 'purple';
-      case 'withdraw': return 'orange';
-      default: return 'gray';
+      case 'supply':
+        return 'green';
+      case 'borrow':
+        return 'blue';
+      case 'repay':
+        return 'purple';
+      case 'withdraw':
+        return 'orange';
+      default:
+        return 'gray';
     }
   };
 
   const getActionDescription = () => {
     switch (currentAction) {
-      case 'supply': return `Supply ${pool.asset} to earn ${pool.supplyAPY.toFixed(2)}% APY`;
-      case 'borrow': return `Borrow ${pool.asset} at ${pool.borrowAPY.toFixed(2)}% APY`;
-      case 'repay': return `Repay your ${pool.asset} loan`;
-      case 'withdraw': return `Withdraw your supplied ${pool.asset}`;
-      default: return '';
+      case 'supply':
+        return `Supply ${pool.asset} to earn ${pool.supplyAPY.toFixed(2)}% APY`;
+      case 'borrow':
+        return `Borrow ${pool.asset} at ${pool.borrowAPY.toFixed(2)}% APY`;
+      case 'repay':
+        return `Repay your ${pool.asset} loan`;
+      case 'withdraw':
+        return `Withdraw your supplied ${pool.asset}`;
+      default:
+        return '';
     }
   };
 
   const getRiskWarnings = () => {
     const warnings: string[] = [];
-    
+
     if (currentAction === 'borrow' && newHealthFactor && newHealthFactor < 1.5) {
       warnings.push('Low health factor increases liquidation risk');
     }
-    
+
     if (currentAction === 'withdraw' && newHealthFactor && newHealthFactor < 2) {
       warnings.push('Withdrawing may reduce your borrowing capacity');
     }
-    
+
     if (pool.utilizationRate > 90) {
       warnings.push('High pool utilization may affect transaction success');
     }
@@ -192,10 +210,16 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
         {/* Header */}
         <Box>
           <HStack justify="space-between" mb={2}>
-            <Text fontSize="xl" fontWeight="bold">{pool.name}</Text>
-            <Badge colorScheme="blue" size="lg">{pool.asset}</Badge>
+            <Text fontSize="xl" fontWeight="bold">
+              {pool.name}
+            </Text>
+            <Badge colorScheme="blue" size="lg">
+              {pool.asset}
+            </Badge>
           </HStack>
-          <Text color="gray.600" fontSize="sm">{getActionDescription()}</Text>
+          <Text color="gray.600" fontSize="sm">
+            {getActionDescription()}
+          </Text>
         </Box>
 
         {/* Pool Stats */}
@@ -229,7 +253,9 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
             <Tab>Supply</Tab>
             <Tab>Borrow</Tab>
             <Tab isDisabled={!userPosition || parseFloat(userPosition.borrowed) === 0}>Repay</Tab>
-            <Tab isDisabled={!userPosition || parseFloat(userPosition.supplied) === 0}>Withdraw</Tab>
+            <Tab isDisabled={!userPosition || parseFloat(userPosition.supplied) === 0}>
+              Withdraw
+            </Tab>
           </TabList>
 
           <TabPanels>
@@ -275,8 +301,12 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
                         <SliderThumb />
                       </Slider>
                       <HStack justify="space-between" mt={1}>
-                        <Text fontSize="xs" color="gray.500">0</Text>
-                        <Text fontSize="xs" color="gray.500">Max: {maxAmount.toFixed(4)}</Text>
+                        <Text fontSize="xs" color="gray.500">
+                          0
+                        </Text>
+                        <Text fontSize="xs" color="gray.500">
+                          Max: {maxAmount.toFixed(4)}
+                        </Text>
                       </HStack>
                     </Box>
                   )}
@@ -287,7 +317,8 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
                       <AlertIcon />
                       <VStack align="start" spacing={0}>
                         <Text fontSize="sm" fontWeight="medium">
-                          Health Factor: {userPosition.healthFactor.toFixed(2)} → {newHealthFactor === 999 ? '∞' : newHealthFactor.toFixed(2)}
+                          Health Factor: {userPosition.healthFactor.toFixed(2)} →{' '}
+                          {newHealthFactor === 999 ? '∞' : newHealthFactor.toFixed(2)}
                         </Text>
                         <Text fontSize="xs">
                           {newHealthFactor < 1.5 ? 'High liquidation risk' : 'Safe position'}
@@ -309,7 +340,7 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
             steps={[
               `Approve ${pool.asset} for ${currentAction}`,
               `Execute ${currentAction} transaction`,
-              'Update pool state and user position'
+              'Update pool state and user position',
             ]}
             risks={getRiskWarnings()}
           />
@@ -317,10 +348,7 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
           <PoolDetails pool={pool} />
 
           {getRiskWarnings().length > 0 && (
-            <RiskWarning
-              healthFactor={newHealthFactor || undefined}
-              warnings={getRiskWarnings()}
-            />
+            <RiskWarning healthFactor={newHealthFactor || undefined} warnings={getRiskWarnings()} />
           )}
         </VStack>
 
@@ -343,11 +371,14 @@ export const EnhancedBlendInterface: React.FC<EnhancedBlendInterfaceProps> = ({
           colorScheme={getActionColor()}
           size="lg"
           onClick={handleTransaction}
-          isDisabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > maxAmount || isSimulating}
+          isDisabled={
+            !amount || parseFloat(amount) <= 0 || parseFloat(amount) > maxAmount || isSimulating
+          }
           isLoading={isSimulating}
           loadingText={`${currentAction.charAt(0).toUpperCase() + currentAction.slice(1)}ing...`}
         >
-          {currentAction.charAt(0).toUpperCase() + currentAction.slice(1)} {amount && `${amount} ${pool.asset}`}
+          {currentAction.charAt(0).toUpperCase() + currentAction.slice(1)}{' '}
+          {amount && `${amount} ${pool.asset}`}
         </Button>
       </VStack>
     </Card>

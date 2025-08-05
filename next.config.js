@@ -1,4 +1,4 @@
-const withTwin = require('./withTwin.js')
+const withTwin = require('./withTwin.js');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,14 +6,14 @@ const nextConfig = {
   swcMinify: true,
   transpilePackages: [],
   experimental: {
-    esmExternals: false
+    esmExternals: false,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
-}
+  },
+};
 
-module.exports = withTwin(nextConfig)
+module.exports = withTwin(nextConfig);

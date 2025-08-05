@@ -6,10 +6,10 @@ interface MobileCardProps extends BoxProps {
   noPadding?: boolean;
 }
 
-export const MobileCard: React.FC<MobileCardProps> = ({ 
-  children, 
-  noPadding = false, 
-  ...props 
+export const MobileCard: React.FC<MobileCardProps> = ({
+  children,
+  noPadding = false,
+  ...props
 }) => {
   return (
     <Box

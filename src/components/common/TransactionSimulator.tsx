@@ -15,7 +15,7 @@ import {
   StatNumber,
   StatHelpText,
   StatArrow,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { CheckIcon, TimeIcon, WarningIcon } from '@chakra-ui/icons';
 
@@ -39,7 +39,7 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
   steps,
   onComplete,
   onError,
-  isActive
+  isActive,
 }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [simulationSteps, setSimulationSteps] = useState<TransactionStep[]>(steps);
@@ -53,7 +53,7 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
     if (!isActive) return;
 
     const timer = setInterval(() => {
-      setElapsedTime(prev => prev + 1);
+      setElapsedTime((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(timer);
@@ -71,11 +71,9 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
       const currentStep = simulationSteps[currentStepIndex];
 
       // Update step to processing
-      setSimulationSteps(prev =>
+      setSimulationSteps((prev) =>
         prev.map((step, index) =>
-          index === currentStepIndex
-            ? { ...step, status: 'processing' }
-            : step
+          index === currentStepIndex ? { ...step, status: 'processing' } : step
         )
       );
 
@@ -85,11 +83,9 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
         const shouldFail = Math.random() < 0.05; // 5% chance
 
         if (shouldFail) {
-          setSimulationSteps(prev =>
+          setSimulationSteps((prev) =>
             prev.map((step, index) =>
-              index === currentStepIndex
-                ? { ...step, status: 'failed' }
-                : step
+              index === currentStepIndex ? { ...step, status: 'failed' } : step
             )
           );
           onError?.(`Transaction failed at step: ${currentStep.name}`);
@@ -97,15 +93,13 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
         }
 
         // Mark step as completed
-        setSimulationSteps(prev =>
+        setSimulationSteps((prev) =>
           prev.map((step, index) =>
-            index === currentStepIndex
-              ? { ...step, status: 'completed' }
-              : step
+            index === currentStepIndex ? { ...step, status: 'completed' } : step
           )
         );
 
-        setCurrentStepIndex(prev => prev + 1);
+        setCurrentStepIndex((prev) => prev + 1);
       }, currentStep.estimatedTime * 1000);
     };
 
@@ -128,19 +122,27 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
     if (step.status === 'failed') return <WarningIcon color="red.500" />;
     if (step.status === 'processing') return <TimeIcon color="blue.500" />;
     if (index < currentStepIndex) return <CheckIcon color="green.500" />;
-    return <Text color="gray.400" fontSize="sm" fontWeight="bold">{index + 1}</Text>;
+    return (
+      <Text color="gray.400" fontSize="sm" fontWeight="bold">
+        {index + 1}
+      </Text>
+    );
   };
 
   const getStepColor = (step: TransactionStep) => {
     switch (step.status) {
-      case 'completed': return 'green';
-      case 'failed': return 'red';
-      case 'processing': return 'blue';
-      default: return 'gray';
+      case 'completed':
+        return 'green';
+      case 'failed':
+        return 'red';
+      case 'processing':
+        return 'blue';
+      default:
+        return 'gray';
     }
   };
 
-  const completedSteps = simulationSteps.filter(step => step.status === 'completed').length;
+  const completedSteps = simulationSteps.filter((step) => step.status === 'completed').length;
   const progressPercentage = (completedSteps / simulationSteps.length) * 100;
 
   return (
@@ -158,12 +160,7 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
           <Text fontSize="lg" fontWeight="bold" mb={2}>
             Transaction Simulation
           </Text>
-          <Progress
-            value={progressPercentage}
-            colorScheme="blue"
-            size="lg"
-            borderRadius="md"
-          />
+          <Progress value={progressPercentage} colorScheme="blue" size="lg" borderRadius="md" />
           <HStack justify="space-between" mt={2}>
             <Text fontSize="sm" color="gray.600">
               {completedSteps} of {simulationSteps.length} steps completed
@@ -200,11 +197,21 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
         {/* Steps */}
         <VStack spacing={3} align="stretch">
           {simulationSteps.map((step, index) => (
-            <HStack key={step.id} spacing={4} p={3} borderRadius="md" bg={
-              step.status === 'processing' ? 'blue.50' :
-              step.status === 'completed' ? 'green.50' :
-              step.status === 'failed' ? 'red.50' : 'transparent'
-            }>
+            <HStack
+              key={step.id}
+              spacing={4}
+              p={3}
+              borderRadius="md"
+              bg={
+                step.status === 'processing'
+                  ? 'blue.50'
+                  : step.status === 'completed'
+                    ? 'green.50'
+                    : step.status === 'failed'
+                      ? 'red.50'
+                      : 'transparent'
+              }
+            >
               <Box
                 w={8}
                 h={8}
@@ -234,13 +241,7 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
                   {step.description}
                 </Text>
                 {step.status === 'processing' && (
-                  <Progress
-                    size="xs"
-                    isIndeterminate
-                    colorScheme="blue"
-                    w="100%"
-                    mt={1}
-                  />
+                  <Progress size="xs" isIndeterminate colorScheme="blue" w="100%" mt={1} />
                 )}
               </VStack>
             </HStack>
@@ -248,7 +249,7 @@ export const TransactionSimulator: React.FC<TransactionSimulatorProps> = ({
         </VStack>
 
         {/* Status Alert */}
-        {simulationSteps.some(step => step.status === 'failed') && (
+        {simulationSteps.some((step) => step.status === 'failed') && (
           <Alert status="error" size="sm">
             <AlertIcon />
             Transaction simulation failed. Please try again.
@@ -281,7 +282,7 @@ export const createTransactionSteps = (
           description: `Approve ${amount} ${asset} for spending`,
           estimatedTime: 3,
           gasEstimate: '0.001',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'supply',
@@ -289,8 +290,8 @@ export const createTransactionSteps = (
           description: `Supply ${amount} ${asset} to earn yield`,
           estimatedTime: 5,
           gasEstimate: '0.002',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ];
 
     case 'borrow':
@@ -301,7 +302,7 @@ export const createTransactionSteps = (
           description: 'Verify collateral requirements',
           estimatedTime: 2,
           gasEstimate: '0.0005',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'borrow',
@@ -309,8 +310,8 @@ export const createTransactionSteps = (
           description: `Borrow ${amount} ${asset}`,
           estimatedTime: 4,
           gasEstimate: '0.0015',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ];
 
     case 'repay':
@@ -321,7 +322,7 @@ export const createTransactionSteps = (
           description: `Approve ${amount} ${asset} for repayment`,
           estimatedTime: 3,
           gasEstimate: '0.001',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'repay',
@@ -329,8 +330,8 @@ export const createTransactionSteps = (
           description: `Repay ${amount} ${asset}`,
           estimatedTime: 4,
           gasEstimate: '0.0015',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ];
 
     case 'withdraw':
@@ -341,7 +342,7 @@ export const createTransactionSteps = (
           description: 'Verify withdrawal is safe',
           estimatedTime: 2,
           gasEstimate: '0.0005',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'withdraw',
@@ -349,8 +350,8 @@ export const createTransactionSteps = (
           description: `Withdraw ${amount} ${asset}`,
           estimatedTime: 4,
           gasEstimate: '0.0015',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ];
 
     case 'bridge':
@@ -361,7 +362,7 @@ export const createTransactionSteps = (
           description: `Approve ${amount} ${asset} for bridging`,
           estimatedTime: 3,
           gasEstimate: '0.001',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'initiate-bridge',
@@ -369,7 +370,7 @@ export const createTransactionSteps = (
           description: 'Start cross-chain transfer',
           estimatedTime: 8,
           gasEstimate: '0.005',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'confirm-bridge',
@@ -377,8 +378,8 @@ export const createTransactionSteps = (
           description: 'Confirm receipt on target chain',
           estimatedTime: 15,
           gasEstimate: '0.002',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ];
 
     case 'bridge-to-earn':
@@ -389,7 +390,7 @@ export const createTransactionSteps = (
           description: `Approve ${amount} ${asset} for bridging`,
           estimatedTime: 3,
           gasEstimate: '0.001',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'bridge-transfer',
@@ -397,7 +398,7 @@ export const createTransactionSteps = (
           description: 'Transfer to Stellar network',
           estimatedTime: 12,
           gasEstimate: '0.005',
-          status: 'pending'
+          status: 'pending',
         },
         {
           id: 'auto-supply',
@@ -405,8 +406,8 @@ export const createTransactionSteps = (
           description: 'Automatically supply to earn yield',
           estimatedTime: 5,
           gasEstimate: '0.002',
-          status: 'pending'
-        }
+          status: 'pending',
+        },
       ];
 
     default:

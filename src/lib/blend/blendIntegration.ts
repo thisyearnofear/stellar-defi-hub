@@ -28,7 +28,7 @@ export class BlendIntegrationHub {
         return await this.fallbackAdapter.getPools();
       }
     }
-    
+
     return await this.fallbackAdapter.getPools();
   }
 
@@ -41,7 +41,7 @@ export class BlendIntegrationHub {
         return await this.fallbackAdapter.getUserPositions(userAddress);
       }
     }
-    
+
     return await this.fallbackAdapter.getUserPositions(userAddress);
   }
 
@@ -55,7 +55,7 @@ export class BlendIntegrationHub {
         throw error;
       }
     }
-    
+
     return await this.fallbackAdapter.supply(poolId, amount);
   }
 
@@ -69,7 +69,7 @@ export class BlendIntegrationHub {
         throw error;
       }
     }
-    
+
     return await this.fallbackAdapter.borrow(poolId, amount);
   }
 
@@ -83,7 +83,7 @@ export class BlendIntegrationHub {
         throw error;
       }
     }
-    
+
     return await this.fallbackAdapter.repay(poolId, amount);
   }
 
@@ -97,7 +97,7 @@ export class BlendIntegrationHub {
         throw error;
       }
     }
-    
+
     return await this.fallbackAdapter.withdraw(poolId, amount);
   }
 
@@ -108,8 +108,10 @@ export class BlendIntegrationHub {
       poolContract: 'CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
       oracleContract: 'CCVTVW2CVA7JLH4ROQGP3CU4T3EXVCK66AZGSM4MUQPXAI4QHCZPOATS',
       adminAccount: 'GAX2VVWVHU5YQY5J3NJBXKHI3FFKZN54BE6GRJCWSIKSBZTQWJJNJMPC',
-      explorerUrl: 'https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
-      dashboardUrl: 'https://mainnet.blend.capital/dashboard/?poolId=CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD'
+      explorerUrl:
+        'https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
+      dashboardUrl:
+        'https://mainnet.blend.capital/dashboard/?poolId=CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
     };
   }
 }

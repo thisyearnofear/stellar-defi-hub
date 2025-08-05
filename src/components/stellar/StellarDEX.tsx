@@ -38,9 +38,22 @@ interface TradingPair {
 }
 
 const POPULAR_PAIRS: TradingPair[] = [
-  { base: 'XLM', counter: 'USDC', counterIssuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN' },
-  { base: 'XLM', counter: 'yXLM', counterIssuer: 'GARDNV3Q7YGT4AKSDF25LT32YSCCW67UUQRWHAT7QHYPX7XQXQX7XQXQ' },
-  { base: 'USDC', counter: 'AQUA', baseIssuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', counterIssuer: 'GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA' },
+  {
+    base: 'XLM',
+    counter: 'USDC',
+    counterIssuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
+  },
+  {
+    base: 'XLM',
+    counter: 'yXLM',
+    counterIssuer: 'GARDNV3Q7YGT4AKSDF25LT32YSCCW67UUQRWHAT7QHYPX7XQXQX7XQXQ',
+  },
+  {
+    base: 'USDC',
+    counter: 'AQUA',
+    baseIssuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
+    counterIssuer: 'GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA',
+  },
 ];
 
 export const StellarDEX: React.FC = () => {
@@ -64,13 +77,15 @@ export const StellarDEX: React.FC = () => {
   const fetchOrderbook = async () => {
     setLoading(true);
     try {
-      const baseAsset = selectedPair.base === 'XLM'
-        ? StellarSdk.Asset.native()
-        : new StellarSdk.Asset(selectedPair.base, selectedPair.baseIssuer!);
+      const baseAsset =
+        selectedPair.base === 'XLM'
+          ? StellarSdk.Asset.native()
+          : new StellarSdk.Asset(selectedPair.base, selectedPair.baseIssuer!);
 
-      const counterAsset = selectedPair.counter === 'XLM'
-        ? StellarSdk.Asset.native()
-        : new StellarSdk.Asset(selectedPair.counter, selectedPair.counterIssuer!);
+      const counterAsset =
+        selectedPair.counter === 'XLM'
+          ? StellarSdk.Asset.native()
+          : new StellarSdk.Asset(selectedPair.counter, selectedPair.counterIssuer!);
 
       const orderbook = await server.orderbook(baseAsset, counterAsset).call();
       setOrderbook(orderbook);
@@ -83,15 +98,18 @@ export const StellarDEX: React.FC = () => {
 
   const fetchRecentTrades = async () => {
     try {
-      const baseAsset = selectedPair.base === 'XLM'
-        ? StellarSdk.Asset.native()
-        : new StellarSdk.Asset(selectedPair.base, selectedPair.baseIssuer!);
+      const baseAsset =
+        selectedPair.base === 'XLM'
+          ? StellarSdk.Asset.native()
+          : new StellarSdk.Asset(selectedPair.base, selectedPair.baseIssuer!);
 
-      const counterAsset = selectedPair.counter === 'XLM'
-        ? StellarSdk.Asset.native()
-        : new StellarSdk.Asset(selectedPair.counter, selectedPair.counterIssuer!);
+      const counterAsset =
+        selectedPair.counter === 'XLM'
+          ? StellarSdk.Asset.native()
+          : new StellarSdk.Asset(selectedPair.counter, selectedPair.counterIssuer!);
 
-      const trades = await server.trades()
+      const trades = await server
+        .trades()
         .forAssetPair(baseAsset, counterAsset)
         .limit(20)
         .order('desc')
@@ -113,7 +131,7 @@ export const StellarDEX: React.FC = () => {
     console.log(`Creating ${side} order:`, {
       amount: side === 'buy' ? buyAmount : sellAmount,
       price: side === 'buy' ? buyPrice : sellPrice,
-      pair: selectedPair
+      pair: selectedPair,
     });
   };
 
@@ -144,13 +162,18 @@ export const StellarDEX: React.FC = () => {
                   value={`${selectedPair.base}-${selectedPair.counter}`}
                   onChange={(e) => {
                     const [base, counter] = e.target.value.split('-');
-                    const pair = POPULAR_PAIRS.find(p => p.base === base && p.counter === counter);
+                    const pair = POPULAR_PAIRS.find(
+                      (p) => p.base === base && p.counter === counter
+                    );
                     if (pair) setSelectedPair(pair);
                   }}
                   maxW="200px"
                 >
                   {POPULAR_PAIRS.map((pair) => (
-                    <option key={`${pair.base}-${pair.counter}`} value={`${pair.base}-${pair.counter}`}>
+                    <option
+                      key={`${pair.base}-${pair.counter}`}
+                      value={`${pair.base}-${pair.counter}`}
+                    >
                       {pair.base}/{pair.counter}
                     </option>
                   ))}
@@ -224,7 +247,9 @@ export const StellarDEX: React.FC = () => {
               ) : orderbook ? (
                 <VStack spacing={4}>
                   <Box>
-                    <Text fontWeight="bold" color="red.500" mb={2}>Asks (Sell Orders)</Text>
+                    <Text fontWeight="bold" color="red.500" mb={2}>
+                      Asks (Sell Orders)
+                    </Text>
                     <Table size="sm">
                       <Thead>
                         <Tr>
@@ -244,7 +269,9 @@ export const StellarDEX: React.FC = () => {
                   </Box>
 
                   <Box>
-                    <Text fontWeight="bold" color="green.500" mb={2}>Bids (Buy Orders)</Text>
+                    <Text fontWeight="bold" color="green.500" mb={2}>
+                      Bids (Buy Orders)
+                    </Text>
                     <Table size="sm">
                       <Thead>
                         <Tr>
@@ -295,7 +322,7 @@ export const StellarDEX: React.FC = () => {
                           {trade.base_is_seller ? 'Sell' : 'Buy'}
                         </Badge>
                       </Td>
-                      <Td>{((trade.price.n / trade.price.d)).toFixed(6)}</Td>
+                      <Td>{(trade.price.n / trade.price.d).toFixed(6)}</Td>
                       <Td>{parseFloat(trade.base_amount).toFixed(2)}</Td>
                     </Tr>
                   ))}

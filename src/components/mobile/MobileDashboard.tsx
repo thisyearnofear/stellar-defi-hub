@@ -33,9 +33,30 @@ export const MobileDashboard: React.FC = () => {
   ];
 
   const assets = [
-    { symbol: 'XLM', name: 'Stellar Lumens', balance: '8,432.12', value: '$1,686.42', change: '+2.4%', positive: true },
-    { symbol: 'USDC', name: 'USD Coin', balance: '5,000.00', value: '$5,000.00', change: '0.0%', positive: true },
-    { symbol: 'yXLM', name: 'Yield XLM', balance: '2,156.78', value: '$431.36', change: '+5.2%', positive: true },
+    {
+      symbol: 'XLM',
+      name: 'Stellar Lumens',
+      balance: '8,432.12',
+      value: '$1,686.42',
+      change: '+2.4%',
+      positive: true,
+    },
+    {
+      symbol: 'USDC',
+      name: 'USD Coin',
+      balance: '5,000.00',
+      value: '$5,000.00',
+      change: '0.0%',
+      positive: true,
+    },
+    {
+      symbol: 'yXLM',
+      name: 'Yield XLM',
+      balance: '2,156.78',
+      value: '$431.36',
+      change: '+5.2%',
+      positive: true,
+    },
   ];
 
   if (!isMobile) {
@@ -50,9 +71,13 @@ export const MobileDashboard: React.FC = () => {
           <VStack align="start" spacing={3}>
             <HStack justify="space-between" w="full">
               <VStack align="start" spacing={0}>
-                <Text fontSize="sm" color="gray.600">Good morning</Text>
+                <Text fontSize="sm" color="gray.600">
+                  Good morning
+                </Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  {isConnected ? `${publicKey?.slice(0, 6)}...${publicKey?.slice(-4)}` : 'Connect Wallet'}
+                  {isConnected
+                    ? `${publicKey?.slice(0, 6)}...${publicKey?.slice(-4)}`
+                    : 'Connect Wallet'}
                 </Text>
               </VStack>
               <Avatar size="sm" />
@@ -62,7 +87,9 @@ export const MobileDashboard: React.FC = () => {
 
             <VStack align="start" spacing={1} w="full">
               <HStack justify="space-between" w="full">
-                <Text fontSize="sm" color="gray.600">Total Balance</Text>
+                <Text fontSize="sm" color="gray.600">
+                  Total Balance
+                </Text>
                 <Button
                   variant="ghost"
                   size="xs"
@@ -72,20 +99,24 @@ export const MobileDashboard: React.FC = () => {
                   {balanceVisible ? 'Hide' : 'Show'}
                 </Button>
               </HStack>
-              
+
               <Text fontSize="3xl" fontWeight="bold">
                 {balanceVisible ? `$${totalBalance.toLocaleString()}` : '••••••'}
               </Text>
-              
+
               <HStack>
-                <Text 
-                  fontSize="sm" 
+                <Text
+                  fontSize="sm"
                   color={dayChange >= 0 ? 'green.500' : 'red.500'}
                   fontWeight="medium"
                 >
-                  {dayChange >= 0 ? '+' : ''}${dayChange.toFixed(2)} ({dayChangePercent >= 0 ? '+' : ''}{dayChangePercent}%)
+                  {dayChange >= 0 ? '+' : ''}${dayChange.toFixed(2)} (
+                  {dayChangePercent >= 0 ? '+' : ''}
+                  {dayChangePercent}%)
                 </Text>
-                <Text fontSize="sm" color="gray.500">today</Text>
+                <Text fontSize="sm" color="gray.500">
+                  today
+                </Text>
               </HStack>
             </VStack>
           </VStack>
@@ -94,7 +125,9 @@ export const MobileDashboard: React.FC = () => {
         {/* Quick Actions */}
         <MobileCard>
           <VStack align="start" spacing={3}>
-            <Text fontSize="lg" fontWeight="semibold">Quick Actions</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              Quick Actions
+            </Text>
             <SimpleGrid columns={3} spacing={3} w="full">
               {quickActions.map((action) => (
                 <Button
@@ -119,10 +152,14 @@ export const MobileDashboard: React.FC = () => {
         <MobileCard>
           <VStack align="start" spacing={3}>
             <HStack justify="space-between" w="full">
-              <Text fontSize="lg" fontWeight="semibold">Your Assets</Text>
-              <Button variant="ghost" size="sm">View All</Button>
+              <Text fontSize="lg" fontWeight="semibold">
+                Your Assets
+              </Text>
+              <Button variant="ghost" size="sm">
+                View All
+              </Button>
             </HStack>
-            
+
             <VStack spacing={3} w="full">
               {assets.map((asset) => (
                 <HStack key={asset.symbol} justify="space-between" w="full" p={2}>
@@ -130,16 +167,20 @@ export const MobileDashboard: React.FC = () => {
                     <Avatar size="sm" name={asset.symbol} />
                     <VStack align="start" spacing={0}>
                       <Text fontWeight="medium">{asset.symbol}</Text>
-                      <Text fontSize="sm" color="gray.600">{asset.name}</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        {asset.name}
+                      </Text>
                     </VStack>
                   </HStack>
-                  
+
                   <VStack align="end" spacing={0}>
                     <Text fontWeight="medium">{asset.value}</Text>
                     <HStack spacing={1}>
-                      <Text fontSize="sm" color="gray.600">{asset.balance}</Text>
-                      <Badge 
-                        colorScheme={asset.positive ? 'green' : 'red'} 
+                      <Text fontSize="sm" color="gray.600">
+                        {asset.balance}
+                      </Text>
+                      <Badge
+                        colorScheme={asset.positive ? 'green' : 'red'}
                         variant="subtle"
                         fontSize="xs"
                       >
@@ -156,14 +197,16 @@ export const MobileDashboard: React.FC = () => {
         {/* Recent Activity */}
         <MobileCard>
           <VStack align="start" spacing={3}>
-            <Text fontSize="lg" fontWeight="semibold">Recent Activity</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              Recent Activity
+            </Text>
             <Text fontSize="sm" color="gray.500" textAlign="center" py={4}>
               No recent activity
             </Text>
           </VStack>
         </MobileCard>
       </VStack>
-      
+
       {/* AI Widget */}
       <MobileAIWidget />
     </Box>

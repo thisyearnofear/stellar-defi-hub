@@ -2,7 +2,17 @@
 import { randomBytes } from 'crypto';
 import { existsSync, readFileSync } from 'fs';
 import path from 'path';
-import { Address, Asset, Contract, Keypair, Operation, StrKey, hash, scValToNative, xdr } from '@stellar/stellar-sdk';
+import {
+  Address,
+  Asset,
+  Contract,
+  Keypair,
+  Operation,
+  StrKey,
+  hash,
+  scValToNative,
+  xdr,
+} from '@stellar/stellar-sdk';
 import { fileURLToPath } from 'url';
 import { AddressBook } from './address_book.js';
 import { config } from './env_config.js';
@@ -15,9 +25,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export async function installContract(wasmKey: string, addressBook: AddressBook, source: Keypair) {
-  const contract_wasm_path = path.join(__dirname,`../../${wasmKey}/target/wasm32-unknown-unknown/release/${wasmKey}.wasm`);
+  const contract_wasm_path = path.join(
+    __dirname,
+    `../../${wasmKey}/target/wasm32-unknown-unknown/release/${wasmKey}.wasm`
+  );
   if (!existsSync(contract_wasm_path)) {
-    const error = `The wasm file for contract ${wasmKey} cannot be found at ${contract_wasm_path}`
+    const error = `The wasm file for contract ${wasmKey} cannot be found at ${contract_wasm_path}`;
     throw new Error(error);
   }
   const contractWasm = readFileSync(contract_wasm_path);
@@ -56,7 +69,7 @@ export async function deployContract(
   console.log('Deploying WASM', wasmKey, 'for', contractKey);
   const contractId = StrKey.encodeContract(hash(hashIdPreimage.toXDR()));
   addressBook.setContractId(contractKey, contractId);
-  const wasmHash = Buffer.from(addressBook.getWasmHash(contractKey), 'hex');//@param contractKey - The name of the contract
+  const wasmHash = Buffer.from(addressBook.getWasmHash(contractKey), 'hex'); //@param contractKey - The name of the contract
 
   const deployFunction = xdr.HostFunction.hostFunctionTypeCreateContract(
     new xdr.CreateContractArgs({
@@ -75,10 +88,9 @@ export async function deployContract(
     false
   );
   if (result) {
-    return contractId
+    return contractId;
   }
 }
-
 
 export async function invokeContract(
   contractKey: string,
@@ -87,16 +99,12 @@ export async function invokeContract(
   params: xdr.ScVal[],
   source: Keypair
 ) {
-  console.log("Invoking contract: ", contractKey, " with method: ", method);
+  console.log('Invoking contract: ', contractKey, ' with method: ', method);
   const contractAddress = addressBook.getContractId(contractKey);
   const contractInstance = new Contract(contractAddress);
 
   const contractOperation = contractInstance.call(method, ...params);
-  return await invoke(
-    contractOperation,
-    source,
-    false,
-  );  
+  return await invoke(contractOperation, source, false);
 }
 
 export async function invokeCustomContract(
@@ -105,15 +113,11 @@ export async function invokeCustomContract(
   params: xdr.ScVal[],
   source: Keypair
 ) {
-  console.log("Invoking contract: ", contractId, " with method: ", method);
+  console.log('Invoking contract: ', contractId, ' with method: ', method);
   const contractInstance = new Contract(contractId);
 
   const contractOperation = contractInstance.call(method, ...params);
-  return await invoke(
-    contractOperation,
-    source,
-    false,
-  );  
+  return await invoke(contractOperation, source, false);
 }
 
 export async function deployStellarAsset(asset: Asset, source: Keypair) {
@@ -210,7 +214,7 @@ export async function bumpContractCode(wasmKey: string, addressBook: AddressBook
   txBuilder.addOperation(Operation.extendFootprintTtl({ extendTo: 535670 })); // 1 year
   txBuilder.setSorobanData(bumpTransactionData);
   const result = await invokeTransaction(txBuilder.build(), source, false);
-  console.log("Result = ", result)
+  console.log('Result = ', result);
   // @ts-expect-error ignore
   console.log(result.status, '\n');
 }
@@ -270,18 +274,17 @@ export async function deploySorobanToken(
 }
 
 export async function getTokenBalance(contractId: string, from: string, source: Keypair) {
-
   const tokenContract = new Contract(contractId);
-  const op = tokenContract.call("balance", new Address(from).toScVal());
-  
+  const op = tokenContract.call('balance', new Address(from).toScVal());
+
   const result = await invoke(op, source, true);
   const parsedResult = scValToNative(result.result.retval).toString();
-  
-  if(!parsedResult) {
-      throw new Error("The operation has no result.");
+
+  if (!parsedResult) {
+    throw new Error('The operation has no result.');
   }
-  if(parsedResult == 0) {
-      return parsedResult
+  if (parsedResult == 0) {
+    return parsedResult;
   }
   const resultNumber = parseInt(parsedResult.slice(0, -1));
   return resultNumber;

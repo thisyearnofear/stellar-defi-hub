@@ -17,9 +17,9 @@ export const useOnboarding = () => {
     // Check if user has completed onboarding
     const completed = localStorage.getItem('stellar_onboarding_completed');
     const profile = localStorage.getItem('stellar_user_profile');
-    
+
     setHasCompletedOnboarding(completed === 'true');
-    
+
     if (profile) {
       try {
         setUserProfile(JSON.parse(profile));
@@ -56,6 +56,6 @@ export const useOnboarding = () => {
     userProfile,
     completeOnboarding,
     resetOnboarding,
-    updateProfile
+    updateProfile,
   };
 };

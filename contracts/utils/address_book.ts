@@ -2,7 +2,6 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -14,7 +13,12 @@ export class AddressBook {
   private loadedConfig: any;
   private deploymentsFilePath: string;
 
-  constructor(ids: Map<string, string>, hashes: Map<string, string>, fileName: string, loadedConfig: any) {
+  constructor(
+    ids: Map<string, string>,
+    hashes: Map<string, string>,
+    fileName: string,
+    loadedConfig: any
+  ) {
     this.ids = ids;
     this.hashes = hashes;
     this.fileName = fileName;
@@ -54,18 +58,21 @@ export class AddressBook {
   updateDeployments(contractkey: string) {
     var updated = false;
     this.deployments.forEach((deploymentInfo: any) => {
-      if (deploymentInfo.contractId == contractkey && deploymentInfo.networkPassphrase == this.loadedConfig.passphrase){
+      if (
+        deploymentInfo.contractId == contractkey &&
+        deploymentInfo.networkPassphrase == this.loadedConfig.passphrase
+      ) {
         deploymentInfo.contractAddress = this.ids.get(contractkey);
         updated = true;
       }
-    })
+    });
 
     if (!updated) {
       this.deployments.push({
         contractId: contractkey,
         networkPassphrase: this.loadedConfig.passphrase,
-        contractAddress: this.ids.get(contractkey)
-      })
+        contractAddress: this.ids.get(contractkey),
+      });
     }
   }
 
@@ -83,7 +90,7 @@ export class AddressBook {
     const newFile = JSON.stringify(
       {
         ids: this.ids,
-        hashes: this.hashes
+        hashes: this.hashes,
       },
       (key, value) => {
         if (value instanceof Map) {
@@ -97,7 +104,7 @@ export class AddressBook {
     );
 
     writeFileSync(filePath, newFile);
-    
+
     // Do the same with updated deployments.json
     const newDeploymentFile = JSON.stringify(
       this.deployments,
@@ -110,8 +117,8 @@ export class AddressBook {
         }
       },
       2
-    )
-    
+    );
+
     writeFileSync(this.deploymentsFilePath, newDeploymentFile);
   }
 
@@ -140,7 +147,7 @@ export class AddressBook {
     this.ids.set(contractKey, contractId);
 
     // We update the deployments.json file used for contract registry
-    this.updateDeployments(contractKey)
+    this.updateDeployments(contractKey);
   }
 
   /**

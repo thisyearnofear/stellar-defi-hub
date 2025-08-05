@@ -28,9 +28,9 @@ export const MobileAIWidget: React.FC = () => {
   // Quick AI suggestions for mobile
   const quickSuggestions = [
     "What's my portfolio worth?",
-    "Best yield opportunity?",
-    "Should I buy XLM now?",
-    "Set up weekly DCA"
+    'Best yield opportunity?',
+    'Should I buy XLM now?',
+    'Set up weekly DCA',
   ];
 
   const handleQuickSuggestion = (_suggestion: string) => {

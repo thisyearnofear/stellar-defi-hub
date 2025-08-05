@@ -44,30 +44,30 @@ export const useAIContext = (): AIContext => {
     totalValue: 12543,
     assets: [
       { symbol: 'XLM', balance: 8432.12, value: 1686.42, change24h: 2.4 },
-      { symbol: 'USDC', balance: 5000.00, value: 5000.00, change24h: 0.0 },
-      { symbol: 'yXLM', balance: 2156.78, value: 431.36, change24h: 5.2 }
+      { symbol: 'USDC', balance: 5000.0, value: 5000.0, change24h: 0.0 },
+      { symbol: 'yXLM', balance: 2156.78, value: 431.36, change24h: 5.2 },
     ],
     riskScore: 6,
     allocation: {
       XLM: 65,
       USDC: 25,
-      OTHER: 10
-    }
+      OTHER: 10,
+    },
   };
 
   // Mock market data - replace with real market data
   const marketData = {
     xlmPrice: 0.12,
-    usdcPrice: 1.00,
+    usdcPrice: 1.0,
     blendAPY: 8.2,
-    volatility: 0.25
+    volatility: 0.25,
   };
 
   return {
     user: {
       walletAddress: publicKey || undefined,
       isConnected,
-      profile: userProfile
+      profile: userProfile,
     },
     portfolio: isConnected ? portfolioData : {},
     market: marketData,
@@ -75,53 +75,50 @@ export const useAIContext = (): AIContext => {
       riskTolerance: userProfile?.riskTolerance,
       goals: userProfile?.goals,
       experience: userProfile?.experience,
-      preferredAssets: userProfile?.preferredAssets
-    }
+      preferredAssets: userProfile?.preferredAssets,
+    },
   };
 };
 
 // Enhanced AI Agent Hook with Context
 export const useEnhancedAIAgent = () => {
   const context = useAIContext();
-  
+
   const sendContextualMessage = async (message: string, useAIAgent: any) => {
-    return await useAIAgent.sendMessage(
-      message,
-      context.preferences,
-      context.portfolio
-    );
+    return await useAIAgent.sendMessage(message, context.preferences, context.portfolio);
   };
 
   const getContextSummary = () => {
     const { user, portfolio, preferences } = context;
-    
+
     return {
       hasWallet: user.isConnected,
       portfolioValue: portfolio.totalValue,
       riskProfile: preferences.riskTolerance,
       experience: preferences.experience,
       primaryGoals: preferences.goals?.slice(0, 3),
-      topAssets: portfolio.assets?.slice(0, 3).map(a => a.symbol)
+      topAssets: portfolio.assets?.slice(0, 3).map((a) => a.symbol),
     };
   };
 
   const getPersonalizedGreeting = () => {
     const { user, preferences, portfolio } = context;
-    
+
     if (!user.isConnected) {
       return "👋 Hi! I'm your Stellar DeFi AI assistant. Connect your wallet to get personalized insights!";
     }
 
     const greeting = `👋 Welcome back! `;
-    const portfolioInfo = portfolio.totalValue 
+    const portfolioInfo = portfolio.totalValue
       ? `Your portfolio is worth $${portfolio.totalValue.toLocaleString()}. `
       : '';
-    
-    const suggestion = preferences.experience === 'beginner'
-      ? "I can help you learn about safe yield opportunities."
-      : preferences.riskTolerance === 'aggressive'
-      ? "Ready to explore some high-yield strategies?"
-      : "Let's optimize your portfolio for steady returns.";
+
+    const suggestion =
+      preferences.experience === 'beginner'
+        ? 'I can help you learn about safe yield opportunities.'
+        : preferences.riskTolerance === 'aggressive'
+          ? 'Ready to explore some high-yield strategies?'
+          : "Let's optimize your portfolio for steady returns.";
 
     return greeting + portfolioInfo + suggestion;
   };
@@ -130,6 +127,6 @@ export const useEnhancedAIAgent = () => {
     context,
     sendContextualMessage,
     getContextSummary,
-    getPersonalizedGreeting
+    getPersonalizedGreeting,
   };
 };

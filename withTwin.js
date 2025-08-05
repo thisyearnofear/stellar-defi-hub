@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-env node */
 
-const path = require('path')
+const path = require('path');
 
 // The folders containing files importing twin.macro
-const includedDirs = [path.resolve(__dirname, 'src')]
+const includedDirs = [path.resolve(__dirname, 'src')];
 
 module.exports = function withTwin(nextConfig) {
   return {
     ...nextConfig,
     webpack(config, options) {
-      const { dev, isServer } = options
-      config.module = config.module || {}
-      config.module.rules = config.module.rules || []
+      const { dev, isServer } = options;
+      config.module = config.module || {};
+      config.module.rules = config.module.rules || [];
       config.module.rules.push({
         test: /\.(tsx|ts)$/,
         include: includedDirs,
@@ -33,7 +33,7 @@ module.exports = function withTwin(nextConfig) {
             },
           },
         ],
-      })
+      });
 
       if (!isServer) {
         config.resolve.fallback = {
@@ -51,14 +51,14 @@ module.exports = function withTwin(nextConfig) {
           assert: false,
           url: false,
           querystring: false,
-        }
+        };
       }
 
       if (typeof nextConfig.webpack === 'function') {
-        return nextConfig.webpack(config, options)
+        return nextConfig.webpack(config, options);
       } else {
-        return config
+        return config;
       }
     },
-  }
-}
+  };
+};

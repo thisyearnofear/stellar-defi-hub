@@ -1,7 +1,7 @@
-import Link from 'next/link'
-import type { FC } from 'react'
-import { HiOutlineExternalLink } from 'react-icons/hi'
-import 'twin.macro'
+import Link from 'next/link';
+import type { FC } from 'react';
+import { HiOutlineExternalLink } from 'react-icons/hi';
+import 'twin.macro';
 
 export const HomeTopBar: FC = () => {
   return (
@@ -20,5 +20,5 @@ export const HomeTopBar: FC = () => {
         <HiOutlineExternalLink tw="ml-1.5" />
       </Link>
     </>
-  )
-}
+  );
+};

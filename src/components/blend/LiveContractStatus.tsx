@@ -9,7 +9,7 @@ import {
   Alert,
   AlertIcon,
   Code,
-  Divider
+  Divider,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { blendIntegration } from '../../lib/blend/blendIntegration';
@@ -38,23 +38,24 @@ export const LiveContractStatus: React.FC = () => {
 
         <VStack align="stretch" spacing={2}>
           <HStack justify="space-between">
-            <Text fontSize="sm" fontWeight="medium">Pool Contract:</Text>
-            <Link 
-              href={contractInfo.explorerUrl} 
-              isExternal 
-              fontSize="xs"
-              color="blue.500"
-            >
-              <Code>{contractInfo.poolContract.slice(0, 8)}...{contractInfo.poolContract.slice(-8)}</Code>
+            <Text fontSize="sm" fontWeight="medium">
+              Pool Contract:
+            </Text>
+            <Link href={contractInfo.explorerUrl} isExternal fontSize="xs" color="blue.500">
+              <Code>
+                {contractInfo.poolContract.slice(0, 8)}...{contractInfo.poolContract.slice(-8)}
+              </Code>
               <ExternalLinkIcon mx="2px" />
             </Link>
           </HStack>
 
           <HStack justify="space-between">
-            <Text fontSize="sm" fontWeight="medium">YieldBlox Pool:</Text>
-            <Link 
-              href="https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS" 
-              isExternal 
+            <Text fontSize="sm" fontWeight="medium">
+              YieldBlox Pool:
+            </Text>
+            <Link
+              href="https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS"
+              isExternal
               fontSize="xs"
               color="blue.500"
             >
@@ -64,7 +65,9 @@ export const LiveContractStatus: React.FC = () => {
           </HStack>
 
           <HStack justify="space-between">
-            <Text fontSize="sm" fontWeight="medium">Oracle Contract:</Text>
+            <Text fontSize="sm" fontWeight="medium">
+              Oracle Contract:
+            </Text>
             <Code fontSize="xs">
               {contractInfo.oracleContract.slice(0, 8)}...{contractInfo.oracleContract.slice(-8)}
             </Code>

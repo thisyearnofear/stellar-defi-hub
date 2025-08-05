@@ -9,7 +9,7 @@ import {
   Icon,
   useColorModeValue,
   Divider,
-  Badge
+  Badge,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon, InfoIcon } from '@chakra-ui/icons';
 
@@ -30,10 +30,10 @@ export const ProgressiveDisclosure: React.FC<ProgressiveDisclosureProps> = ({
   badgeColor = 'blue',
   children,
   defaultOpen = false,
-  variant = 'simple'
+  variant = 'simple',
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  
+
   const bgColor = useColorModeValue(
     variant === 'warning' ? 'orange.50' : 'gray.50',
     variant === 'warning' ? 'orange.900' : 'gray.800'
@@ -81,7 +81,7 @@ export const ProgressiveDisclosure: React.FC<ProgressiveDisclosureProps> = ({
         </HStack>
         <Icon as={isOpen ? ChevronUpIcon : ChevronDownIcon} />
       </Button>
-      
+
       <Collapse in={isOpen}>
         <Box p={4} pt={0}>
           <Divider mb={4} />
@@ -107,28 +107,36 @@ export const TransactionDetails: React.FC<{
   >
     <VStack align="stretch" spacing={3}>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Estimated Gas:</Text>
+        <Text fontSize="sm" fontWeight="medium">
+          Estimated Gas:
+        </Text>
         <Text fontSize="sm">{gasEstimate} XLM</Text>
       </HStack>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Estimated Time:</Text>
+        <Text fontSize="sm" fontWeight="medium">
+          Estimated Time:
+        </Text>
         <Text fontSize="sm">{timeEstimate}</Text>
       </HStack>
-      
+
       <Divider />
-      
+
       <Box>
-        <Text fontSize="sm" fontWeight="medium" mb={2}>Transaction Steps:</Text>
+        <Text fontSize="sm" fontWeight="medium" mb={2}>
+          Transaction Steps:
+        </Text>
         <VStack align="stretch" spacing={1}>
           {steps.map((step, index) => (
             <HStack key={index} spacing={2}>
-              <Badge size="sm" colorScheme="blue">{index + 1}</Badge>
+              <Badge size="sm" colorScheme="blue">
+                {index + 1}
+              </Badge>
               <Text fontSize="xs">{step}</Text>
             </HStack>
           ))}
         </VStack>
       </Box>
-      
+
       {risks && risks.length > 0 && (
         <>
           <Divider />
@@ -167,25 +175,39 @@ export const PoolDetails: React.FC<{
   >
     <VStack align="stretch" spacing={3}>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Total Supplied:</Text>
+        <Text fontSize="sm" fontWeight="medium">
+          Total Supplied:
+        </Text>
         <Text fontSize="sm">{pool.totalSupply}</Text>
       </HStack>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Total Borrowed:</Text>
+        <Text fontSize="sm" fontWeight="medium">
+          Total Borrowed:
+        </Text>
         <Text fontSize="sm">{pool.totalBorrow}</Text>
       </HStack>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Utilization Rate:</Text>
-        <Badge colorScheme={pool.utilizationRate > 80 ? 'red' : pool.utilizationRate > 60 ? 'yellow' : 'green'}>
+        <Text fontSize="sm" fontWeight="medium">
+          Utilization Rate:
+        </Text>
+        <Badge
+          colorScheme={
+            pool.utilizationRate > 80 ? 'red' : pool.utilizationRate > 60 ? 'yellow' : 'green'
+          }
+        >
           {pool.utilizationRate.toFixed(1)}%
         </Badge>
       </HStack>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Collateral Factor:</Text>
+        <Text fontSize="sm" fontWeight="medium">
+          Collateral Factor:
+        </Text>
         <Text fontSize="sm">{(pool.collateralFactor * 100).toFixed(0)}%</Text>
       </HStack>
       <HStack justify="space-between">
-        <Text fontSize="sm" fontWeight="medium">Liquidation Threshold:</Text>
+        <Text fontSize="sm" fontWeight="medium">
+          Liquidation Threshold:
+        </Text>
         <Text fontSize="sm">{(pool.liquidationThreshold * 100).toFixed(0)}%</Text>
       </HStack>
     </VStack>
@@ -199,7 +221,9 @@ export const RiskWarning: React.FC<{
 }> = ({ healthFactor, liquidationPrice, warnings }) => (
   <ProgressiveDisclosure
     title="Risk Assessment"
-    summary={healthFactor ? `Health Factor: ${healthFactor.toFixed(2)}` : "Review risks before proceeding"}
+    summary={
+      healthFactor ? `Health Factor: ${healthFactor.toFixed(2)}` : 'Review risks before proceeding'
+    }
     variant="warning"
     badge="Important"
     badgeColor="orange"
@@ -207,22 +231,28 @@ export const RiskWarning: React.FC<{
     <VStack align="stretch" spacing={3}>
       {healthFactor && (
         <HStack justify="space-between">
-          <Text fontSize="sm" fontWeight="medium">Health Factor:</Text>
+          <Text fontSize="sm" fontWeight="medium">
+            Health Factor:
+          </Text>
           <Badge colorScheme={healthFactor > 2 ? 'green' : healthFactor > 1.2 ? 'yellow' : 'red'}>
             {healthFactor === 999 ? '∞' : healthFactor.toFixed(2)}
           </Badge>
         </HStack>
       )}
-      
+
       {liquidationPrice && (
         <HStack justify="space-between">
-          <Text fontSize="sm" fontWeight="medium">Liquidation Price:</Text>
-          <Text fontSize="sm" color="red.500">{liquidationPrice}</Text>
+          <Text fontSize="sm" fontWeight="medium">
+            Liquidation Price:
+          </Text>
+          <Text fontSize="sm" color="red.500">
+            {liquidationPrice}
+          </Text>
         </HStack>
       )}
-      
+
       <Divider />
-      
+
       <Box>
         <Text fontSize="sm" fontWeight="medium" mb={2} color="orange.600">
           Risk Factors:

@@ -4,21 +4,17 @@ import {
   SorobanRpc,
   Transaction,
   TransactionBuilder,
-  xdr
+  xdr,
 } from '@stellar/stellar-sdk';
 import { config } from './env_config.js';
 
 type txResponse = SorobanRpc.Api.SendTransactionResponse | SorobanRpc.Api.GetTransactionResponse;
 type txStatus = SorobanRpc.Api.SendTransactionStatus | SorobanRpc.Api.GetTransactionStatus;
 
-const network = "testnet";
+const network = 'testnet';
 const loadedConfig = config(network);
 
-export function signWithKeypair(
-  txXdr: string,
-  passphrase: string,
-  source: Keypair
-): string {
+export function signWithKeypair(txXdr: string, passphrase: string, source: Keypair): string {
   const tx = new Transaction(txXdr, passphrase);
   tx.sign(source);
   return tx.toXDR();
@@ -44,7 +40,7 @@ export async function invokeTransaction(tx: Transaction, source: Keypair, sim: b
   if (SorobanRpc.Api.isSimulationError(simulation_resp)) {
     // No resource estimation available from a simulation error. Allow the response formatter
     // to fetch the error.
-    throw new DetailedSimulationError("Simulation failed due to an error", simulation_resp);
+    throw new DetailedSimulationError('Simulation failed due to an error', simulation_resp);
   } else if (sim) {
     // Only simulate the TX. Assemble the TX to borrow the resource estimation algorithm in
     return simulation_resp;
@@ -107,7 +103,6 @@ export const getCurrentTimePlusOneHour = () => {
   return oneHourLater;
 };
 
-
 // export async function invokeClassicOp(operation: xdr.Operation<Operation>, source: Keypair) {
 //   console.log('invoking classic op...');
 //   const txBuilder = await createTxBuilder(source);
@@ -142,7 +137,7 @@ class DetailedSimulationError extends Error {
 
   constructor(message: string, simulationResp: SorobanRpc.Api.SimulateTransactionResponse) {
     super(message);
-    this.name = "DetailedSimulationError";
+    this.name = 'DetailedSimulationError';
     this.simulationResp = simulationResp;
     Object.setPrototypeOf(this, DetailedSimulationError.prototype);
   }

@@ -9,18 +9,9 @@ export async function testSoroswapAdapter(addressBook: AddressBook) {
   console.log('Testing');
   console.log('-------------------------------------------------------');
 
-  const params: xdr.ScVal[] = [
-    nativeToScVal("gg", {type: "string"})
-  ];
+  const params: xdr.ScVal[] = [nativeToScVal('gg', { type: 'string' })];
 
-  await invokeContract(
-    'greeting',
-    addressBook,
-    'set_title',
-    params,
-    loadedConfig.admin
-  );
-
+  await invokeContract('greeting', addressBook, 'set_title', params, loadedConfig.admin);
 }
 
 const network = process.argv[2];

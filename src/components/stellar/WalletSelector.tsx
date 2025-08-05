@@ -77,16 +77,18 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({ isOpen, onClose 
                       alt={wallet.name}
                       boxSize="40px"
                       fallback={
-                        <div style={{ 
-                          width: '40px', 
-                          height: '40px', 
-                          backgroundColor: '#e2e8f0', 
-                          borderRadius: '8px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '20px'
-                        }}>
+                        <div
+                          style={{
+                            width: '40px',
+                            height: '40px',
+                            backgroundColor: '#e2e8f0',
+                            borderRadius: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '20px',
+                          }}
+                        >
                           🌟
                         </div>
                       }
@@ -94,7 +96,9 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({ isOpen, onClose 
                     <VStack align="start" spacing={1} flex={1}>
                       <HStack>
                         <Text fontWeight="semibold">{wallet.name}</Text>
-                        <Badge colorScheme="green" size="sm">Installed</Badge>
+                        <Badge colorScheme="green" size="sm">
+                          Installed
+                        </Badge>
                       </HStack>
                       <Text fontSize="sm" color="gray.600" textAlign="left">
                         {getWalletDescription(wallet.id)}
@@ -146,9 +150,9 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({ isOpen, onClose 
 // Hook for easy wallet selection
 export const useWalletSelector = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   return {
     openWalletSelector: onOpen,
-    WalletSelectorModal: () => <WalletSelector isOpen={isOpen} onClose={onClose} />
+    WalletSelectorModal: () => <WalletSelector isOpen={isOpen} onClose={onClose} />,
   };
 };

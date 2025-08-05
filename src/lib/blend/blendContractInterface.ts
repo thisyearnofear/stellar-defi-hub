@@ -8,7 +8,7 @@ export interface BlendContractInterface {
   getPoolInfo(): Promise<any>;
   getPoolStats(): Promise<any>;
   getUserPosition(userAddress: string): Promise<any>;
-  
+
   // Transaction functions
   supply(amount: string): Promise<string>;
   borrow(amount: string): Promise<string>;
@@ -22,17 +22,17 @@ export const BLEND_CONTRACT_FUNCTIONS = {
   POOL_INFO: 'get_pool_info', // or whatever the actual function is
   POOL_STATS: 'get_pool_stats',
   USER_POSITION: 'get_user_position',
-  
+
   // Transaction functions
   SUPPLY: 'supply',
-  BORROW: 'borrow', 
+  BORROW: 'borrow',
   REPAY: 'repay',
   WITHDRAW: 'withdraw',
-  
+
   // Additional functions we might discover
   GET_RESERVES: 'get_reserves',
   GET_RATES: 'get_rates',
-  GET_UTILIZATION: 'get_utilization'
+  GET_UTILIZATION: 'get_utilization',
 };
 
 // Contract-specific configurations
@@ -43,19 +43,22 @@ export const LIVE_BLEND_CONTRACTS = {
     type: 'fixed_pool',
     assets: ['USDC', 'XLM'],
     description: 'Fixed rate lending pool for USDC/XLM',
-    explorerUrl: 'https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
-    dashboardUrl: 'https://mainnet.blend.capital/dashboard/?poolId=CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD'
+    explorerUrl:
+      'https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
+    dashboardUrl:
+      'https://mainnet.blend.capital/dashboard/?poolId=CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD',
   },
-  
+
   YIELDBLOX_V2: {
     address: 'CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFSYou have used 0 iterations.',
     name: 'YieldBlox Pool V2',
     type: 'yield_pool',
     assets: ['Multi-Asset'],
     description: 'YieldBlox lending and borrowing pool',
-    explorerUrl: 'https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFSYou have used 0 iterations.',
-    dashboardUrl: 'https://yieldblox.com' // Assuming they have a dashboard
-  }
+    explorerUrl:
+      'https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFSYou have used 0 iterations.',
+    dashboardUrl: 'https://yieldblox.com', // Assuming they have a dashboard
+  },
 };
 
 // Helper to create contract instances
@@ -72,7 +75,7 @@ export function prepareContractCall(
   return StellarSdk.Operation.invokeContract({
     contract: contractAddress,
     function: functionName,
-    args
+    args,
   });
 }
 
@@ -95,12 +98,12 @@ export async function discoverContractFunctions(
 export const MAINNET_CONFIG = {
   rpcUrl: 'https://soroban-rpc.mainnet.stellar.org',
   networkPassphrase: StellarSdk.Networks.PUBLIC,
-  horizonUrl: 'https://horizon.stellar.org'
+  horizonUrl: 'https://horizon.stellar.org',
 };
 
 // Testnet configuration (fallback)
 export const TESTNET_CONFIG = {
   rpcUrl: 'https://soroban-testnet.stellar.org',
   networkPassphrase: StellarSdk.Networks.TESTNET,
-  horizonUrl: 'https://horizon-testnet.stellar.org'
+  horizonUrl: 'https://horizon-testnet.stellar.org',
 };

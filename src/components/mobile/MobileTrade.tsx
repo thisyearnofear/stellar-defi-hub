@@ -34,16 +34,16 @@ export const MobileTrade: React.FC = () => {
   // Mock data
   const assets = [
     { symbol: 'XLM', name: 'Stellar Lumens', price: 0.12, change: 2.4, balance: 8432.12 },
-    { symbol: 'USDC', name: 'USD Coin', price: 1.00, change: 0.0, balance: 5000.00 },
+    { symbol: 'USDC', name: 'USD Coin', price: 1.0, change: 0.0, balance: 5000.0 },
     { symbol: 'yXLM', name: 'Yield XLM', price: 0.13, change: 5.2, balance: 2156.78 },
   ];
 
-  const selectedAssetData = assets.find(a => a.symbol === selectedAsset) || assets[0];
+  const selectedAssetData = assets.find((a) => a.symbol === selectedAsset) || assets[0];
   const maxAmount = selectedAssetData.balance;
 
   const handlePercentageChange = (value: number) => {
     setPercentage(value);
-    const calculatedAmount = (maxAmount * value / 100).toFixed(2);
+    const calculatedAmount = ((maxAmount * value) / 100).toFixed(2);
     setAmount(calculatedAmount);
   };
 
@@ -57,7 +57,9 @@ export const MobileTrade: React.FC = () => {
         {/* Asset Selector */}
         <MobileCard>
           <VStack spacing={3} align="stretch">
-            <Text fontSize="lg" fontWeight="semibold">Select Asset</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              Select Asset
+            </Text>
             <VStack spacing={2}>
               {assets.map((asset) => (
                 <HStack
@@ -76,17 +78,17 @@ export const MobileTrade: React.FC = () => {
                     <Avatar size="sm" name={asset.symbol} />
                     <VStack align="start" spacing={0}>
                       <Text fontWeight="medium">{asset.symbol}</Text>
-                      <Text fontSize="sm" color="gray.600">{asset.name}</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        {asset.name}
+                      </Text>
                     </VStack>
                   </HStack>
 
                   <VStack align="end" spacing={0}>
                     <Text fontWeight="medium">${asset.price.toFixed(4)}</Text>
-                    <Badge
-                      colorScheme={asset.change >= 0 ? 'green' : 'red'}
-                      variant="subtle"
-                    >
-                      {asset.change >= 0 ? '+' : ''}{asset.change}%
+                    <Badge colorScheme={asset.change >= 0 ? 'green' : 'red'} variant="subtle">
+                      {asset.change >= 0 ? '+' : ''}
+                      {asset.change}%
                     </Badge>
                   </VStack>
                 </HStack>
@@ -118,7 +120,9 @@ export const MobileTrade: React.FC = () => {
               <TabPanel p={0}>
                 <VStack spacing={4} align="stretch">
                   <Box>
-                    <Text fontSize="sm" color="gray.600" mb={2}>Amount to buy</Text>
+                    <Text fontSize="sm" color="gray.600" mb={2}>
+                      Amount to buy
+                    </Text>
                     <Input
                       placeholder="0.00"
                       value={amount}
@@ -134,14 +138,14 @@ export const MobileTrade: React.FC = () => {
 
                   <Box>
                     <HStack justify="space-between" mb={2}>
-                      <Text fontSize="sm" color="gray.600">Quick Select</Text>
-                      <Text fontSize="sm" color="gray.500">{percentage}%</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Quick Select
+                      </Text>
+                      <Text fontSize="sm" color="gray.500">
+                        {percentage}%
+                      </Text>
                     </HStack>
-                    <Slider
-                      value={percentage}
-                      onChange={handlePercentageChange}
-                      colorScheme="blue"
-                    >
+                    <Slider value={percentage} onChange={handlePercentageChange} colorScheme="blue">
                       <SliderTrack>
                         <SliderFilledTrack />
                       </SliderTrack>
@@ -163,7 +167,9 @@ export const MobileTrade: React.FC = () => {
 
                   <Box bg="gray.50" p={3} borderRadius="8px">
                     <HStack justify="space-between">
-                      <Text fontSize="sm" color="gray.600">Available Balance</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Available Balance
+                      </Text>
                       <Text fontSize="sm" fontWeight="medium">
                         {selectedAssetData.balance.toLocaleString()} {selectedAsset}
                       </Text>
@@ -185,7 +191,9 @@ export const MobileTrade: React.FC = () => {
               <TabPanel p={0}>
                 <VStack spacing={4} align="stretch">
                   <Box>
-                    <Text fontSize="sm" color="gray.600" mb={2}>Amount to sell</Text>
+                    <Text fontSize="sm" color="gray.600" mb={2}>
+                      Amount to sell
+                    </Text>
                     <Input
                       placeholder="0.00"
                       value={amount}
@@ -201,14 +209,14 @@ export const MobileTrade: React.FC = () => {
 
                   <Box>
                     <HStack justify="space-between" mb={2}>
-                      <Text fontSize="sm" color="gray.600">Quick Select</Text>
-                      <Text fontSize="sm" color="gray.500">{percentage}%</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Quick Select
+                      </Text>
+                      <Text fontSize="sm" color="gray.500">
+                        {percentage}%
+                      </Text>
                     </HStack>
-                    <Slider
-                      value={percentage}
-                      onChange={handlePercentageChange}
-                      colorScheme="red"
-                    >
+                    <Slider value={percentage} onChange={handlePercentageChange} colorScheme="red">
                       <SliderTrack>
                         <SliderFilledTrack />
                       </SliderTrack>
@@ -230,7 +238,9 @@ export const MobileTrade: React.FC = () => {
 
                   <Box bg="gray.50" p={3} borderRadius="8px">
                     <HStack justify="space-between">
-                      <Text fontSize="sm" color="gray.600">Available Balance</Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Available Balance
+                      </Text>
                       <Text fontSize="sm" fontWeight="medium">
                         {selectedAssetData.balance.toLocaleString()} {selectedAsset}
                       </Text>
@@ -254,19 +264,33 @@ export const MobileTrade: React.FC = () => {
         {/* Market Info */}
         <MobileCard>
           <VStack spacing={3} align="stretch">
-            <Text fontSize="lg" fontWeight="semibold">Market Info</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              Market Info
+            </Text>
             <VStack spacing={2}>
               <HStack justify="space-between" w="full">
-                <Text fontSize="sm" color="gray.600">24h Volume</Text>
-                <Text fontSize="sm" fontWeight="medium">$2.4M</Text>
+                <Text fontSize="sm" color="gray.600">
+                  24h Volume
+                </Text>
+                <Text fontSize="sm" fontWeight="medium">
+                  $2.4M
+                </Text>
               </HStack>
               <HStack justify="space-between" w="full">
-                <Text fontSize="sm" color="gray.600">24h High</Text>
-                <Text fontSize="sm" fontWeight="medium">$0.1245</Text>
+                <Text fontSize="sm" color="gray.600">
+                  24h High
+                </Text>
+                <Text fontSize="sm" fontWeight="medium">
+                  $0.1245
+                </Text>
               </HStack>
               <HStack justify="space-between" w="full">
-                <Text fontSize="sm" color="gray.600">24h Low</Text>
-                <Text fontSize="sm" fontWeight="medium">$0.1189</Text>
+                <Text fontSize="sm" color="gray.600">
+                  24h Low
+                </Text>
+                <Text fontSize="sm" fontWeight="medium">
+                  $0.1189
+                </Text>
               </HStack>
             </VStack>
           </VStack>

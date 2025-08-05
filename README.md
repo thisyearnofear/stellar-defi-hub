@@ -38,18 +38,21 @@ Syndicate is an AI-powered DeFi platform that makes Stellar DeFi accessible to e
 ## ✨ Key Features
 
 ### 🤖 AI Assistant
+
 - **Natural Language Interface** - Chat with your DeFi assistant
 - **Personalized Recommendations** - Tailored advice based on your profile
 - **Strategy Automation** - Set up DCA, yield farming, and rebalancing
 - **Risk Analysis** - Real-time portfolio health monitoring
 
 ### 🌟 DeFi Integration
+
 - **Blend Protocol** - Lending and borrowing optimization
 - **YieldBlox** - Multi-asset yield farming
 - **Stellar DEX** - Automated market making
 - **Portfolio Tracking** - Cross-protocol position monitoring
 
 ### 📱 User Experience
+
 - **Smart Onboarding** - AI-guided setup process
 - **Mobile-First Design** - Optimized for mobile DeFi
 - **Multi-Wallet Support** - Freighter, Albedo, and more
@@ -58,6 +61,7 @@ Syndicate is an AI-powered DeFi platform that makes Stellar DeFi accessible to e
 ## 🏗️ Architecture
 
 ### Frontend Stack
+
 - **Next.js 13** - React framework with App Router
 - **TypeScript** - Type-safe development
 - **Chakra UI** - Component library and design system
@@ -65,11 +69,13 @@ Syndicate is an AI-powered DeFi platform that makes Stellar DeFi accessible to e
 - **Framer Motion** - Smooth animations
 
 ### Blockchain Integration
+
 - **Stellar SDK** - Core blockchain interactions
 - **Soroban** - Smart contract integration
 - **Multi-protocol SDKs** - Blend, YieldBlox integrations
 
 ### AI & Backend
+
 - **Google Gemini AI** - Natural language processing
 - **Zustand** - State management
 - **React Hook Form** - Form handling
@@ -78,16 +84,19 @@ Syndicate is an AI-powered DeFi platform that makes Stellar DeFi accessible to e
 ## 🎮 User Journey
 
 ### 1. AI-Powered Onboarding
+
 ```
 📝 Experience Assessment → 🎯 Goal Setting → ⚖️ Risk Profiling → 💼 Portfolio Setup → 🤖 AI Demo
 ```
 
 ### 2. Intelligent Dashboard
+
 ```
 📊 Portfolio Overview → 💡 AI Recommendations → 🔄 Auto-Execute → 📈 Track Performance
 ```
 
 ### 3. Continuous Optimization
+
 ```
 🔍 Monitor Markets → 🎯 Identify Opportunities → ⚡ Execute Strategies → 📊 Report Results
 ```
@@ -95,11 +104,13 @@ Syndicate is an AI-powered DeFi platform that makes Stellar DeFi accessible to e
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Stellar/Freighter wallet for testing
 
 ### Environment Setup
+
 ```bash
 # Required environment variables
 NEXT_PUBLIC_STELLAR_NETWORK=testnet  # or mainnet
@@ -108,6 +119,7 @@ NEXT_PUBLIC_RPC_URL=your_rpc_endpoint
 ```
 
 ### Available Scripts
+
 ```bash
 npm run dev          # Start development server
 npm run build        # Build for production
@@ -118,6 +130,7 @@ npm run type-check   # TypeScript type checking
 ```
 
 ### Project Structure
+
 ```
 src/
 ├── components/
@@ -138,18 +151,21 @@ src/
 ## 🌟 Core Components
 
 ### AI Agent (`src/lib/ai/stellarAIAgent.ts`)
+
 - Natural language processing for DeFi queries
 - Portfolio analysis and recommendations
 - Strategy automation and execution
 - Risk assessment and monitoring
 
 ### Onboarding (`src/components/onboarding/AIOnboarding.tsx`)
+
 - Experience-based user profiling
 - Goal setting and risk tolerance assessment
 - Personalized portfolio recommendations
 - Interactive AI demo
 
 ### Mobile Dashboard (`src/components/mobile/MobileDashboard.tsx`)
+
 - Touch-optimized DeFi interface
 - Quick actions and portfolio overview
 - AI chat widget integration
@@ -158,16 +174,19 @@ src/
 ## 🔗 Integrations
 
 ### Stellar Protocols
+
 - **Blend Protocol** - Lending/borrowing via `@blend-capital/blend-sdk`
 - **Stellar DEX** - Trading via `@stellar/stellar-sdk`
 - **Soroban** - Smart contract interactions
 
 ### AI Services
+
 - **Google Gemini** - Natural language understanding
 - **Custom AI Logic** - DeFi-specific intelligence
 - **Strategy Engine** - Automated decision making
 
 ### Wallet Connections
+
 - **Freighter** - Primary Stellar wallet
 - **Albedo** - Alternative Stellar wallet
 - **WalletConnect** - Multi-chain support
@@ -175,6 +194,7 @@ src/
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 ```bash
 # Deploy to Vercel
 vercel --prod
@@ -186,6 +206,7 @@ vercel --prod
 ```
 
 ### Docker
+
 ```bash
 # Build and run with Docker
 docker build -t syndicate .
@@ -209,6 +230,7 @@ The platform is designed for both testnet and mainnet environments:
 5. Open a Pull Request
 
 ### Development Guidelines
+
 - Follow TypeScript best practices
 - Write tests for AI logic components
 - Ensure mobile responsiveness

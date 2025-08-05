@@ -1,23 +1,23 @@
-import type { FC, PropsWithChildren } from 'react'
-import { Box, Flex, HStack, Text, Button, Spacer, useBreakpointValue } from '@chakra-ui/react'
-import { ConnectButton } from '../web3/ConnectButton'
-import { useRouter } from 'next/router'
-import { MobileLayout } from '../mobile/MobileLayout'
-import 'twin.macro'
+import type { FC, PropsWithChildren } from 'react';
+import { Box, Flex, HStack, Text, Button, Spacer, useBreakpointValue } from '@chakra-ui/react';
+import { ConnectButton } from '../web3/ConnectButton';
+import { useRouter } from 'next/router';
+import { MobileLayout } from '../mobile/MobileLayout';
+import 'twin.macro';
 
 export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
-  const router = useRouter()
-  const isMobile = useBreakpointValue({ base: true, md: false })
+  const router = useRouter();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const navItems = [
     { label: 'Home', href: '/' },
     { label: 'Trade', href: '/trade' },
     { label: 'Blend', href: '/blend' },
     { label: 'Portfolio', href: '/portfolio' },
-  ]
+  ];
 
   if (isMobile) {
-    return <MobileLayout>{children}</MobileLayout>
+    return <MobileLayout>{children}</MobileLayout>;
   }
 
   return (
@@ -27,9 +27,9 @@ export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
         <Box bg="white" borderBottom="1px" borderColor="gray.200" px={6} py={4}>
           <Flex align="center" maxW="7xl" mx="auto">
             {/* Logo/Title */}
-            <Text 
-              fontSize="xl" 
-              fontWeight="bold" 
+            <Text
+              fontSize="xl"
+              fontWeight="bold"
               color="gray.800"
               cursor="pointer"
               onClick={() => router.push('/')}
@@ -65,5 +65,5 @@ export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
         <main tw="relative flex grow flex-col">{children}</main>
       </div>
     </>
-  )
-}
+  );
+};

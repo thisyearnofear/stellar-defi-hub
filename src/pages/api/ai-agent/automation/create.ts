@@ -17,12 +17,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const strategy = await createAutomationStrategy(description, walletAddress);
-    
+
     // Store strategy
     const userStrategies = automationStrategies.get(walletAddress) || [];
     userStrategies.push(strategy);
     automationStrategies.set(walletAddress, userStrategies);
-    
+
     res.status(200).json(strategy);
   } catch (error) {
     console.error('Automation creation error:', error);
@@ -30,30 +30,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function createAutomationStrategy(description: string, walletAddress: string): Promise<AutomationStrategy> {
+async function createAutomationStrategy(
+  description: string,
+  walletAddress: string
+): Promise<AutomationStrategy> {
   const lowerDesc = description.toLowerCase();
-  
+
   // Parse automation intent
   let strategy: Partial<AutomationStrategy> = {
     id: `automation_${Date.now()}`,
     description,
     isActive: true,
-    createdAt: new Date()
+    createdAt: new Date(),
   };
 
   // DCA (Dollar Cost Averaging)
-  if (lowerDesc.includes('dca') || lowerDesc.includes('dollar cost') || lowerDesc.includes('weekly') || lowerDesc.includes('monthly')) {
+  if (
+    lowerDesc.includes('dca') ||
+    lowerDesc.includes('dollar cost') ||
+    lowerDesc.includes('weekly') ||
+    lowerDesc.includes('monthly')
+  ) {
     const amountMatch = description.match(/\$?(\d+(?:\.\d+)?)/);
     const assetMatch = description.match(/xlm|usdc|btc|eth/i);
     const frequencyMatch = description.match(/daily|weekly|monthly/i);
-    
+
     strategy = {
       ...strategy,
       name: 'Dollar Cost Averaging',
       conditions: [
         `Every ${frequencyMatch?.[0] || 'week'}`,
         `Market is open`,
-        `Wallet has sufficient balance`
+        `Wallet has sufficient balance`,
       ],
       actions: [
         {
@@ -62,49 +70,49 @@ async function createAutomationStrategy(description: string, walletAddress: stri
           parameters: {
             fromAsset: 'USDC',
             toAsset: assetMatch?.[0]?.toUpperCase() || 'XLM',
-            amount: amountMatch?.[1] || '100'
+            amount: amountMatch?.[1] || '100',
           },
           riskLevel: 'low',
-          expectedOutcome: 'Average purchase price over time'
-        }
-      ]
+          expectedOutcome: 'Average purchase price over time',
+        },
+      ],
     };
   }
-  
+
   // Rebalancing
   else if (lowerDesc.includes('rebalance') || lowerDesc.includes('allocation')) {
     strategy = {
       ...strategy,
       name: 'Portfolio Rebalancing',
-      conditions: [
-        'Portfolio drift exceeds 5%',
-        'Monthly check',
-        'Market volatility is low'
-      ],
+      conditions: ['Portfolio drift exceeds 5%', 'Monthly check', 'Market volatility is low'],
       actions: [
         {
           type: 'rebalance',
           description: 'Rebalance to target allocation',
           parameters: {
             targetAllocation: { XLM: 60, USDC: 30, OTHER: 10 },
-            threshold: 5
+            threshold: 5,
           },
           riskLevel: 'low',
-          expectedOutcome: 'Maintain target portfolio allocation'
-        }
-      ]
+          expectedOutcome: 'Maintain target portfolio allocation',
+        },
+      ],
     };
   }
-  
+
   // Yield optimization
-  else if (lowerDesc.includes('yield') || lowerDesc.includes('optimize') || lowerDesc.includes('earn')) {
+  else if (
+    lowerDesc.includes('yield') ||
+    lowerDesc.includes('optimize') ||
+    lowerDesc.includes('earn')
+  ) {
     strategy = {
       ...strategy,
       name: 'Yield Optimization',
       conditions: [
         'Better yield opportunity available',
         'Minimum 1% APY improvement',
-        'Low risk protocols only'
+        'Low risk protocols only',
       ],
       actions: [
         {
@@ -113,26 +121,26 @@ async function createAutomationStrategy(description: string, walletAddress: stri
           parameters: {
             asset: 'XLM',
             protocol: 'blend',
-            minAPY: '8%'
+            minAPY: '8%',
           },
           riskLevel: 'low',
-          expectedOutcome: 'Maximize yield while maintaining safety'
-        }
-      ]
+          expectedOutcome: 'Maximize yield while maintaining safety',
+        },
+      ],
     };
   }
-  
+
   // Stop loss
   else if (lowerDesc.includes('stop loss') || lowerDesc.includes('protect')) {
     const percentMatch = description.match(/(\d+)%/);
-    
+
     strategy = {
       ...strategy,
       name: 'Stop Loss Protection',
       conditions: [
         `Portfolio value drops ${percentMatch?.[1] || '20'}% from peak`,
         'Market is in downtrend',
-        'Volatility is high'
+        'Volatility is high',
       ],
       actions: [
         {
@@ -141,26 +149,26 @@ async function createAutomationStrategy(description: string, walletAddress: stri
           parameters: {
             fromAsset: 'XLM',
             toAsset: 'USDC',
-            percentage: 50
+            percentage: 50,
           },
           riskLevel: 'medium',
-          expectedOutcome: 'Protect capital during market downturns'
-        }
-      ]
+          expectedOutcome: 'Protect capital during market downturns',
+        },
+      ],
     };
   }
-  
+
   // Take profit
   else if (lowerDesc.includes('take profit') || lowerDesc.includes('sell when')) {
     const percentMatch = description.match(/(\d+)%/);
-    
+
     strategy = {
       ...strategy,
       name: 'Take Profit Strategy',
       conditions: [
         `Portfolio value increases ${percentMatch?.[1] || '50'}% from entry`,
         'Market shows signs of overheating',
-        'Technical indicators suggest reversal'
+        'Technical indicators suggest reversal',
       ],
       actions: [
         {
@@ -169,15 +177,15 @@ async function createAutomationStrategy(description: string, walletAddress: stri
           parameters: {
             fromAsset: 'XLM',
             toAsset: 'USDC',
-            percentage: 25
+            percentage: 25,
           },
           riskLevel: 'low',
-          expectedOutcome: 'Lock in gains while maintaining upside exposure'
-        }
-      ]
+          expectedOutcome: 'Lock in gains while maintaining upside exposure',
+        },
+      ],
     };
   }
-  
+
   // Default strategy
   else {
     strategy = {
@@ -190,9 +198,9 @@ async function createAutomationStrategy(description: string, walletAddress: stri
           description: 'Analyze and suggest actions',
           parameters: { description },
           riskLevel: 'low',
-          expectedOutcome: 'Personalized strategy recommendations'
-        }
-      ]
+          expectedOutcome: 'Personalized strategy recommendations',
+        },
+      ],
     };
   }
 

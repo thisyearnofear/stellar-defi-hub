@@ -58,10 +58,10 @@ export class AutomationEngine {
   // Monitoring and Execution
   startMonitoring(): void {
     if (this.isRunning) return;
-    
+
     this.isRunning = true;
     console.log('Automation engine started');
-    
+
     // Check conditions every 30 seconds
     this.intervalId = setInterval(() => {
       this.checkAllConditions();
@@ -70,7 +70,7 @@ export class AutomationEngine {
 
   stopMonitoring(): void {
     if (!this.isRunning) return;
-    
+
     this.isRunning = false;
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -81,7 +81,7 @@ export class AutomationEngine {
   private async checkAllConditions(): Promise<void> {
     for (const strategy of this.strategies.values()) {
       if (!strategy.isActive) continue;
-      
+
       try {
         const shouldExecute = await this.evaluateConditions(strategy);
         if (shouldExecute) {
@@ -104,7 +104,7 @@ export class AutomationEngine {
 
   private async checkCondition(condition: string, strategy: AutomationStrategy): Promise<boolean> {
     const lowerCondition = condition.toLowerCase();
-    
+
     // Time-based conditions
     if (lowerCondition.includes('daily')) {
       return this.checkTimeCondition('daily', strategy);
@@ -115,33 +115,40 @@ export class AutomationEngine {
     if (lowerCondition.includes('monthly')) {
       return this.checkTimeCondition('monthly', strategy);
     }
-    
+
     // Price conditions
-    if (lowerCondition.includes('price') || lowerCondition.includes('drops') || lowerCondition.includes('rises')) {
+    if (
+      lowerCondition.includes('price') ||
+      lowerCondition.includes('drops') ||
+      lowerCondition.includes('rises')
+    ) {
       return await this.checkPriceCondition(condition);
     }
-    
+
     // Portfolio conditions
     if (lowerCondition.includes('portfolio') || lowerCondition.includes('allocation')) {
       return await this.checkPortfolioCondition(condition, strategy);
     }
-    
+
     // Market conditions
     if (lowerCondition.includes('market') || lowerCondition.includes('volatility')) {
       return await this.checkMarketCondition(condition);
     }
-    
+
     // Default to true for unrecognized conditions
     return true;
   }
 
-  private checkTimeCondition(frequency: 'daily' | 'weekly' | 'monthly', strategy: AutomationStrategy): boolean {
+  private checkTimeCondition(
+    frequency: 'daily' | 'weekly' | 'monthly',
+    strategy: AutomationStrategy
+  ): boolean {
     const lastExecution = this.getLastExecution(strategy.id);
     if (!lastExecution) return true; // First execution
-    
+
     const now = new Date();
     const lastExecutionTime = lastExecution.executedAt;
-    
+
     switch (frequency) {
       case 'daily':
         return now.getTime() - lastExecutionTime.getTime() >= 24 * 60 * 60 * 1000;
@@ -159,16 +166,16 @@ export class AutomationEngine {
     const assetMatch = condition.match(/xlm|usdc|btc|eth/i);
     const priceMatch = condition.match(/\$?(\d+(?:\.\d+)?)/);
     const operatorMatch = condition.match(/below|above|drops|rises/i);
-    
+
     if (!assetMatch || !priceMatch || !operatorMatch) return false;
-    
+
     const asset = assetMatch[0].toUpperCase();
     const targetPrice = parseFloat(priceMatch[1]);
     const operator = operatorMatch[0].toLowerCase();
-    
+
     // Get current price (mock implementation)
     const currentPrice = await this.getCurrentPrice(asset);
-    
+
     switch (operator) {
       case 'below':
       case 'drops':
@@ -181,7 +188,10 @@ export class AutomationEngine {
     }
   }
 
-  private async checkPortfolioCondition(condition: string, strategy: AutomationStrategy): Promise<boolean> {
+  private async checkPortfolioCondition(
+    condition: string,
+    strategy: AutomationStrategy
+  ): Promise<boolean> {
     // Check portfolio drift, value changes, etc.
     const driftMatch = condition.match(/(\d+)%/);
     if (driftMatch) {
@@ -203,20 +213,20 @@ export class AutomationEngine {
 
   private async executeStrategy(strategy: AutomationStrategy): Promise<void> {
     console.log(`Executing strategy: ${strategy.name}`);
-    
+
     const execution: AutomationExecution = {
       id: `exec_${Date.now()}`,
       strategyId: strategy.id,
       executedAt: new Date(),
-      status: 'pending'
+      status: 'pending',
     };
-    
+
     try {
       // Execute all actions in the strategy
       for (const action of strategy.actions) {
         await this.executeAction(action, execution);
       }
-      
+
       execution.status = 'success';
       console.log(`Strategy executed successfully: ${strategy.name}`);
     } catch (error) {
@@ -224,11 +234,14 @@ export class AutomationEngine {
       execution.error = error instanceof Error ? error.message : 'Unknown error';
       console.error(`Strategy execution failed: ${strategy.name}`, error);
     }
-    
+
     this.executions.push(execution);
   }
 
-  private async executeAction(action: AIAgentAction, execution: AutomationExecution): Promise<void> {
+  private async executeAction(
+    action: AIAgentAction,
+    execution: AutomationExecution
+  ): Promise<void> {
     switch (action.type) {
       case 'trade':
         await this.executeTrade(action.parameters, execution);
@@ -250,34 +263,34 @@ export class AutomationEngine {
   private async executeTrade(params: any, execution: AutomationExecution): Promise<void> {
     // Execute trade on Stellar DEX
     console.log(`Executing trade: ${params.amount} ${params.fromAsset} -> ${params.toAsset}`);
-    
+
     // This would integrate with actual Stellar SDK
     // For now, simulate execution
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     execution.transactionHash = `trade_${Date.now()}`;
   }
 
   private async executeLend(params: any, execution: AutomationExecution): Promise<void> {
     // Execute lending on Blend Protocol
     console.log(`Executing lend: ${params.amount} ${params.asset} to ${params.protocol}`);
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     execution.transactionHash = `lend_${Date.now()}`;
   }
 
   private async executeRebalance(params: any, execution: AutomationExecution): Promise<void> {
     // Execute portfolio rebalancing
     console.log(`Executing rebalance to target allocation:`, params.targetAllocation);
-    
-    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     execution.transactionHash = `rebalance_${Date.now()}`;
   }
 
   private async sendAlert(params: any): Promise<void> {
     // Send notification/alert
     console.log(`Sending alert: ${params.message || 'Condition triggered'}`);
-    
+
     // This would integrate with notification service
     // For now, just log
   }
@@ -286,10 +299,10 @@ export class AutomationEngine {
   private async getCurrentPrice(asset: string): Promise<number> {
     // Mock price data - replace with real price feed
     const prices: Record<string, number> = {
-      'XLM': 0.12,
-      'USDC': 1.00,
-      'BTC': 45000,
-      'ETH': 3000
+      XLM: 0.12,
+      USDC: 1.0,
+      BTC: 45000,
+      ETH: 3000,
     };
     return prices[asset] || 0;
   }
@@ -308,20 +321,20 @@ export class AutomationEngine {
 
   private getLastExecution(strategyId: string): AutomationExecution | undefined {
     return this.executions
-      .filter(exec => exec.strategyId === strategyId)
+      .filter((exec) => exec.strategyId === strategyId)
       .sort((a, b) => b.executedAt.getTime() - a.executedAt.getTime())[0];
   }
 
   // Public methods for monitoring
   getExecutionHistory(strategyId?: string): AutomationExecution[] {
     if (strategyId) {
-      return this.executions.filter(exec => exec.strategyId === strategyId);
+      return this.executions.filter((exec) => exec.strategyId === strategyId);
     }
     return this.executions;
   }
 
   getActiveStrategiesCount(): number {
-    return Array.from(this.strategies.values()).filter(s => s.isActive).length;
+    return Array.from(this.strategies.values()).filter((s) => s.isActive).length;
   }
 
   getTotalExecutions(): number {
@@ -330,7 +343,7 @@ export class AutomationEngine {
 
   getSuccessRate(): number {
     if (this.executions.length === 0) return 0;
-    const successful = this.executions.filter(exec => exec.status === 'success').length;
+    const successful = this.executions.filter((exec) => exec.status === 'success').length;
     return (successful / this.executions.length) * 100;
   }
 }

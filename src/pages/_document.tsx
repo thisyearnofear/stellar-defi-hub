@@ -1,4 +1,4 @@
-import { extractCritical } from '@emotion/server'
+import { extractCritical } from '@emotion/server';
 import Document, {
   type DocumentContext,
   type DocumentInitialProps,
@@ -6,18 +6,18 @@ import Document, {
   Html,
   Main,
   NextScript,
-} from 'next/document'
+} from 'next/document';
 
 export type NewDocumentInitialProps = DocumentInitialProps & {
-  ids: string[]
-  css: string
-}
+  ids: string[];
+  css: string;
+};
 export default class MyDocument extends Document<NewDocumentInitialProps> {
   // Emotion Critical SSR Styles
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
-    const initialProps = await Document.getInitialProps(ctx)
-    const critical = extractCritical(initialProps.html)
-    initialProps.html = critical.html
+    const initialProps = await Document.getInitialProps(ctx);
+    const critical = extractCritical(initialProps.html);
+    initialProps.html = critical.html;
     initialProps.styles = (
       <>
         {initialProps.styles}
@@ -26,9 +26,9 @@ export default class MyDocument extends Document<NewDocumentInitialProps> {
           dangerouslySetInnerHTML={{ __html: critical.css }}
         />
       </>
-    )
+    );
 
-    return initialProps
+    return initialProps;
   }
 
   render() {
@@ -53,6 +53,6 @@ export default class MyDocument extends Document<NewDocumentInitialProps> {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }

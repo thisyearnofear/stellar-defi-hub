@@ -44,12 +44,12 @@ export class GeminiService {
 
   constructor(apiKey: string) {
     this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
+    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
   }
 
   async processMessage(
-    message: string, 
-    userId: string, 
+    message: string,
+    userId: string,
     walletAddress?: string,
     userProfile?: any,
     portfolioData?: any
@@ -62,7 +62,7 @@ export class GeminiService {
         walletAddress,
         userProfile,
         portfolioData,
-        conversationHistory: []
+        conversationHistory: [],
       };
       this.conversationContexts.set(userId, context);
     }
@@ -76,7 +76,7 @@ export class GeminiService {
     context.conversationHistory.push({
       role: 'user',
       content: message,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
 
     // Generate AI response
@@ -87,7 +87,7 @@ export class GeminiService {
       role: 'assistant',
       content: response.content,
       timestamp: new Date(),
-      actions: response.actions
+      actions: response.actions,
     });
 
     // Keep only last 20 messages to manage memory
@@ -98,10 +98,13 @@ export class GeminiService {
     return response;
   }
 
-  private async generateResponse(message: string, context: ConversationContext): Promise<AIResponse> {
+  private async generateResponse(
+    message: string,
+    context: ConversationContext
+  ): Promise<AIResponse> {
     const systemPrompt = this.buildSystemPrompt(context);
     const conversationHistory = this.buildConversationHistory(context);
-    
+
     const fullPrompt = `${systemPrompt}
 
 ${conversationHistory}
@@ -134,7 +137,7 @@ Format your response as JSON with this structure:
     try {
       const result = await this.model.generateContent(fullPrompt);
       const responseText = result.response.text();
-      
+
       // Try to parse JSON response
       try {
         const jsonMatch = responseText.match(/\{[\s\S]*\}/);
@@ -156,7 +159,7 @@ Format your response as JSON with this structure:
 
   private buildSystemPrompt(context: ConversationContext): string {
     const { userProfile, portfolioData, walletAddress } = context;
-    
+
     return `You are an expert Stellar DeFi AI assistant. Your role is to help users navigate the Stellar ecosystem, make informed decisions, and execute DeFi strategies.
 
 CONTEXT:
@@ -194,39 +197,49 @@ Always consider the user's risk tolerance and experience level. Provide clear ex
 
   private buildConversationHistory(context: ConversationContext): string {
     const recentHistory = context.conversationHistory.slice(-6); // Last 6 messages
-    return recentHistory.map(msg => 
-      `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
-    ).join('\n');
+    return recentHistory
+      .map((msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
+      .join('\n');
   }
 
-  private validateAndEnhanceResponse(response: any, message: string, context: ConversationContext): AIResponse {
+  private validateAndEnhanceResponse(
+    response: any,
+    message: string,
+    context: ConversationContext
+  ): AIResponse {
     // Ensure required fields exist
     const validatedResponse: AIResponse = {
       content: response.content || "I'm here to help with your Stellar DeFi needs!",
       confidence: Math.min(Math.max(response.confidence || 0.7, 0), 1),
       intent: response.intent || this.detectIntent(message),
       actions: Array.isArray(response.actions) ? response.actions : [],
-      followUpQuestions: Array.isArray(response.followUpQuestions) ? response.followUpQuestions : undefined
+      followUpQuestions: Array.isArray(response.followUpQuestions)
+        ? response.followUpQuestions
+        : undefined,
     };
 
     // Enhance actions with Stellar-specific validation
-    validatedResponse.actions = validatedResponse.actions.map(action => ({
+    validatedResponse.actions = validatedResponse.actions.map((action) => ({
       ...action,
       type: this.validateActionType(action.type),
       riskLevel: this.validateRiskLevel(action.riskLevel, context.userProfile?.riskTolerance),
-      parameters: this.enhanceActionParameters(action.parameters, action.type)
+      parameters: this.enhanceActionParameters(action.parameters, action.type),
     }));
 
     return validatedResponse;
   }
 
-  private generateFallbackResponse(message: string, context: ConversationContext, aiText?: string): AIResponse {
+  private generateFallbackResponse(
+    message: string,
+    context: ConversationContext,
+    aiText?: string
+  ): AIResponse {
     const intent = this.detectIntent(message);
     const lowerMessage = message.toLowerCase();
 
     // Use AI text if available, otherwise generate based on intent
     let content = aiText || this.generateIntentBasedResponse(intent, lowerMessage, context);
-    
+
     // Generate appropriate actions based on intent
     const actions = this.generateActionsForIntent(intent, message, context);
 
@@ -234,13 +247,13 @@ Always consider the user's risk tolerance and experience level. Provide clear ex
       content,
       confidence: aiText ? 0.8 : 0.6,
       intent,
-      actions
+      actions,
     };
   }
 
   private detectIntent(message: string): string {
     const lowerMessage = message.toLowerCase();
-    
+
     const intents = {
       portfolio_analysis: /analyze|portfolio|performance|risk|holdings|balance/,
       yield_opportunity: /yield|earn|apy|interest|stake|lend|farming/,
@@ -251,7 +264,7 @@ Always consider the user's risk tolerance and experience level. Provide clear ex
       rebalance: /rebalance|allocate|distribute|allocation/,
       alert: /alert|notify|watch|monitor|tell me when/,
       education: /how|what|why|explain|learn|tutorial/,
-      blend_protocol: /blend|lending|borrowing|supply|borrow/
+      blend_protocol: /blend|lending|borrowing|supply|borrow/,
     };
 
     for (const [intent, pattern] of Object.entries(intents)) {
@@ -263,59 +276,73 @@ Always consider the user's risk tolerance and experience level. Provide clear ex
     return 'general';
   }
 
-  private generateIntentBasedResponse(intent: string, message: string, context: ConversationContext): string {
+  private generateIntentBasedResponse(
+    intent: string,
+    message: string,
+    context: ConversationContext
+  ): string {
     const { userProfile, portfolioData } = context;
-    
+
     switch (intent) {
       case 'portfolio_analysis':
         return `I'll analyze your portfolio for you. ${portfolioData ? `Your current portfolio is worth $${portfolioData.totalValue.toLocaleString()} with a risk score of ${portfolioData.riskScore}/10.` : 'Connect your wallet to see detailed analysis.'} Based on your ${userProfile?.riskTolerance || 'moderate'} risk tolerance, I can suggest optimizations.`;
-      
+
       case 'yield_opportunity':
         return `For ${userProfile?.riskTolerance || 'moderate'} risk tolerance, I recommend Blend Protocol offering 8.2% APY on XLM lending. It's currently the safest yield option in the Stellar ecosystem.`;
-      
+
       case 'trade_execution':
         return `I can help you execute trades on the Stellar DEX. Current XLM price is around $0.12. What would you like to trade?`;
-      
+
       case 'automation':
         return `I can set up automated strategies like dollar-cost averaging, portfolio rebalancing, or yield optimization. What type of automation interests you?`;
-      
+
       case 'blend_protocol':
         return `Blend Protocol is Stellar's leading DeFi platform. You can lend XLM for 8.2% APY or borrow against your assets. It's audited and considered low-risk.`;
-      
+
       default:
         return `I'm your Stellar DeFi assistant! I can help with portfolio analysis, yield farming, trading, automation, and more. What would you like to explore?`;
     }
   }
 
-  private generateActionsForIntent(intent: string, message: string, context: ConversationContext): any[] {
+  private generateActionsForIntent(
+    intent: string,
+    message: string,
+    context: ConversationContext
+  ): any[] {
     switch (intent) {
       case 'portfolio_analysis':
-        return [{
-          type: 'analyze',
-          description: 'Analyze portfolio and suggest optimizations',
-          parameters: { walletAddress: context.walletAddress },
-          riskLevel: 'low',
-          expectedOutcome: 'Detailed portfolio breakdown and recommendations'
-        }];
-      
+        return [
+          {
+            type: 'analyze',
+            description: 'Analyze portfolio and suggest optimizations',
+            parameters: { walletAddress: context.walletAddress },
+            riskLevel: 'low',
+            expectedOutcome: 'Detailed portfolio breakdown and recommendations',
+          },
+        ];
+
       case 'yield_opportunity':
-        return [{
-          type: 'lend',
-          description: 'Lend XLM to Blend Protocol (8.2% APY)',
-          parameters: { asset: 'XLM', protocol: 'blend', amount: '1000' },
-          riskLevel: 'low',
-          expectedOutcome: '8.2% annual yield on deposited XLM'
-        }];
-      
+        return [
+          {
+            type: 'lend',
+            description: 'Lend XLM to Blend Protocol (8.2% APY)',
+            parameters: { asset: 'XLM', protocol: 'blend', amount: '1000' },
+            riskLevel: 'low',
+            expectedOutcome: '8.2% annual yield on deposited XLM',
+          },
+        ];
+
       case 'automation':
-        return [{
-          type: 'automation',
-          description: 'Set up weekly DCA strategy',
-          parameters: { asset: 'XLM', amount: '100', frequency: 'weekly' },
-          riskLevel: 'low',
-          expectedOutcome: 'Automated weekly purchases to average price'
-        }];
-      
+        return [
+          {
+            type: 'automation',
+            description: 'Set up weekly DCA strategy',
+            parameters: { asset: 'XLM', amount: '100', frequency: 'weekly' },
+            riskLevel: 'low',
+            expectedOutcome: 'Automated weekly purchases to average price',
+          },
+        ];
+
       default:
         return [];
     }
@@ -326,36 +353,42 @@ Always consider the user's risk tolerance and experience level. Provide clear ex
     return validTypes.includes(type) ? type : 'analyze';
   }
 
-  private validateRiskLevel(riskLevel: string, userRiskTolerance?: string): 'low' | 'medium' | 'high' {
+  private validateRiskLevel(
+    riskLevel: string,
+    userRiskTolerance?: string
+  ): 'low' | 'medium' | 'high' {
     const validLevels: ('low' | 'medium' | 'high')[] = ['low', 'medium', 'high'];
     if (validLevels.includes(riskLevel as any)) {
       return riskLevel as 'low' | 'medium' | 'high';
     }
-    
+
     // Default based on user's risk tolerance
     switch (userRiskTolerance) {
-      case 'conservative': return 'low';
-      case 'aggressive': return 'high';
-      default: return 'medium';
+      case 'conservative':
+        return 'low';
+      case 'aggressive':
+        return 'high';
+      default:
+        return 'medium';
     }
   }
 
   private enhanceActionParameters(parameters: any, actionType: string): any {
     if (!parameters) return {};
-    
+
     // Add Stellar-specific enhancements
     switch (actionType) {
       case 'trade':
         return {
           ...parameters,
           network: 'stellar',
-          slippage: parameters.slippage || 0.5
+          slippage: parameters.slippage || 0.5,
         };
       case 'lend':
         return {
           ...parameters,
           protocol: parameters.protocol || 'blend',
-          network: 'stellar'
+          network: 'stellar',
         };
       default:
         return parameters;

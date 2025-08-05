@@ -1,6 +1,10 @@
 import { useAccount, useBalance, useConnect, useDisconnect } from 'wagmi';
 import { useState, useEffect } from 'react';
-import { TOKEN_ADDRESSES, type SupportedChainId, type SupportedToken } from '../lib/wallets/evmWalletIntegration';
+import {
+  TOKEN_ADDRESSES,
+  type SupportedChainId,
+  type SupportedToken,
+} from '../lib/wallets/evmWalletIntegration';
 import { formatUnits } from 'viem';
 
 export interface TokenBalance {
@@ -92,10 +96,8 @@ export function useEvmWallet() {
   };
 
   const connectWallet = async (connectorId?: string) => {
-    const connector = connectorId 
-      ? connectors.find(c => c.id === connectorId) 
-      : connectors[0];
-    
+    const connector = connectorId ? connectors.find((c) => c.id === connectorId) : connectors[0];
+
     if (connector) {
       try {
         await connect({ connector });
@@ -121,20 +123,19 @@ export function useEvmWallet() {
     address,
     isConnected,
     chain,
-    
+
     // Balances
     tokenBalances,
     isLoadingBalances,
     getTokenBalance,
     refreshBalances: loadTokenBalances,
-    
+
     // Connection methods
     connect: connectWallet,
     disconnect: disconnectWallet,
     connectors,
-    
+
     // Utilities
-    formatBalance: (balance: string, decimals: number) => 
-      formatUnits(BigInt(balance), decimals),
+    formatBalance: (balance: string, decimals: number) => formatUnits(BigInt(balance), decimals),
   };
 }

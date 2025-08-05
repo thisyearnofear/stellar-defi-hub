@@ -1,178 +1,312 @@
-# 📖 User Guide - Stellar Bridge Hub
+# 📖 User Guide - Syndicate AI DeFi Platform
 
-## 🌟 Welcome to Stellar Bridge Hub
+## 🌟 Welcome to Syndicate
 
-Stellar Bridge Hub is a multi-chain DeFi platform that allows you to bridge assets across blockchains and automatically earn yield on Stellar.
+Syndicate is an AI-powered DeFi platform on Stellar that helps you optimize your portfolio, automate strategies, and maximize yields through intelligent recommendations.
 
 ## 🚀 Getting Started
 
-### Step 1: Connect Your Wallets
+### Step 1: Connect Your Wallet
 
-1. **Visit the Bridge page**
-2. **Connect wallets for each chain you want to use:**
-   - **Ethereum**: MetaMask, WalletConnect, or other EVM wallets
-   - **Stellar**: Freighter, LOBSTR, or other Stellar wallets
-   - **Avalanche**: Same EVM wallets as Ethereum
+1. **Visit the platform** at your deployed URL
+2. **Click "Connect Wallet"** in the top navigation
+3. **Choose your preferred Stellar wallet:**
+   - **Freighter**: Browser extension wallet (recommended)
+   - **LOBSTR**: Mobile and web wallet
+   - **Rabet**: Browser extension with advanced features
+   - **xBull**: Multi-platform wallet
 
-### Step 2: Bridge Assets
+### Step 2: Complete AI Onboarding
 
-1. **Select source and destination chains**
-2. **Choose the token you want to bridge** (USDC, USDT, etc.)
-3. **Enter the amount** or use the slider for quick selection
-4. **Toggle "Auto-Supply to Blend"** to automatically earn yield
-5. **Review the quote** and estimated fees
-6. **Click "Bridge & Earn"** to execute
+1. **Answer the AI questionnaire** about your:
+   - Risk tolerance (Conservative, Moderate, Aggressive)
+   - Investment goals (Yield, Growth, Stability)
+   - Experience level (Beginner, Intermediate, Advanced)
+   - Time horizon (Short, Medium, Long-term)
 
-### Step 3: Track Your Portfolio
+2. **Review AI recommendations** based on your profile
+3. **Set initial portfolio allocation** with AI guidance
 
-1. **Visit the Portfolio page**
-2. **View your positions** across all connected chains
-3. **Monitor yield earnings** and health factors
-4. **Manage positions** directly from the dashboard
+### Step 3: Start Earning
 
-## 💰 Earning Yield
+1. **Fund your wallet** with supported assets (XLM, USDC, etc.)
+2. **Follow AI suggestions** for optimal yield strategies
+3. **Monitor performance** through the intelligent dashboard
 
-### Auto-Supply Feature
+## 🤖 AI Assistant Features
 
-When you enable "Auto-Supply to Blend":
-- Your bridged assets are automatically supplied to Blend Protocol
-- You start earning yield immediately (currently ~5.2% APY for USDC)
-- No additional transactions required
+### Natural Language Interactions
 
-### Manual Supply
+Chat with the AI using natural language:
 
-You can also supply assets manually:
-1. **Visit the Blend page**
-2. **Select a pool** (Blend Fixed Pool V2 or YieldBlox)
+**Examples:**
+- "What's the best way to earn yield on my USDC?"
+- "Should I stake my XLM or provide liquidity?"
+- "Analyze my portfolio risk and suggest improvements"
+- "Set up an alert when USDC APY drops below 5%"
+
+### AI Actions
+
+The AI can execute various DeFi actions:
+
+#### Trading
+- Execute trades on Stellar DEX
+- Find optimal trading paths
+- Set up limit orders
+- Monitor price movements
+
+#### Lending & Borrowing
+- Supply assets to Blend Protocol
+- Borrow against collateral
+- Monitor health factors
+- Optimize interest rates
+
+#### Portfolio Management
+- Analyze asset allocation
+- Suggest rebalancing strategies
+- Track performance metrics
+- Risk assessment and alerts
+
+#### Automation
+- Set up recurring investments
+- Automated rebalancing
+- Yield farming strategies
+- Stop-loss and take-profit orders
+
+## 💰 DeFi Protocols
+
+### Blend Protocol Integration
+
+**What is Blend?**
+Blend is Stellar's premier lending and borrowing protocol offering competitive yields.
+
+**How to Use:**
+1. **Navigate to Blend section**
+2. **Choose a pool** (USDC, XLM, etc.)
 3. **Enter amount to supply**
-4. **Review transaction details**
-5. **Execute supply transaction**
+4. **Confirm transaction** in your wallet
+5. **Start earning yield immediately**
 
-## 🔄 Managing Positions
+**Current Rates (Example):**
+- USDC Supply: ~5.2% APY
+- XLM Supply: ~3.8% APY
+- USDC Borrow: ~7.1% APY
 
-### Supply Operations
-- **Supply**: Deposit assets to earn yield
-- **Withdraw**: Remove supplied assets (subject to utilization)
+### Stellar DEX Trading
 
-### Borrow Operations
-- **Borrow**: Take loans against your collateral
-- **Repay**: Pay back borrowed amounts
+**Features:**
+- Native asset trading
+- Path payments for optimal rates
+- Liquidity pool participation
+- Order book trading
 
-### Health Factor
-- **Monitor your health factor** to avoid liquidation
-- **Keep it above 1.5** for safety
-- **Add collateral** or repay loans if it gets too low
+**How to Trade:**
+1. **Select trading pair** (e.g., XLM/USDC)
+2. **Choose order type** (Market, Limit)
+3. **Enter amount and price**
+4. **Review and confirm**
 
-## 🌉 Supported Bridges
+### YieldBlox Integration
 
-### Allbridge Core
-- **Chains**: Ethereum ↔ Stellar, Avalanche ↔ Stellar
-- **Tokens**: USDC, USDT
-- **Time**: 5-15 minutes
-- **Fees**: ~0.2%
+**Additional Opportunities:**
+- Yield farming with multiple assets
+- Automated strategy execution
+- Enhanced APY through protocol rewards
 
-### Bridge Process
-1. **Approve tokens** for bridge contract
-2. **Initiate bridge** transaction on source chain
-3. **Wait for confirmation** (5-15 minutes)
-4. **Receive tokens** on destination chain
-5. **Auto-supply** (if enabled) to start earning yield
+## 📱 Mobile Experience
 
-## 📊 Portfolio Features
+### Progressive Web App
+- **Install on mobile** for native-like experience
+- **Offline portfolio viewing** when network is unavailable
+- **Touch-optimized interface** for easy navigation
+- **Push notifications** for important alerts
 
-### Multi-Chain Overview
-- **Total portfolio value** across all chains
-- **Yield earnings** from all positions
-- **Risk assessment** and diversification score
-- **Chain-by-chain** balance breakdown
+### Mobile Features
+- One-handed operation design
+- Gesture-based navigation
+- Quick action buttons
+- Simplified transaction flows
 
-### Position Management
-- **View all DeFi positions** in one place
-- **Health factor monitoring** for borrowed positions
-- **Quick actions** to manage positions
-- **Transaction history** and tracking
+## 🔧 API Reference
 
-### Risk Analysis
-- **Diversification scoring** across chains and protocols
-- **Liquidation risk** assessment
-- **Yield optimization** recommendations
-- **Portfolio rebalancing** suggestions
+### AI Agent API
 
-## ⚠️ Risk Management
+#### Process Message
+```typescript
+POST /api/ai-agent/process
 
-### Important Considerations
+Body:
+{
+  "message": "Analyze my portfolio",
+  "context": {
+    "walletAddress": "GABC...",
+    "portfolioData": {...}
+  }
+}
 
-1. **Smart Contract Risk**: DeFi protocols carry inherent risks
-2. **Bridge Risk**: Cross-chain transactions are irreversible
-3. **Liquidation Risk**: Monitor health factors when borrowing
-4. **Market Risk**: Asset prices can fluctuate
+Response:
+{
+  "response": "Based on your portfolio...",
+  "actions": [{
+    "type": "analyze",
+    "data": {...}
+  }],
+  "metadata": {
+    "confidence": 0.95,
+    "action": "[{\"type\":\"analyze\"}]",
+    "followUpQuestions": ["Would you like me to suggest rebalancing?"]
+  }
+}
+```
 
-### Best Practices
+### Blend Protocol API
 
-1. **Start small** to familiarize yourself with the platform
-2. **Diversify** across multiple protocols and chains
-3. **Monitor health factors** regularly
-4. **Keep emergency funds** for gas fees and liquidations
-5. **Understand the risks** before large transactions
+#### Get Pool Information
+```typescript
+GET /api/blend/pools
 
-## 🔧 Troubleshooting
+Response:
+{
+  "pools": [{
+    "id": "blend-usdc-pool",
+    "asset": "USDC",
+    "supplyAPY": "5.2",
+    "borrowAPY": "7.1",
+    "totalSupply": "1000000",
+    "utilization": "0.75"
+  }]
+}
+```
+
+#### Supply Assets
+```typescript
+POST /api/blend/supply
+
+Body:
+{
+  "poolId": "blend-usdc-pool",
+  "amount": "1000",
+  "userAddress": "GABC..."
+}
+
+Response:
+{
+  "transactionId": "abc123...",
+  "status": "pending"
+}
+```
+
+### Portfolio API
+
+#### Get User Portfolio
+```typescript
+GET /api/portfolio?address=GABC...
+
+Response:
+{
+  "totalValue": "10000",
+  "assets": [{
+    "symbol": "USDC",
+    "balance": "5000",
+    "value": "5000",
+    "allocation": "50%"
+  }],
+  "positions": [{
+    "protocol": "Blend",
+    "type": "supply",
+    "asset": "USDC",
+    "amount": "3000",
+    "apy": "5.2%"
+  }]
+}
+```
+
+## 🛠️ Troubleshooting
 
 ### Common Issues
 
-**Wallet Won't Connect**
-- Ensure you have the latest wallet version
-- Check network settings (Mainnet for production)
-- Clear browser cache and try again
+#### Wallet Connection Problems
+**Issue**: Wallet won't connect
+**Solutions**:
+- Ensure wallet extension is installed and unlocked
+- Refresh the page and try again
+- Check if wallet is set to correct network (Testnet/Mainnet)
+- Clear browser cache and cookies
 
-**Transaction Fails**
-- Check you have sufficient balance for fees
-- Ensure wallet is connected to correct network
-- Try increasing gas price for EVM transactions
+#### Transaction Failures
+**Issue**: Transactions fail or get stuck
+**Solutions**:
+- Check wallet balance for sufficient funds
+- Verify network fees are adequate
+- Wait for network congestion to clear
+- Try increasing gas/fee limits
 
-**Bridge Takes Too Long**
-- Cross-chain bridges typically take 5-15 minutes
-- Check transaction status on block explorers
-- Contact support if stuck for >30 minutes
+#### AI Assistant Not Responding
+**Issue**: AI doesn't respond or gives errors
+**Solutions**:
+- Check internet connection
+- Verify API keys are configured
+- Try refreshing the page
+- Contact support if issue persists
 
-**Balance Not Updating**
-- Refresh the page or click refresh button
-- Check wallet connection status
-- Verify transaction was confirmed on blockchain
+### Error Codes
 
-### Getting Help
+| Code | Description | Solution |
+|------|-------------|----------|
+| 1001 | Wallet not connected | Connect wallet first |
+| 1002 | Insufficient balance | Add funds to wallet |
+| 1003 | Network error | Check connection |
+| 1004 | Invalid transaction | Review transaction details |
+| 1005 | AI service unavailable | Try again later |
 
-1. **Check the [Troubleshooting Guide](./TROUBLESHOOTING.md)**
-2. **Visit our Discord/Telegram** for community support
-3. **Submit an issue** on GitHub for technical problems
-4. **Contact support** for urgent issues
+### Performance Optimization
 
-## 🎯 Tips for Success
+#### Slow Loading
+- Clear browser cache
+- Disable unnecessary browser extensions
+- Use latest browser version
+- Check internet connection speed
 
-### Maximizing Yield
-1. **Use Auto-Supply** when bridging for immediate yield
-2. **Compare APYs** between different pools
-3. **Consider compound strategies** for larger amounts
-4. **Monitor for new opportunities** and protocol updates
+#### High Memory Usage
+- Close unused browser tabs
+- Restart browser periodically
+- Update to latest browser version
 
-### Efficient Bridging
-1. **Bridge larger amounts** to minimize fee impact
-2. **Time bridges** during low network congestion
-3. **Keep some native tokens** for gas fees
-4. **Use batch operations** when possible
+## 🔐 Security Best Practices
 
-### Portfolio Management
-1. **Regular monitoring** of positions and health factors
-2. **Rebalance periodically** based on risk tolerance
-3. **Take profits** during favorable market conditions
-4. **Maintain emergency reserves** for unexpected events
+### Wallet Security
+- **Never share** your private keys or seed phrases
+- **Use hardware wallets** for large amounts
+- **Enable 2FA** where available
+- **Keep software updated** (wallet, browser)
 
----
+### Platform Security
+- **Verify URLs** before connecting wallets
+- **Review transactions** carefully before signing
+- **Monitor portfolio** regularly for unauthorized activity
+- **Report suspicious** activity immediately
+
+### Smart Contract Risks
+- **Understand protocols** before investing
+- **Start with small amounts** to test
+- **Monitor health factors** for lending positions
+- **Keep emergency funds** for liquidation protection
 
 ## 📞 Support
 
-- **Documentation**: [./docs/](../docs/)
-- **Troubleshooting**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
-- **Technical Issues**: GitHub Issues
-- **Community**: Discord/Telegram
+### Getting Help
+- **Documentation**: Check this guide and README
+- **Community**: Join Discord/Telegram discussions
+- **Issues**: Report bugs via GitHub Issues
+- **Email**: Contact support team directly
 
-**Happy bridging and earning! 🌟**
+### Feedback
+We value your feedback! Please share:
+- Feature requests
+- Bug reports
+- User experience improvements
+- Integration suggestions
+
+---
+
+**Happy DeFi-ing with Syndicate! 🚀**

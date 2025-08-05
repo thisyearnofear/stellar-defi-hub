@@ -8,7 +8,7 @@ import {
   Badge,
   Link,
   VStack,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
@@ -49,25 +49,21 @@ export const ProductionBanner: React.FC = () => {
               Connected to Stellar mainnet protocols
             </Text>
             <HStack spacing={4} fontSize="xs">
-              <Link 
-                href="https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD" 
-                isExternal 
+              <Link
+                href="https://stellar.expert/explorer/public/contract/CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD"
+                isExternal
                 color="blue.500"
               >
                 Blend Pool <ExternalLinkIcon mx="1px" />
               </Link>
-              <Link 
-                href="https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS" 
-                isExternal 
+              <Link
+                href="https://stellar.expert/explorer/public/contract/CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS"
+                isExternal
                 color="blue.500"
               >
                 YieldBlox Pool <ExternalLinkIcon mx="1px" />
               </Link>
-              <Link 
-                href="https://mainnet.blend.capital/dashboard" 
-                isExternal 
-                color="blue.500"
-              >
+              <Link href="https://mainnet.blend.capital/dashboard" isExternal color="blue.500">
                 Blend Dashboard <ExternalLinkIcon mx="1px" />
               </Link>
             </HStack>

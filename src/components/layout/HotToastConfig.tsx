@@ -1,5 +1,5 @@
-import type { FC } from 'react'
-import { Toaster } from 'react-hot-toast'
+import type { FC } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 export const HotToastConfig: FC = () => {
   return (
@@ -27,5 +27,5 @@ export const HotToastConfig: FC = () => {
         },
       }}
     />
-  )
-}
+  );
+};

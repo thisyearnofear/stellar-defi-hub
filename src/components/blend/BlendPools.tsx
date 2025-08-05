@@ -24,7 +24,7 @@ import {
   useDisclosure,
   Input,
   FormControl,
-  FormLabel
+  FormLabel,
 } from '@chakra-ui/react';
 import { useBlendStore } from '../../lib/stores/blendStore';
 import { useSorobanReact } from '../web3/StellarProvider';
@@ -46,7 +46,7 @@ export const BlendPools: React.FC = () => {
     borrow,
     repay,
     withdraw,
-    clearErrors
+    clearErrors,
   } = useBlendStore();
 
   const sorobanContext = useSorobanReact();
@@ -54,7 +54,9 @@ export const BlendPools: React.FC = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [actionAmount, setActionAmount] = useState('');
-  const [actionType, setActionType] = useState<'supply' | 'borrow' | 'repay' | 'withdraw'>('supply');
+  const [actionType, setActionType] = useState<'supply' | 'borrow' | 'repay' | 'withdraw'>(
+    'supply'
+  );
 
   useEffect(() => {
     void loadPools();
@@ -66,13 +68,12 @@ export const BlendPools: React.FC = () => {
     }
   }, [userAddress, loadUserPositions]);
 
-
   const executeAction = async () => {
     if (!selectedPool || !actionAmount || !userAddress) return;
 
     try {
       let txId: string;
-      
+
       switch (actionType) {
         case 'supply':
           txId = await supply(selectedPool.id, actionAmount);
@@ -87,11 +88,11 @@ export const BlendPools: React.FC = () => {
           txId = await withdraw(selectedPool.id, actionAmount);
           break;
       }
-      
+
       alert(`Transaction submitted: ${txId}`);
       onClose();
       setActionAmount('');
-      
+
       // Refresh data
       setTimeout(() => {
         void loadUserPositions(userAddress);
@@ -102,23 +103,27 @@ export const BlendPools: React.FC = () => {
   };
 
   const getUserPosition = (poolId: string) => {
-    return userPositions.find(pos => pos.poolId === poolId);
+    return userPositions.find((pos) => pos.poolId === poolId);
   };
 
   const formatNumber = (value: string | number, decimals = 2) => {
     const num = typeof value === 'string' ? parseFloat(value) : value;
-    return num.toLocaleString(undefined, { 
-      minimumFractionDigits: decimals, 
-      maximumFractionDigits: decimals 
+    return num.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
     });
   };
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'low': return 'green';
-      case 'medium': return 'yellow';
-      case 'high': return 'red';
-      default: return 'gray';
+      case 'low':
+        return 'green';
+      case 'medium':
+        return 'yellow';
+      case 'high':
+        return 'red';
+      default:
+        return 'gray';
     }
   };
 
@@ -142,10 +147,12 @@ export const BlendPools: React.FC = () => {
 
   return (
     <VStack spacing={6} align="stretch">
-      <Text fontSize="2xl" fontWeight="bold">Stellar Bridge Hub - Lending</Text>
-      
+      <Text fontSize="2xl" fontWeight="bold">
+        Stellar Bridge Hub - Lending
+      </Text>
+
       <ProductionBanner />
-      
+
       {!userAddress && (
         <Alert status="info">
           <AlertIcon />
@@ -157,14 +164,18 @@ export const BlendPools: React.FC = () => {
         <Alert status="error">
           <AlertIcon />
           {transactionError}
-          <Button ml={2} size="sm" onClick={clearErrors}>Dismiss</Button>
+          <Button ml={2} size="sm" onClick={clearErrors}>
+            Dismiss
+          </Button>
         </Alert>
       )}
 
       {/* User Positions */}
       {userAddress && userPositions.length > 0 && (
         <Card p={4}>
-          <Text fontSize="lg" fontWeight="bold" mb={4}>Your Positions</Text>
+          <Text fontSize="lg" fontWeight="bold" mb={4}>
+            Your Positions
+          </Text>
           <Table size="sm">
             <Thead>
               <Tr>
@@ -177,13 +188,15 @@ export const BlendPools: React.FC = () => {
             </Thead>
             <Tbody>
               {userPositions.map((position) => {
-                const pool = pools.find(p => p.id === position.poolId);
+                const pool = pools.find((p) => p.id === position.poolId);
                 return (
                   <Tr key={position.poolId}>
                     <Td>{pool?.asset ?? 'Unknown'}</Td>
                     <Td>{formatNumber(position.supplied)}</Td>
                     <Td>{formatNumber(position.borrowed)}</Td>
-                    <Td>{position.healthFactor === 999 ? '∞' : formatNumber(position.healthFactor)}</Td>
+                    <Td>
+                      {position.healthFactor === 999 ? '∞' : formatNumber(position.healthFactor)}
+                    </Td>
                     <Td>
                       <Badge colorScheme={getRiskColor(position.liquidationRisk)}>
                         {position.liquidationRisk.toUpperCase()}
@@ -206,11 +219,15 @@ export const BlendPools: React.FC = () => {
               key={pool.id}
               pool={pool}
               userBalance="1000" // This would come from wallet integration
-              userPosition={userPosition ? {
-                supplied: userPosition.supplied,
-                borrowed: userPosition.borrowed,
-                healthFactor: userPosition.healthFactor
-              } : undefined}
+              userPosition={
+                userPosition
+                  ? {
+                      supplied: userPosition.supplied,
+                      borrowed: userPosition.borrowed,
+                      healthFactor: userPosition.healthFactor,
+                    }
+                  : undefined
+              }
               onTransaction={async (type, amount) => {
                 switch (type) {
                   case 'supply':
@@ -255,22 +272,31 @@ export const BlendPools: React.FC = () => {
                   type="number"
                 />
               </FormControl>
-              
+
               {selectedPool && (
                 <Box w="100%" p={3} bg="gray.50" borderRadius="md">
                   <VStack spacing={2} align="start">
-                    <Text fontSize="sm"><strong>Pool:</strong> {selectedPool.name}</Text>
-                    <Text fontSize="sm"><strong>Available Liquidity:</strong> {formatNumber(selectedPool.liquidityAvailable)}</Text>
+                    <Text fontSize="sm">
+                      <strong>Pool:</strong> {selectedPool.name}
+                    </Text>
+                    <Text fontSize="sm">
+                      <strong>Available Liquidity:</strong>{' '}
+                      {formatNumber(selectedPool.liquidityAvailable)}
+                    </Text>
                     {actionType === 'supply' && (
-                      <Text fontSize="sm"><strong>Supply APY:</strong> {selectedPool.supplyAPY.toFixed(2)}%</Text>
+                      <Text fontSize="sm">
+                        <strong>Supply APY:</strong> {selectedPool.supplyAPY.toFixed(2)}%
+                      </Text>
                     )}
                     {actionType === 'borrow' && (
-                      <Text fontSize="sm"><strong>Borrow APY:</strong> {selectedPool.borrowAPY.toFixed(2)}%</Text>
+                      <Text fontSize="sm">
+                        <strong>Borrow APY:</strong> {selectedPool.borrowAPY.toFixed(2)}%
+                      </Text>
                     )}
                   </VStack>
                 </Box>
               )}
-              
+
               <Button
                 onClick={executeAction}
                 isDisabled={!actionAmount || parseFloat(actionAmount) <= 0}

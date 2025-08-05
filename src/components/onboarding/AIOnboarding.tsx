@@ -17,7 +17,6 @@ import {
 import { FiArrowRight, FiCheck, FiStar, FiTrendingUp, FiShield } from 'react-icons/fi';
 import { RiRobotLine } from 'react-icons/ri';
 
-
 interface OnboardingStep {
   id: string;
   title: string;
@@ -85,21 +84,21 @@ const ExperienceStep: React.FC<{
     {
       level: 'beginner' as const,
       title: 'New to DeFi',
-      description: 'I\'m just getting started with decentralized finance',
-      icon: '🌱'
+      description: "I'm just getting started with decentralized finance",
+      icon: '🌱',
     },
     {
       level: 'intermediate' as const,
       title: 'Some Experience',
-      description: 'I\'ve used DeFi before and understand the basics',
-      icon: '🚀'
+      description: "I've used DeFi before and understand the basics",
+      icon: '🚀',
     },
     {
       level: 'advanced' as const,
       title: 'DeFi Expert',
-      description: 'I\'m experienced with complex DeFi strategies',
-      icon: '⚡'
-    }
+      description: "I'm experienced with complex DeFi strategies",
+      icon: '⚡',
+    },
   ];
 
   return (
@@ -114,7 +113,10 @@ const ExperienceStep: React.FC<{
           borderColor={profile.experience === exp.level ? 'blue.500' : 'gray.300'}
           bg={profile.experience === exp.level ? 'blue.600' : 'gray.50'}
           onClick={() => setProfile({ ...profile, experience: exp.level })}
-          _hover={{ borderColor: 'blue.400', bg: profile.experience === exp.level ? 'blue.700' : 'gray.100' }}
+          _hover={{
+            borderColor: 'blue.400',
+            bg: profile.experience === exp.level ? 'blue.700' : 'gray.100',
+          }}
         >
           <HStack spacing={4}>
             <Box
@@ -139,16 +141,11 @@ const ExperienceStep: React.FC<{
               >
                 {exp.title}
               </Text>
-              <Text
-                fontSize="md"
-                color={profile.experience === exp.level ? 'white' : 'gray.600'}
-              >
+              <Text fontSize="md" color={profile.experience === exp.level ? 'white' : 'gray.600'}>
                 {exp.description}
               </Text>
             </VStack>
-            {profile.experience === exp.level && (
-              <FiCheck size={24} color="white" />
-            )}
+            {profile.experience === exp.level && <FiCheck size={24} color="white" />}
           </HStack>
         </Card>
       ))}
@@ -166,13 +163,13 @@ const GoalsStep: React.FC<{
     { id: 'diversify', label: 'Diversify Portfolio', icon: '🎯' },
     { id: 'learn', label: 'Learn About DeFi', icon: '📚' },
     { id: 'automate', label: 'Automate Investing', icon: '🤖' },
-    { id: 'preserve', label: 'Preserve Capital', icon: '🛡️' }
+    { id: 'preserve', label: 'Preserve Capital', icon: '🛡️' },
   ];
 
   const toggleGoal = (goalId: string) => {
     const currentGoals = profile.goals ?? [];
     const newGoals = currentGoals.includes(goalId)
-      ? currentGoals.filter(g => g !== goalId)
+      ? currentGoals.filter((g) => g !== goalId)
       : [...currentGoals, goalId];
     setProfile({ ...profile, goals: newGoals });
   };
@@ -192,7 +189,10 @@ const GoalsStep: React.FC<{
             borderColor={profile.goals?.includes(goal.id) ? 'blue.500' : 'gray.300'}
             bg={profile.goals?.includes(goal.id) ? 'blue.600' : 'gray.50'}
             onClick={() => toggleGoal(goal.id)}
-            _hover={{ borderColor: 'blue.400', bg: profile.goals?.includes(goal.id) ? 'blue.700' : 'gray.100' }}
+            _hover={{
+              borderColor: 'blue.400',
+              bg: profile.goals?.includes(goal.id) ? 'blue.700' : 'gray.100',
+            }}
           >
             <VStack spacing={3} align="start">
               <HStack spacing={4} w="full">
@@ -230,9 +230,7 @@ const GoalsStep: React.FC<{
                     {goal.id === 'preserve' && 'Protect your capital with low-risk options'}
                   </Text>
                 </VStack>
-                {profile.goals?.includes(goal.id) && (
-                  <FiCheck size={24} color="white" />
-                )}
+                {profile.goals?.includes(goal.id) && <FiCheck size={24} color="white" />}
               </HStack>
             </VStack>
           </Card>
@@ -252,22 +250,22 @@ const RiskStep: React.FC<{
       title: 'Conservative',
       description: 'I prefer stable returns with minimal risk',
       color: 'green',
-      icon: '🛡️'
+      icon: '🛡️',
     },
     {
       level: 'moderate' as const,
       title: 'Moderate',
-      description: 'I\'m comfortable with some risk for better returns',
+      description: "I'm comfortable with some risk for better returns",
       color: 'yellow',
-      icon: '⚖️'
+      icon: '⚖️',
     },
     {
       level: 'aggressive' as const,
       title: 'Aggressive',
-      description: 'I\'m willing to take high risks for high rewards',
+      description: "I'm willing to take high risks for high rewards",
       color: 'red',
-      icon: '🚀'
-    }
+      icon: '🚀',
+    },
   ];
 
   return (
@@ -282,7 +280,10 @@ const RiskStep: React.FC<{
           borderColor={profile.riskTolerance === risk.level ? `${risk.color}.500` : 'gray.300'}
           bg={profile.riskTolerance === risk.level ? `${risk.color}.600` : 'gray.50'}
           onClick={() => setProfile({ ...profile, riskTolerance: risk.level })}
-          _hover={{ borderColor: `${risk.color}.400`, bg: profile.riskTolerance === risk.level ? `${risk.color}.700` : 'gray.100' }}
+          _hover={{
+            borderColor: `${risk.color}.400`,
+            bg: profile.riskTolerance === risk.level ? `${risk.color}.700` : 'gray.100',
+          }}
         >
           <HStack spacing={4}>
             <Box
@@ -314,9 +315,7 @@ const RiskStep: React.FC<{
                 {risk.description}
               </Text>
             </VStack>
-            {profile.riskTolerance === risk.level && (
-              <FiCheck size={24} color="white" />
-            )}
+            {profile.riskTolerance === risk.level && <FiCheck size={24} color="white" />}
           </HStack>
         </Card>
       ))}
@@ -333,7 +332,7 @@ const PortfolioStep: React.FC<{
   const toggleAsset = (asset: string) => {
     const currentAssets = profile.preferredAssets ?? [];
     const newAssets = currentAssets.includes(asset)
-      ? currentAssets.filter(a => a !== asset)
+      ? currentAssets.filter((a) => a !== asset)
       : [...currentAssets, asset];
     setProfile({ ...profile, preferredAssets: newAssets });
   };
@@ -375,7 +374,10 @@ const PortfolioStep: React.FC<{
               borderColor={profile.preferredAssets?.includes(asset) ? 'blue.500' : 'gray.300'}
               bg={profile.preferredAssets?.includes(asset) ? 'blue.600' : 'gray.50'}
               onClick={() => toggleAsset(asset)}
-              _hover={{ borderColor: 'blue.400', bg: profile.preferredAssets?.includes(asset) ? 'blue.700' : 'gray.100' }}
+              _hover={{
+                borderColor: 'blue.400',
+                bg: profile.preferredAssets?.includes(asset) ? 'blue.700' : 'gray.100',
+              }}
             >
               <HStack justify="space-between">
                 <Text
@@ -385,9 +387,7 @@ const PortfolioStep: React.FC<{
                 >
                   {asset}
                 </Text>
-                {profile.preferredAssets?.includes(asset) && (
-                  <FiCheck size={20} color="white" />
-                )}
+                {profile.preferredAssets?.includes(asset) && <FiCheck size={20} color="white" />}
               </HStack>
             </Card>
           ))}
@@ -400,7 +400,7 @@ const PortfolioStep: React.FC<{
           {[
             { value: 'short', label: 'Short-term (< 1 year)' },
             { value: 'medium', label: 'Medium-term (1-3 years)' },
-            { value: 'long', label: 'Long-term (3+ years)' }
+            { value: 'long', label: 'Long-term (3+ years)' },
           ].map((option) => (
             <Card
               key={option.value}
@@ -411,7 +411,10 @@ const PortfolioStep: React.FC<{
               borderColor={profile.timeHorizon === option.value ? 'blue.500' : 'gray.300'}
               bg={profile.timeHorizon === option.value ? 'blue.600' : 'gray.50'}
               onClick={() => setProfile({ ...profile, timeHorizon: option.value as any })}
-              _hover={{ borderColor: 'blue.400', bg: profile.timeHorizon === option.value ? 'blue.700' : 'gray.100' }}
+              _hover={{
+                borderColor: 'blue.400',
+                bg: profile.timeHorizon === option.value ? 'blue.700' : 'gray.100',
+              }}
             >
               <HStack justify="space-between">
                 <Text
@@ -421,9 +424,7 @@ const PortfolioStep: React.FC<{
                 >
                   {option.label}
                 </Text>
-                {profile.timeHorizon === option.value && (
-                  <FiCheck size={20} color="white" />
-                )}
+                {profile.timeHorizon === option.value && <FiCheck size={20} color="white" />}
               </HStack>
             </Card>
           ))}
@@ -439,20 +440,22 @@ const AIDemoStep: React.FC<{ profile: Partial<UserProfile> }> = ({ profile }) =>
 
   const demos = [
     {
-      title: "Portfolio Analysis",
-      message: "Analyze my portfolio and suggest optimizations",
-      response: `Based on your ${profile.riskTolerance} risk profile and $${profile.investmentAmount?.toLocaleString()} investment, I recommend a balanced approach with ${profile.preferredAssets?.join(', ')}. Your current allocation could be optimized for better yields.`
+      title: 'Portfolio Analysis',
+      message: 'Analyze my portfolio and suggest optimizations',
+      response: `Based on your ${profile.riskTolerance} risk profile and $${profile.investmentAmount?.toLocaleString()} investment, I recommend a balanced approach with ${profile.preferredAssets?.join(', ')}. Your current allocation could be optimized for better yields.`,
     },
     {
-      title: "Yield Opportunities",
+      title: 'Yield Opportunities',
       message: "What's the best yield opportunity right now?",
-      response: "For your conservative approach, Blend Protocol offers 8.2% APY on XLM with minimal risk. I can set up automatic lending for you."
+      response:
+        'For your conservative approach, Blend Protocol offers 8.2% APY on XLM with minimal risk. I can set up automatic lending for you.',
     },
     {
-      title: "Automation Setup",
-      message: "Set up weekly DCA of $100 into XLM",
-      response: "Perfect! I'll create an automation strategy to purchase $100 of XLM every week. This will help you average your entry price over time."
-    }
+      title: 'Automation Setup',
+      message: 'Set up weekly DCA of $100 into XLM',
+      response:
+        "Perfect! I'll create an automation strategy to purchase $100 of XLM every week. This will help you average your entry price over time.",
+    },
   ];
 
   const runDemo = (index: number) => {
@@ -494,7 +497,9 @@ const AIDemoStep: React.FC<{ profile: Partial<UserProfile> }> = ({ profile }) =>
               <Box p={2} bg="blue.100" borderRadius="full">
                 <RiRobotLine color="#2B6CB0" size={20} />
               </Box>
-              <Text fontWeight="bold" fontSize="lg" color="blue.700">AI Demo</Text>
+              <Text fontWeight="bold" fontSize="lg" color="blue.700">
+                AI Demo
+              </Text>
             </HStack>
 
             <Box bg="blue.600" p={4} borderRadius="lg" border="2px" borderColor="blue.700">
@@ -518,7 +523,9 @@ const AIDemoStep: React.FC<{ profile: Partial<UserProfile> }> = ({ profile }) =>
             <FiStar color="#16A34A" size={24} />
           </Box>
           <VStack align="start" spacing={2}>
-            <Text fontWeight="bold" fontSize="lg" color="white">You&apos;re all set!</Text>
+            <Text fontWeight="bold" fontSize="lg" color="white">
+              You&apos;re all set!
+            </Text>
             <Text fontSize="md" color="green.100">
               Your AI assistant is configured and ready to help you achieve your DeFi goals.
             </Text>
@@ -529,48 +536,49 @@ const AIDemoStep: React.FC<{ profile: Partial<UserProfile> }> = ({ profile }) =>
   );
 };
 
-export const AIOnboarding: React.FC<{ onComplete: (profile: UserProfile) => void }> = ({ onComplete }) => {
+export const AIOnboarding: React.FC<{ onComplete: (profile: UserProfile) => void }> = ({
+  onComplete,
+}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [profile, setProfile] = useState<Partial<UserProfile>>({});
-
 
   const steps: OnboardingStep[] = [
     {
       id: 'welcome',
       title: 'Welcome to AI-Powered DeFi',
       description: 'Meet your personal Stellar DeFi assistant',
-      component: <WelcomeStep />
+      component: <WelcomeStep />,
     },
     {
       id: 'experience',
       title: 'Your DeFi Experience',
       description: 'Help us understand your background',
-      component: <ExperienceStep profile={profile} setProfile={setProfile} />
+      component: <ExperienceStep profile={profile} setProfile={setProfile} />,
     },
     {
       id: 'goals',
       title: 'Investment Goals',
       description: 'What do you want to achieve?',
-      component: <GoalsStep profile={profile} setProfile={setProfile} />
+      component: <GoalsStep profile={profile} setProfile={setProfile} />,
     },
     {
       id: 'risk',
       title: 'Risk Preferences',
       description: 'How much risk are you comfortable with?',
-      component: <RiskStep profile={profile} setProfile={setProfile} />
+      component: <RiskStep profile={profile} setProfile={setProfile} />,
     },
     {
       id: 'portfolio',
       title: 'Portfolio Setup',
-      description: 'Let\'s configure your initial strategy',
-      component: <PortfolioStep profile={profile} setProfile={setProfile} />
+      description: "Let's configure your initial strategy",
+      component: <PortfolioStep profile={profile} setProfile={setProfile} />,
     },
     {
       id: 'ai-demo',
       title: 'AI Assistant Demo',
       description: 'See your AI assistant in action',
-      component: <AIDemoStep profile={profile} />
-    }
+      component: <AIDemoStep profile={profile} />,
+    },
   ];
 
   const currentStepData = steps[currentStep];
@@ -601,7 +609,11 @@ export const AIOnboarding: React.FC<{ onComplete: (profile: UserProfile) => void
       case 'risk':
         return !!profile.riskTolerance;
       case 'portfolio':
-        return !!profile.investmentAmount && profile.preferredAssets && profile.preferredAssets.length > 0;
+        return (
+          !!profile.investmentAmount &&
+          profile.preferredAssets &&
+          profile.preferredAssets.length > 0
+        );
       case 'ai-demo':
         return true;
       default:
@@ -632,22 +644,14 @@ export const AIOnboarding: React.FC<{ onComplete: (profile: UserProfile) => void
               <Text fontSize="2xl" fontWeight="bold">
                 {currentStepData.title}
               </Text>
-              <Text color="gray.600">
-                {currentStepData.description}
-              </Text>
+              <Text color="gray.600">{currentStepData.description}</Text>
             </VStack>
 
-            <Box w="full">
-              {currentStepData.component}
-            </Box>
+            <Box w="full">{currentStepData.component}</Box>
 
             {/* Navigation */}
             <HStack justify="space-between" w="full" pt={4}>
-              <Button
-                variant="outline"
-                onClick={handlePrevious}
-                isDisabled={currentStep === 0}
-              >
+              <Button variant="outline" onClick={handlePrevious} isDisabled={currentStep === 0}>
                 Previous
               </Button>
 

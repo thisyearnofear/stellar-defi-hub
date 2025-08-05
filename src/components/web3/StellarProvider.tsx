@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as StellarSdk from '@stellar/stellar-sdk';
-import { StellarWallet, StellarWalletType, getAvailableWallets, getWallet, getRecommendedWallet } from '../../lib/wallets/stellarWalletAdapter';
+import {
+  StellarWallet,
+  StellarWalletType,
+  getAvailableWallets,
+  getWallet,
+  getRecommendedWallet,
+} from '../../lib/wallets/stellarWalletAdapter';
 
 interface StellarContextType {
   publicKey: string | null;
@@ -25,7 +31,7 @@ interface StellarProviderProps {
 export const StellarProvider: React.FC<StellarProviderProps> = ({
   children,
   network = 'PUBLIC',
-  appName = "Stellar Bridge Hub"
+  appName = 'Stellar Bridge Hub',
 }) => {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -37,10 +43,9 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
 
   useEffect(() => {
     // Set up the correct Horizon server based on network
-    const horizonUrl = network === 'PUBLIC' 
-      ? 'https://horizon.stellar.org'
-      : 'https://horizon-testnet.stellar.org';
-    
+    const horizonUrl =
+      network === 'PUBLIC' ? 'https://horizon.stellar.org' : 'https://horizon-testnet.stellar.org';
+
     setServer(new StellarSdk.Horizon.Server(horizonUrl));
 
     // Get available wallets
@@ -54,7 +59,7 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
         const storedWalletType = localStorage.getItem('stellar_wallet_type') as StellarWalletType;
         if (storedWalletType) {
           const wallet = getWallet(storedWalletType);
-          if (wallet.isInstalled() && await wallet.isConnected()) {
+          if (wallet.isInstalled() && (await wallet.isConnected())) {
             const userPublicKey = await wallet.getPublicKey();
             setCurrentWallet(wallet);
             setPublicKey(userPublicKey);
@@ -74,14 +79,16 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
   const connect = async (walletType?: StellarWalletType) => {
     try {
       let wallet: StellarWallet;
-      
+
       if (walletType) {
         wallet = getWallet(walletType);
       } else {
         // Auto-select best available wallet
         const recommended = getRecommendedWallet();
         if (!recommended) {
-          alert('No Stellar wallets found. Please install a Stellar wallet like Freighter, Lobstr, or Hana.');
+          alert(
+            'No Stellar wallets found. Please install a Stellar wallet like Freighter, Lobstr, or Hana.'
+          );
           return;
         }
         wallet = recommended;
@@ -91,16 +98,16 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
         alert(`${wallet.name} wallet not found. Please install it first.`);
         return;
       }
-      
+
       const userPublicKey = await wallet.connect();
-      
+
       setCurrentWallet(wallet);
       setPublicKey(userPublicKey);
       setIsWalletConnected(true);
-      
+
       // Store wallet preference
       localStorage.setItem('stellar_wallet_type', wallet.id);
-      
+
       console.log(`Connected to ${wallet.name}:`, { publicKey: userPublicKey });
     } catch (error) {
       console.error('Failed to connect wallet:', error);
@@ -117,7 +124,7 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
         console.warn('Error disconnecting wallet:', error);
       }
     }
-    
+
     setCurrentWallet(null);
     setPublicKey(null);
     setIsWalletConnected(false);
@@ -130,10 +137,9 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
     }
 
     try {
-      const networkPassphrase = network === 'PUBLIC' 
-        ? StellarSdk.Networks.PUBLIC 
-        : StellarSdk.Networks.TESTNET;
-      
+      const networkPassphrase =
+        network === 'PUBLIC' ? StellarSdk.Networks.PUBLIC : StellarSdk.Networks.TESTNET;
+
       const signedXDR = await currentWallet.signTransaction(xdr, networkPassphrase);
       return signedXDR;
     } catch (error) {
@@ -151,14 +157,10 @@ export const StellarProvider: React.FC<StellarProviderProps> = ({
     connect,
     disconnect,
     sign,
-    server
+    server,
   };
 
-  return (
-    <StellarContext.Provider value={value}>
-      {children}
-    </StellarContext.Provider>
-  );
+  return <StellarContext.Provider value={value}>{children}</StellarContext.Provider>;
 };
 
 export const useStellar = () => {
@@ -172,7 +174,7 @@ export const useStellar = () => {
 // Compatibility hook for existing soroban-react code
 export const useSorobanReact = () => {
   const { publicKey, isConnected, connect, disconnect, activeChain, server } = useStellar();
-  
+
   return {
     address: publicKey,
     isConnected,
@@ -180,22 +182,23 @@ export const useSorobanReact = () => {
     disconnect,
     activeChain: {
       name: activeChain === 'PUBLIC' ? 'mainnet' : 'testnet',
-      networkPassphrase: activeChain === 'PUBLIC' 
-        ? StellarSdk.Networks.PUBLIC 
-        : StellarSdk.Networks.TESTNET,
-      sorobanRpcUrl: activeChain === 'PUBLIC'
-        ? 'https://soroban-rpc.mainnet.stellar.gateway.fm'
-        : 'https://soroban-rpc.testnet.stellar.gateway.fm',
-      networkUrl: activeChain === 'PUBLIC'
-        ? 'https://horizon.stellar.org'
-        : 'https://horizon-testnet.stellar.org'
+      networkPassphrase:
+        activeChain === 'PUBLIC' ? StellarSdk.Networks.PUBLIC : StellarSdk.Networks.TESTNET,
+      sorobanRpcUrl:
+        activeChain === 'PUBLIC'
+          ? 'https://soroban-rpc.mainnet.stellar.gateway.fm'
+          : 'https://soroban-rpc.testnet.stellar.gateway.fm',
+      networkUrl:
+        activeChain === 'PUBLIC'
+          ? 'https://horizon.stellar.org'
+          : 'https://horizon-testnet.stellar.org',
     },
     server,
     // Mock properties for compatibility
     connectors: [],
     chains: [],
     setActiveConnectorAndConnect: null,
-    setActiveChain: null
+    setActiveChain: null,
   };
 };
 

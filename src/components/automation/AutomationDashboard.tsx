@@ -39,7 +39,7 @@ export const AutomationDashboard: React.FC = () => {
   const [stats, setStats] = useState({
     activeStrategies: 0,
     totalExecutions: 0,
-    successRate: 0
+    successRate: 0,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [newStrategyDescription, setNewStrategyDescription] = useState('');
@@ -56,11 +56,11 @@ export const AutomationDashboard: React.FC = () => {
     try {
       const allStrategies = automationEngine.getAllStrategies();
       setStrategies(allStrategies);
-      
+
       setStats({
         activeStrategies: automationEngine.getActiveStrategiesCount(),
         totalExecutions: automationEngine.getTotalExecutions(),
-        successRate: automationEngine.getSuccessRate()
+        successRate: automationEngine.getSuccessRate(),
       });
     } catch (error) {
       console.error('Failed to load automation data:', error);
@@ -69,7 +69,7 @@ export const AutomationDashboard: React.FC = () => {
 
   const handleCreateStrategy = async () => {
     if (!newStrategyDescription.trim()) return;
-    
+
     try {
       const strategy = await agent.createAutomation(newStrategyDescription);
       automationEngine.addStrategy(strategy);
@@ -96,10 +96,10 @@ export const AutomationDashboard: React.FC = () => {
 
   const getStrategyStatusColor = (strategy: AutomationStrategy) => {
     if (!strategy.isActive) return 'gray';
-    
+
     const executions = automationEngine.getExecutionHistory(strategy.id);
     const recentExecution = executions[executions.length - 1];
-    
+
     if (!recentExecution) return 'blue';
     if (recentExecution.status === 'success') return 'green';
     if (recentExecution.status === 'failed') return 'red';
@@ -111,7 +111,7 @@ export const AutomationDashboard: React.FC = () => {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     }).format(date);
   };
 
@@ -121,7 +121,9 @@ export const AutomationDashboard: React.FC = () => {
         {/* Header */}
         <HStack justify="space-between">
           <VStack align="start" spacing={0}>
-            <Text fontSize="2xl" fontWeight="bold">Automation Dashboard</Text>
+            <Text fontSize="2xl" fontWeight="bold">
+              Automation Dashboard
+            </Text>
             <Text color="gray.600">Manage your DeFi strategies</Text>
           </VStack>
           <Button leftIcon={<FiPlus />} colorScheme="blue" onClick={onOpen}>
@@ -143,7 +145,7 @@ export const AutomationDashboard: React.FC = () => {
               </StatHelpText>
             </Stat>
           </Card>
-          
+
           <Card p={4}>
             <Stat>
               <StatLabel>Total Executions</StatLabel>
@@ -156,7 +158,7 @@ export const AutomationDashboard: React.FC = () => {
               </StatHelpText>
             </Stat>
           </Card>
-          
+
           <Card p={4}>
             <Stat>
               <StatLabel>Success Rate</StatLabel>
@@ -171,12 +173,16 @@ export const AutomationDashboard: React.FC = () => {
         {/* Strategies List */}
         <Card>
           <Box p={4} borderBottom="1px" borderColor="gray.200">
-            <Text fontSize="lg" fontWeight="semibold">Your Strategies</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              Your Strategies
+            </Text>
           </Box>
-          
+
           {strategies.length === 0 ? (
             <Box p={8} textAlign="center">
-              <Text color="gray.500" mb={4}>No automation strategies yet</Text>
+              <Text color="gray.500" mb={4}>
+                No automation strategies yet
+              </Text>
               <Button leftIcon={<FiPlus />} colorScheme="blue" onClick={onOpen}>
                 Create Your First Strategy
               </Button>
@@ -210,7 +216,7 @@ export const AutomationDashboard: React.FC = () => {
                           </HStack>
                         </VStack>
                       </Td>
-                      
+
                       <Td>
                         <HStack>
                           <Badge colorScheme={getStrategyStatusColor(strategy)}>
@@ -223,17 +229,15 @@ export const AutomationDashboard: React.FC = () => {
                           />
                         </HStack>
                       </Td>
-                      
+
                       <Td>
-                        <Text fontSize="sm">
-                          {formatDate(strategy.createdAt)}
-                        </Text>
+                        <Text fontSize="sm">{formatDate(strategy.createdAt)}</Text>
                       </Td>
-                      
+
                       <Td>
                         <HStack spacing={2}>
                           <IconButton
-                            aria-label={strategy.isActive ? "Pause" : "Resume"}
+                            aria-label={strategy.isActive ? 'Pause' : 'Resume'}
                             icon={strategy.isActive ? <FiPause /> : <FiPlay />}
                             size="sm"
                             variant="outline"
@@ -267,7 +271,9 @@ export const AutomationDashboard: React.FC = () => {
           <ModalBody pb={6}>
             <VStack spacing={4}>
               <Box w="full">
-                <Text mb={2} fontWeight="medium">Describe your strategy:</Text>
+                <Text mb={2} fontWeight="medium">
+                  Describe your strategy:
+                </Text>
                 <Textarea
                   value={newStrategyDescription}
                   onChange={(e) => setNewStrategyDescription(e.target.value)}
@@ -275,17 +281,27 @@ export const AutomationDashboard: React.FC = () => {
                   rows={4}
                 />
               </Box>
-              
+
               <Box w="full">
-                <Text fontSize="sm" color="gray.600" mb={2}>Examples:</Text>
+                <Text fontSize="sm" color="gray.600" mb={2}>
+                  Examples:
+                </Text>
                 <VStack spacing={1} align="start">
-                  <Text fontSize="sm" color="gray.500">• "Set up weekly DCA of $100 into XLM"</Text>
-                  <Text fontSize="sm" color="gray.500">• "Alert me if XLM drops below $0.10"</Text>
-                  <Text fontSize="sm" color="gray.500">• "Rebalance portfolio monthly"</Text>
-                  <Text fontSize="sm" color="gray.500">• "Take profit if portfolio gains 50%"</Text>
+                  <Text fontSize="sm" color="gray.500">
+                    • "Set up weekly DCA of $100 into XLM"
+                  </Text>
+                  <Text fontSize="sm" color="gray.500">
+                    • "Alert me if XLM drops below $0.10"
+                  </Text>
+                  <Text fontSize="sm" color="gray.500">
+                    • "Rebalance portfolio monthly"
+                  </Text>
+                  <Text fontSize="sm" color="gray.500">
+                    • "Take profit if portfolio gains 50%"
+                  </Text>
                 </VStack>
               </Box>
-              
+
               <HStack spacing={3} w="full" justify="end">
                 <Button variant="outline" onClick={onClose}>
                   Cancel

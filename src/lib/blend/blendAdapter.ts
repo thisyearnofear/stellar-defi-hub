@@ -42,7 +42,7 @@ export class BlendProtocolAdapter implements BlendAdapter {
           utilizationRate: 71.2,
           liquidityAvailable: '360,000',
           collateralFactor: 0.85,
-          liquidationThreshold: 0.90
+          liquidationThreshold: 0.9,
         },
         {
           id: 'yieldblox_v2',
@@ -54,9 +54,9 @@ export class BlendProtocolAdapter implements BlendAdapter {
           totalBorrow: '3,520,000',
           utilizationRate: 45.1,
           liquidityAvailable: '4,290,000',
-          collateralFactor: 0.80,
-          liquidationThreshold: 0.85
-        }
+          collateralFactor: 0.8,
+          liquidationThreshold: 0.85,
+        },
       ];
 
       return productionPools;
@@ -77,7 +77,7 @@ export class BlendProtocolAdapter implements BlendAdapter {
           collateralValue: '8500',
           borrowCapacity: '7225',
           healthFactor: 1.445,
-          liquidationRisk: 'low'
+          liquidationRisk: 'low',
         },
         {
           poolId: 'pool_xlm',
@@ -86,8 +86,8 @@ export class BlendProtocolAdapter implements BlendAdapter {
           collateralValue: '37500',
           borrowCapacity: '28125',
           healthFactor: 999, // No borrowing
-          liquidationRisk: 'low'
-        }
+          liquidationRisk: 'low',
+        },
       ];
 
       return mockPositions;
@@ -101,15 +101,15 @@ export class BlendProtocolAdapter implements BlendAdapter {
     try {
       // This would interact with Blend smart contracts
       console.log(`Supplying ${amount} to pool ${poolId}`);
-      
+
       // Mock transaction ID
       const txId = `blend_supply_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       // In reality, this would:
       // 1. Prepare the supply transaction
       // 2. Call the Blend pool contract
       // 3. Return the transaction hash
-      
+
       return txId;
     } catch (error) {
       console.error('Supply error:', error);
@@ -120,7 +120,7 @@ export class BlendProtocolAdapter implements BlendAdapter {
   async borrow(poolId: string, amount: string): Promise<string> {
     try {
       console.log(`Borrowing ${amount} from pool ${poolId}`);
-      
+
       const txId = `blend_borrow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       return txId;
     } catch (error) {
@@ -132,7 +132,7 @@ export class BlendProtocolAdapter implements BlendAdapter {
   async repay(poolId: string, amount: string): Promise<string> {
     try {
       console.log(`Repaying ${amount} to pool ${poolId}`);
-      
+
       const txId = `blend_repay_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       return txId;
     } catch (error) {
@@ -144,7 +144,7 @@ export class BlendProtocolAdapter implements BlendAdapter {
   async withdraw(poolId: string, amount: string): Promise<string> {
     try {
       console.log(`Withdrawing ${amount} from pool ${poolId}`);
-      
+
       const txId = `blend_withdraw_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       return txId;
     } catch (error) {
@@ -154,7 +154,11 @@ export class BlendProtocolAdapter implements BlendAdapter {
   }
 
   // Helper method to calculate health factor
-  calculateHealthFactor(collateralValue: number, borrowValue: number, liquidationThreshold: number): number {
+  calculateHealthFactor(
+    collateralValue: number,
+    borrowValue: number,
+    liquidationThreshold: number
+  ): number {
     if (borrowValue === 0) return 999; // No liquidation risk
     return (collateralValue * liquidationThreshold) / borrowValue;
   }

@@ -1,19 +1,19 @@
-import { Card, Link } from '@chakra-ui/react'
-import { useSorobanReact } from './StellarProvider'
-import { type FC, useEffect, useState } from 'react'
-import { HiOutlineExternalLink } from 'react-icons/hi'
-import 'twin.macro'
+import { Card, Link } from '@chakra-ui/react';
+import { useSorobanReact } from './StellarProvider';
+import { type FC, useEffect, useState } from 'react';
+import { HiOutlineExternalLink } from 'react-icons/hi';
+import 'twin.macro';
 
 interface ChainInfo {
-  Chain: string | undefined,
-  PassPhrase: string,
-  NetworkURL: string,
-  sorobanURL: string | undefined
-} 
+  Chain: string | undefined;
+  PassPhrase: string;
+  NetworkURL: string;
+  sorobanURL: string | undefined;
+}
 export const ChainInfo: FC = () => {
   const sorobanContext = useSorobanReact();
-  // const { api, activeChain } = 
-  const [chainInfo, setChainInfo] = useState<ChainInfo>()
+  // const { api, activeChain } =
+  const [chainInfo, setChainInfo] = useState<ChainInfo>();
 
   // Fetch Chain Info
   const fetchChainInfo = () => {
@@ -22,7 +22,12 @@ export const ChainInfo: FC = () => {
     //   return
     // }
 
-    const chain = sorobanContext.activeChain ?? {name:"", networkPassphrase:"",networkUrl:"",sorobanRpcUrl:""}
+    const chain = sorobanContext.activeChain ?? {
+      name: '',
+      networkPassphrase: '',
+      networkUrl: '',
+      sorobanRpcUrl: '',
+    };
     // const version = (await api.rpc.system.version())?.toString() || ''
     // const properties = ((await api.rpc.system.properties())?.toHuman() as any) || {}
     // const tokenSymbol = properties?.tokenSymbol?.[0] || 'UNIT'
@@ -31,12 +36,12 @@ export const ChainInfo: FC = () => {
       Chain: chain.name,
       PassPhrase: chain.networkPassphrase,
       NetworkURL: chain.networkUrl,
-      sorobanURL: chain.sorobanRpcUrl
+      sorobanURL: chain.sorobanRpcUrl,
       // Token: `${tokenSymbol} (${tokenDecimals} Decimals)`,
-    }
-    setChainInfo(chainInfo)
-  }
-  useEffect(fetchChainInfo, [sorobanContext])
+    };
+    setChainInfo(chainInfo);
+  };
+  useEffect(fetchChainInfo, [sorobanContext]);
 
   // Connection Loading Indicator
   // if (!api)
@@ -56,7 +61,7 @@ export const ChainInfo: FC = () => {
 
         <Card variant="outline" p={4} bgColor="whiteAlpha.100">
           {/* Metadata */}
-          {Object.entries(chainInfo ?? {}).map(([key, value]:[string, string]) => (
+          {Object.entries(chainInfo ?? {}).map(([key, value]: [string, string]) => (
             <div key={key} tw="text-sm leading-7">
               {key}:
               <strong tw="float-right ml-6 truncate max-w-[15rem]" title={value}>
@@ -66,18 +71,18 @@ export const ChainInfo: FC = () => {
           ))}
 
           {/* <div tw="mt-3 flex items-center justify-center space-x-3"> */}
-            {/* Explorer Link */}
-            {
-              <Link
-                href={"https://stellar.expert/explorer/testnet/"}
-                target="_blank"
-                tw="flex items-center justify-center gap-1 text-center text-sm text-gray-400 hover:text-white"
-              >
-                TestNet Explorer <HiOutlineExternalLink />
-              </Link>
-            }
-            {/* Faucet Link */}
-            {/* {!!activeChain?.faucetUrls?.length && (
+          {/* Explorer Link */}
+          {
+            <Link
+              href={'https://stellar.expert/explorer/testnet/'}
+              target="_blank"
+              tw="flex items-center justify-center gap-1 text-center text-sm text-gray-400 hover:text-white"
+            >
+              TestNet Explorer <HiOutlineExternalLink />
+            </Link>
+          }
+          {/* Faucet Link */}
+          {/* {!!activeChain?.faucetUrls?.length && (
               <Link
                 href={activeChain.faucetUrls[0]}
                 target="_blank"
@@ -86,8 +91,8 @@ export const ChainInfo: FC = () => {
                 Faucet <HiOutlineExternalLink />
               </Link>
             )} */}
-            {/* Contracts UI Link */}
-            {/* {!!activeChain?.rpcUrls?.length && (
+          {/* Contracts UI Link */}
+          {/* {!!activeChain?.rpcUrls?.length && (
               <Link
                 href={`https://contracts-ui.substrate.io/?rpc=${activeChain.rpcUrls[0]}`}
                 target="_blank"
@@ -112,5 +117,5 @@ export const ChainInfo: FC = () => {
         )} */}
       </div>
     </>
-  )
-}
+  );
+};

@@ -12,7 +12,7 @@ interface RealBalanceDisplayProps {
 export const RealBalanceDisplay: React.FC<RealBalanceDisplayProps> = ({
   chain,
   token,
-  onBalanceUpdate
+  onBalanceUpdate,
 }) => {
   const [balance, setBalance] = useState<string>('0');
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +38,10 @@ export const RealBalanceDisplay: React.FC<RealBalanceDisplayProps> = ({
           const mockStellarBalance = '1000'; // Placeholder
           setBalance(mockStellarBalance);
           onBalanceUpdate?.(mockStellarBalance);
-        } else if (['ethereum', 'avalanche', 'polygon'].includes(chain.toLowerCase()) && isEvmConnected) {
+        } else if (
+          ['ethereum', 'avalanche', 'polygon'].includes(chain.toLowerCase()) &&
+          isEvmConnected
+        ) {
           // Use wagmi balance for EVM chains
           if (token === 'ETH' || token === 'AVAX' || token === 'MATIC') {
             // Native token
@@ -78,7 +81,7 @@ export const RealBalanceDisplay: React.FC<RealBalanceDisplayProps> = ({
 
   const formattedBalance = parseFloat(balance).toLocaleString(undefined, {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 6
+    maximumFractionDigits: 6,
   });
 
   return (
@@ -96,7 +99,11 @@ export const useWalletBalance = (chain: string, token: string) => {
 
   // EVM integration
   const { address: evmAddress, isConnected: isEvmConnected } = useAccount();
-  const { data: evmBalance, isLoading: isEvmLoading, error: evmError } = useBalance({
+  const {
+    data: evmBalance,
+    isLoading: isEvmLoading,
+    error: evmError,
+  } = useBalance({
     address: evmAddress,
   });
 
@@ -152,7 +159,7 @@ export const useWalletBalance = (chain: string, token: string) => {
     refresh: () => {
       // Trigger balance refresh
       setIsLoading(true);
-    }
+    },
   };
 };
 
@@ -161,9 +168,9 @@ async function loadStellarBalance(address: string, token: string): Promise<strin
   // This would integrate with Stellar SDK
   // For now, return mock data
   const mockBalances: Record<string, string> = {
-    'XLM': '1000',
-    'USDC': '500',
-    'USDT': '300'
+    XLM: '1000',
+    USDC: '500',
+    USDT: '300',
   };
 
   return mockBalances[token] || '0';
@@ -174,17 +181,17 @@ async function loadERC20Balance(address: string, token: string, chain: string): 
   // For now, return mock data
   const mockBalances: Record<string, Record<string, string>> = {
     ethereum: {
-      'USDC': '5000',
-      'USDT': '3000'
+      USDC: '5000',
+      USDT: '3000',
     },
     avalanche: {
-      'USDC': '1200',
-      'USDT': '800'
+      USDC: '1200',
+      USDT: '800',
     },
     polygon: {
-      'USDC': '800',
-      'USDT': '600'
-    }
+      USDC: '800',
+      USDT: '600',
+    },
   };
 
   return mockBalances[chain.toLowerCase()]?.[token] || '0';

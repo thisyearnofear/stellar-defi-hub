@@ -1,49 +1,49 @@
-import { CenterBody } from '@/components/layout/CenterBody'
-import { MobileDashboard } from '@/components/mobile/MobileDashboard'
-import { AIOnboarding } from '@/components/onboarding/AIOnboarding'
-import { useOnboarding } from '@/hooks/useOnboarding'
-import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { useBreakpointValue } from '@chakra-ui/react'
-import { Box, Button, VStack, Text, Card, SimpleGrid } from '@chakra-ui/react'
-import { ArrowForwardIcon } from '@chakra-ui/icons'
-import 'twin.macro'
+import { CenterBody } from '@/components/layout/CenterBody';
+import { MobileDashboard } from '@/components/mobile/MobileDashboard';
+import { AIOnboarding } from '@/components/onboarding/AIOnboarding';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, VStack, Text, Card, SimpleGrid } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+import 'twin.macro';
 
 const HomePage: NextPage = () => {
-  const router = useRouter()
-  const isMobile = useBreakpointValue({ base: true, md: false })
-  const { hasCompletedOnboarding, completeOnboarding } = useOnboarding()
+  const router = useRouter();
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const { hasCompletedOnboarding, completeOnboarding } = useOnboarding();
 
   // Show onboarding for new users
   if (hasCompletedOnboarding === false) {
-    return <AIOnboarding onComplete={completeOnboarding} />
+    return <AIOnboarding onComplete={completeOnboarding} />;
   }
 
   // Show mobile dashboard on mobile, desktop experience on desktop
   if (isMobile) {
-    return <MobileDashboard />
+    return <MobileDashboard />;
   }
 
   const features = [
     {
       title: 'Stellar DEX Trading',
-      description: 'Trade assets on Stellar\'s built-in decentralized exchange',
+      description: "Trade assets on Stellar's built-in decentralized exchange",
       href: '/trade',
-      color: 'blue'
+      color: 'blue',
     },
     {
       title: 'Blend Protocol',
       description: 'Lend and borrow assets on Stellar with competitive rates',
       href: '/blend',
-      color: 'purple'
+      color: 'purple',
     },
     {
       title: 'Portfolio',
       description: 'Track your Stellar assets and DeFi positions',
       href: '/portfolio',
-      color: 'green'
-    }
-  ]
+      color: 'green',
+    },
+  ];
 
   return (
     <>
@@ -51,12 +51,11 @@ const HomePage: NextPage = () => {
         {/* Title */}
         <div tw="flex flex-col items-center text-center font-mono">
           <h1 tw="font-black text-[2.5rem]">Stellar DeFi Hub</h1>
-          <h1 tw="font-black text-[2.5rem] text-gray-500">Your Gateway to Stellar DeFi</h1>
+          <h1 tw="font-black text-gray-500 text-[2.5rem]">Your Gateway to Stellar DeFi</h1>
           <p tw="mt-1 text-gray-600 text-sm">
             Trade on the DEX, earn yield with Blend, and access the entire Stellar ecosystem
           </p>
         </div>
-
 
         {/* Feature Cards */}
         <Box mt={16} w="100%" maxW="4xl">
@@ -82,8 +81,8 @@ const HomePage: NextPage = () => {
                     colorScheme={feature.color}
                     rightIcon={<ArrowForwardIcon />}
                     onClick={(e) => {
-                      e.stopPropagation()
-                      void router.push(feature.href)
+                      e.stopPropagation();
+                      void router.push(feature.href);
                     }}
                   >
                     Get Started
@@ -104,7 +103,7 @@ const HomePage: NextPage = () => {
               { name: 'XLM', description: 'Native Stellar token' },
               { name: 'USDC', description: 'USD Coin on Stellar' },
               { name: 'Blend', description: 'Lending protocol' },
-              { name: 'Soroban', description: 'Smart contracts' }
+              { name: 'Soroban', description: 'Smart contracts' },
             ].map((asset) => (
               <Card
                 key={asset.name}
@@ -117,15 +116,19 @@ const HomePage: NextPage = () => {
                 _hover={{ shadow: 'md', borderColor: 'blue.300' }}
                 transition="all 0.2s"
               >
-                <Text fontSize="sm" fontWeight="semibold" color="gray.800">{asset.name}</Text>
-                <Text fontSize="xs" color="gray.600" mt={1}>{asset.description}</Text>
+                <Text fontSize="sm" fontWeight="semibold" color="gray.800">
+                  {asset.name}
+                </Text>
+                <Text fontSize="xs" color="gray.600" mt={1}>
+                  {asset.description}
+                </Text>
               </Card>
             ))}
           </SimpleGrid>
         </Box>
       </CenterBody>
     </>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

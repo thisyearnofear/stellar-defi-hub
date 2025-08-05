@@ -1,9 +1,21 @@
-import { type NextPage } from 'next'
-import Head from 'next/head'
-import { VStack, Container, Text, Card, SimpleGrid, Stat, StatLabel, StatNumber, StatHelpText, Alert, AlertIcon } from '@chakra-ui/react'
-import { useSorobanReact } from '../components/web3/StellarProvider'
-import { useBlendStore } from '../lib/stores/blendStore'
-import { useEffect } from 'react'
+import { type NextPage } from 'next';
+import Head from 'next/head';
+import {
+  VStack,
+  Container,
+  Text,
+  Card,
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react';
+import { useSorobanReact } from '../components/web3/StellarProvider';
+import { useBlendStore } from '../lib/stores/blendStore';
+import { useEffect } from 'react';
 
 const PortfolioPage: NextPage = () => {
   const sorobanContext = useSorobanReact();
@@ -18,7 +30,10 @@ const PortfolioPage: NextPage = () => {
 
   const totalSupplied = userPositions.reduce((sum, pos) => sum + parseFloat(pos.supplied), 0);
   const totalBorrowed = userPositions.reduce((sum, pos) => sum + parseFloat(pos.borrowed), 0);
-  const totalCollateral = userPositions.reduce((sum, pos) => sum + parseFloat(pos.collateralValue), 0);
+  const totalCollateral = userPositions.reduce(
+    (sum, pos) => sum + parseFloat(pos.collateralValue),
+    0
+  );
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -49,7 +64,9 @@ const PortfolioPage: NextPage = () => {
 
           {/* Connected Wallets */}
           <Card p={6} w="100%">
-            <Text fontSize="xl" fontWeight="bold" mb={4}>Connected Wallets</Text>
+            <Text fontSize="xl" fontWeight="bold" mb={4}>
+              Connected Wallets
+            </Text>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={4}>
               <Card p={4} bg={sorobanContext.address ? 'green.50' : 'gray.50'}>
                 <VStack>
@@ -72,8 +89,10 @@ const PortfolioPage: NextPage = () => {
           {/* Blend Protocol Positions */}
           {sorobanContext.address ? (
             <Card p={6} w="100%">
-              <Text fontSize="xl" fontWeight="bold" mb={4}>Blend Protocol Positions</Text>
-              
+              <Text fontSize="xl" fontWeight="bold" mb={4}>
+                Blend Protocol Positions
+              </Text>
+
               {userPositions.length > 0 ? (
                 <>
                   <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mb={6}>
@@ -89,7 +108,9 @@ const PortfolioPage: NextPage = () => {
                     </Stat>
                     <Stat>
                       <StatLabel>Net Position</StatLabel>
-                      <StatNumber color={totalSupplied - totalBorrowed >= 0 ? 'green.500' : 'red.500'}>
+                      <StatNumber
+                        color={totalSupplied - totalBorrowed >= 0 ? 'green.500' : 'red.500'}
+                      >
                         {formatCurrency(totalSupplied - totalBorrowed)}
                       </StatNumber>
                       <StatHelpText>
@@ -102,11 +123,18 @@ const PortfolioPage: NextPage = () => {
                     {userPositions.map((position, index) => (
                       <Card key={index} p={4} borderLeft="4px" borderLeftColor="purple.500">
                         <VStack align="start" spacing={2}>
-                          <Text fontWeight="bold">Pool: {position.poolId.replace('pool_', '').toUpperCase()}</Text>
-                          <Text fontSize="sm">Supplied: {formatCurrency(parseFloat(position.supplied))}</Text>
-                          <Text fontSize="sm">Borrowed: {formatCurrency(parseFloat(position.borrowed))}</Text>
+                          <Text fontWeight="bold">
+                            Pool: {position.poolId.replace('pool_', '').toUpperCase()}
+                          </Text>
                           <Text fontSize="sm">
-                            Health Factor: {position.healthFactor === 999 ? '∞' : position.healthFactor.toFixed(2)}
+                            Supplied: {formatCurrency(parseFloat(position.supplied))}
+                          </Text>
+                          <Text fontSize="sm">
+                            Borrowed: {formatCurrency(parseFloat(position.borrowed))}
+                          </Text>
+                          <Text fontSize="sm">
+                            Health Factor:{' '}
+                            {position.healthFactor === 999 ? '∞' : position.healthFactor.toFixed(2)}
                           </Text>
                         </VStack>
                       </Card>
@@ -129,7 +157,9 @@ const PortfolioPage: NextPage = () => {
 
           {/* Bridge Transaction History */}
           <Card p={6} w="100%">
-            <Text fontSize="xl" fontWeight="bold" mb={4}>Recent Bridge Transactions</Text>
+            <Text fontSize="xl" fontWeight="bold" mb={4}>
+              Recent Bridge Transactions
+            </Text>
             <Alert status="info">
               <AlertIcon />
               Bridge transaction history will be displayed here once you start bridging assets
@@ -138,7 +168,7 @@ const PortfolioPage: NextPage = () => {
         </VStack>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default PortfolioPage
+export default PortfolioPage;

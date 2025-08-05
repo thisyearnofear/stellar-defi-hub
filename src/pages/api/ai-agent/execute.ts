@@ -59,39 +59,43 @@ async function executeTrade(params: any, walletAddress: string) {
     const account = await server.loadAccount(walletAddress);
 
     // Create assets
-    const fromAsset = params.fromAsset === 'XLM'
-      ? StellarSdk.Asset.native()
-      : new StellarSdk.Asset(params.fromAsset, getAssetIssuer(params.fromAsset));
+    const fromAsset =
+      params.fromAsset === 'XLM'
+        ? StellarSdk.Asset.native()
+        : new StellarSdk.Asset(params.fromAsset, getAssetIssuer(params.fromAsset));
 
-    const toAsset = params.toAsset === 'XLM'
-      ? StellarSdk.Asset.native()
-      : new StellarSdk.Asset(params.toAsset, getAssetIssuer(params.toAsset));
+    const toAsset =
+      params.toAsset === 'XLM'
+        ? StellarSdk.Asset.native()
+        : new StellarSdk.Asset(params.toAsset, getAssetIssuer(params.toAsset));
 
     // Build transaction
     const transaction = new StellarSdk.TransactionBuilder(account, {
       fee: StellarSdk.BASE_FEE,
-      networkPassphrase: StellarSdk.Networks.PUBLIC
+      networkPassphrase: StellarSdk.Networks.PUBLIC,
     })
-    .addOperation(StellarSdk.Operation.manageBuyOffer({
-      selling: fromAsset,
-      buying: toAsset,
-      buyAmount: params.amount,
-      price: '1', // Market price - should be calculated
-      offerId: '0'
-    }))
-    .setTimeout(30)
-    .build();
+      .addOperation(
+        StellarSdk.Operation.manageBuyOffer({
+          selling: fromAsset,
+          buying: toAsset,
+          buyAmount: params.amount,
+          price: '1', // Market price - should be calculated
+          offerId: '0',
+        })
+      )
+      .setTimeout(30)
+      .build();
 
     return {
       success: true,
       transactionXDR: transaction.toXDR(),
       message: `Trade transaction prepared: ${params.amount} ${params.toAsset}`,
-      requiresSignature: true
+      requiresSignature: true,
     };
   } catch (error) {
     return {
       success: false,
-      error: `Trade execution failed: ${error}`
+      error: `Trade execution failed: ${error}`,
     };
   }
 }
@@ -106,12 +110,12 @@ async function executeLend(params: any, walletAddress: string) {
       message: `Prepared lending of ${params.amount} ${params.asset} to ${params.protocol}`,
       estimatedAPY: '8.2%',
       requiresSignature: true,
-      contractAddress: 'BLEND_PROTOCOL_CONTRACT_ADDRESS'
+      contractAddress: 'BLEND_PROTOCOL_CONTRACT_ADDRESS',
     };
   } catch (error) {
     return {
       success: false,
-      error: `Lending execution failed: ${error}`
+      error: `Lending execution failed: ${error}`,
     };
   }
 }
@@ -123,12 +127,12 @@ async function executeStake(params: any, walletAddress: string) {
       success: true,
       message: `Prepared staking of ${params.amount} ${params.asset}`,
       estimatedRewards: '12% APY',
-      requiresSignature: true
+      requiresSignature: true,
     };
   } catch (error) {
     return {
       success: false,
-      error: `Staking execution failed: ${error}`
+      error: `Staking execution failed: ${error}`,
     };
   }
 }
@@ -142,12 +146,12 @@ async function executeRebalance(params: any, walletAddress: string) {
       success: true,
       message: `Prepared rebalancing to target allocation`,
       trades: trades,
-      requiresSignature: true
+      requiresSignature: true,
     };
   } catch (error) {
     return {
       success: false,
-      error: `Rebalancing failed: ${error}`
+      error: `Rebalancing failed: ${error}`,
     };
   }
 }
@@ -160,12 +164,12 @@ async function executeAnalysis(params: any, walletAddress: string) {
     return {
       success: true,
       analysis: analysis,
-      requiresSignature: false
+      requiresSignature: false,
     };
   } catch (error) {
     return {
       success: false,
-      error: `Analysis failed: ${error}`
+      error: `Analysis failed: ${error}`,
     };
   }
 }
@@ -180,12 +184,12 @@ async function createAlert(params: any, walletAddress: string) {
       success: true,
       alertId: alertId,
       message: `Alert created: ${params.asset} ${params.condition} $${params.price}`,
-      requiresSignature: false
+      requiresSignature: false,
     };
   } catch (error) {
     return {
       success: false,
-      error: `Alert creation failed: ${error}`
+      error: `Alert creation failed: ${error}`,
     };
   }
 }
@@ -199,12 +203,12 @@ async function createAutomation(params: any, walletAddress: string) {
       success: true,
       automationId: automationId,
       message: `Automation created: ${params.frequency} ${params.asset} purchases`,
-      requiresSignature: false
+      requiresSignature: false,
     };
   } catch (error) {
     return {
       success: false,
-      error: `Automation creation failed: ${error}`
+      error: `Automation creation failed: ${error}`,
     };
   }
 }
@@ -212,7 +216,7 @@ async function createAutomation(params: any, walletAddress: string) {
 // Helper functions
 function getAssetIssuer(assetCode: string): string {
   const issuers: Record<string, string> = {
-    'USDC': 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
+    USDC: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
     // Add more asset issuers as needed
   };
 
@@ -223,7 +227,7 @@ function calculateRebalanceTrades(targetAllocation: any, walletAddress: string) 
   // Mock rebalancing calculation
   return [
     { action: 'sell', asset: 'XLM', amount: '500', reason: 'Reduce XLM allocation' },
-    { action: 'buy', asset: 'USDC', amount: '500', reason: 'Increase USDC allocation' }
+    { action: 'buy', asset: 'USDC', amount: '500', reason: 'Increase USDC allocation' },
   ];
 }
 
@@ -236,7 +240,7 @@ async function analyzePortfolio(walletAddress: string) {
     recommendations: [
       'Consider diversifying into yield-earning positions',
       'Your XLM allocation is high - consider taking some profits',
-      'Add some stablecoin exposure for stability'
-    ]
+      'Add some stablecoin exposure for stability',
+    ],
   };
 }
